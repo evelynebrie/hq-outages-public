@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HQ Outage Exposure Analysis</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body{margin:0;padding:0;font-family:-apple-system,system-ui,sans-serif}
+        #map{position:absolute;top:0;bottom:0;width:100%}
+        .info{padding:12px;background:white;box-shadow:0 2px 10px rgba(0,0,0,0.1);border-radius:8px}
+        .info h4{margin:0 0 8px;font-size:15px;font-weight:600}
+        .info p{margin:4px 0;font-size:13px}
+        .legend{line-height:20px;font-size:12px}
+        .legend i{width:18px;height:18px;float:left;margin-right:8px;opacity:0.8;border-radius:2px}
+        .controls{padding:10px;background:white;box-shadow:0 2px 10px rgba(0,0,0,0.1);border-radius:8px}
+        .controls h4{margin:0 0 8px;font-size:14px;font-weight:600}
+        .controls select{width:100%;padding:6px;border-radius:4px;border:1px solid #ddd}
+        .downloads a{display:block;margin:4px 0;padding:4px 8px;color:#0066cc;text-decoration:none;border-radius:4px}
+        .downloads a:hover{background:#f0f0f0}
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        var map = L.map("map").setView([46.8,-71.2],7);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OSM"}).addTo(map);
+        
+        var currentLayer;
+        
+        function loadData(url, type) {
+            if (currentLayer) map.removeLayer(currentLayer);
+            
+            fetch(url)
+                .then(r => r.json())
+                .then(data => {
+                    currentLayer = L.geoJSON(data, {
+                        style: f => ({
+                            fillColor: getColor(f.properties.pct),
+                            weight: 0.5,
+                            color: "#fff",
+                            fillOpacity: 0.75
+                        }),
+                        onEachFeature: (f, layer) => {
+                            var popup = `<b>Hex ${f.properties.hex_id}</b><br>Exposure: ${f.properties.pct}%`;
+                            if (type === "total") {
+                                popup += `<br>Days affected: ${f.properties.days_affected}`;
+                            }
+                            layer.bindPopup(popup);
+                        }
+                    }).addTo(map);
+                });
+        }
+        
+        function getColor(d) {
+            return d>80?"#67000d":d>60?"#a50f15":d>40?"#cb181d":d>20?"#ef3b2c":
+                   d>10?"#fb6a4a":d>5?"#fc9272":d>2?"#fcbba1":"#fee5d9";
+        }
+        
+        // Load total by default
+        loadData("total/total_exposure.geojson", "total");
+        
+        var legend = L.control({position:"bottomright"});
+        legend.onAdd = () => {
+            var div = L.DomUtil.create("div","info legend");
+            div.innerHTML = "<h4>Exposure (%)</h4>";
+            [0,2,5,10,20,40,60,80].forEach((g,i,a) => {
+                div.innerHTML += `<i style="background:${getColor(g+1)}"></i>${g}${a[i+1]?"–"+a[i+1]:"+"}<br>`;
+            });
+            return div;
+        };
+        legend.addTo(map);
+        
+        var info = L.control({position:"topright"});
+        info.onAdd = () => {
+            var div = L.DomUtil.create("div","info");
+            div.innerHTML = "<h4>HQ Cumulative Outage Exposure</h4>" +
+                           "<p><b>Hex size:</b> 5km</p>" +
+                           "<p><b>Days analyzed:</b> 29</p>";
+            return div;
+        };
+        info.addTo(map);
+        
+        var controls = L.control({position:"topleft"});
+        controls.onAdd = () => {
+            var div = L.DomUtil.create("div","controls downloads");
+            div.innerHTML = "<h4>📥 Downloads</h4>" +
+                           "<a href=\"total/total_exposure.geojson\">Total GeoJSON</a>" +
+                           "<a href=\"total/total_stats.csv\">Total CSV</a>" +
+                           "<a href=\"total/summary.json\">Summary JSON</a>";
+            return div;
+        };
+        controls.addTo(map);
+    </script>
+</body>
+</html>
