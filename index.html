@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <title>Pannes de courant cumulatives</title>
+    <title>Pannes de courant cumulatives - Hydro-Québec</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body{margin:0;padding:0;font-family:-apple-system,system-ui,sans-serif}
         #map{position:absolute;top:0;bottom:0;width:100%}
@@ -22,32 +25,88 @@
         .detail-link:hover{color:#0052a3}
         .detail-modal{display:none;position:fixed;z-index:2000;left:50%;top:50%;transform:translate(-50%,-50%);
                       background:white;padding:20px;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.3);
-                      max-width:500px;max-height:70vh;overflow-y:auto}
+                      max-width:600px;max-height:80vh;overflow-y:auto}
         .detail-modal.active{display:block}
         .modal-overlay{display:none;position:fixed;z-index:1999;left:0;top:0;width:100%;height:100%;
                        background:rgba(0,0,0,0.5)}
         .modal-overlay.active{display:block}
         .close-modal{float:right;font-size:24px;font-weight:bold;cursor:pointer;color:#999}
         .close-modal:hover{color:#333}
-        .detail-table{width:100%;border-collapse:collapse;margin-top:10px}
-        .detail-table th,.detail-table td{text-align:left;padding:6px;border-bottom:1px solid #eee;font-size:12px}
-        .detail-table th{font-weight:600;background:#f5f5f5}
+        .detail-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}
+        .detail-table th,.detail-table td{text-align:left;padding:8px;border-bottom:1px solid #eee}
+        .detail-table th{font-weight:600;background:#f5f5f5;position:sticky;top:0}
+        .detail-table tfoot{font-weight:600;background:#f9f9f9}
+        .sidebar{position:fixed;left:0;top:0;bottom:0;width:350px;background:white;box-shadow:2px 0 10px rgba(0,0,0,0.1);
+                 transform:translateX(-350px);transition:transform 0.3s;z-index:1000;overflow-y:auto}
+        .sidebar.active{transform:translateX(0)}
+        .sidebar-toggle{position:fixed;left:10px;top:10px;z-index:1001;padding:10px 15px;background:white;
+                        border:none;border-radius:4px;box-shadow:0 2px 10px rgba(0,0,0,0.1);cursor:pointer;font-size:14px}
+        .sidebar-content{padding:20px}
+        .sidebar h3{margin-top:0}
+        .chart-container{margin:20px 0;height:300px}
+        .welcome-modal{display:block;position:fixed;z-index:2001;left:50%;top:50%;transform:translate(-50%,-50%);
+                       background:white;padding:30px;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.3);
+                       max-width:500px}
+        .welcome-modal h2{margin-top:0;color:#0066cc}
+        .welcome-modal button{padding:10px 20px;background:#0066cc;color:white;border:none;border-radius:4px;
+                              cursor:pointer;font-size:14px;margin-top:15px}
+        .welcome-modal button:hover{background:#0052a3}
     </style>
 </head>
 <body>
     <div id="map"></div>
     <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-overlay active" id="welcomeOverlay"></div>
+    
+    <div class="welcome-modal" id="welcomeModal">
+        <h2>Bienvenue!</h2>
+        <p>Cette carte interactive présente les pannes de courant cumulatives dHydro-Québec.</p>
+        <p><strong>Fonctionnalités:</strong></p>
+        <ul>
+            <li>Hexagones de 1km montrant les zones affectées</li>
+            <li>Filtrage par date et heure</li>
+            <li>Recherche dadresse ou code postal</li>
+            <li>Statistiques des clients affectés (panneau latéral)</li>
+            <li>Détails complets pour chaque hexagone</li>
+        </ul>
+        <p><em>Les données sont mises à jour quotidiennement.</em></p>
+        <button onclick="closeWelcome()">Commencer</button>
+    </div>
+    
     <div class="detail-modal" id="detailModal">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <span class="close-modal" onclick="closeDetailModal()">&times;</span>
         <div id="modalContent"></div>
     </div>
+    
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰ Statistiques</button>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <h3>Impact sur les clients</h3>
+            <p id="sidebarInfo">Chargement...</p>
+            <div class="chart-container">
+                <canvas id="impactChart"></canvas>
+            </div>
+        </div>
+    </div>
+    
     <script>
-        var map = L.map('map').setView([46.8,-71.2],7);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OSM'}).addTo(map);
+        var customerData = null;
+        var map = L.map("map").setView([46.4, -72.7], 8);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OSM"}).addTo(map);
         
         var currentLayer;
         var allData = {};
+        var impactChart = null;
         
+        function closeWelcome() {
+            document.getElementById("welcomeModal").style.display = "none";
+            document.getElementById("welcomeOverlay").classList.remove("active");
+        }
+        
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("active");
+        }
+
         async function loadAllDailyData() {
             try {
                 const response = await fetch('total/total_exposure.geojson');
@@ -59,7 +118,7 @@
                     if (f.properties.datetimes_affected) {
                         const datetimes = f.properties.datetimes_affected.split(',');
                         datetimes.forEach(dt => {
-                            const date = dt.split(' ')[0];
+                            const date = dt.trim().split(' ')[0];
                             dates.add(date);
                         });
                     }
@@ -74,9 +133,55 @@
                     dateSelect.appendChild(opt);
                 });
                 
+                if (customerData && customerData.length > 0) {
+                    initImpactChart();
+                }
+                
             } catch (e) {
                 console.error('Error loading data:', e);
             }
+        }
+        
+        function initImpactChart() {
+            const ctx = document.getElementById('impactChart').getContext('2d');
+            
+            const dates = {};
+            customerData.forEach(d => {
+                const date = d.datetime.split(' ')[0];
+                if (!dates[date]) dates[date] = 0;
+                dates[date] += d.total_customers_affected;
+            });
+            
+            impactChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(dates).sort(),
+                    datasets: [{
+                        label: 'Clients affectés',
+                        data: Object.values(dates),
+                        backgroundColor: '#cb181d'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Nombre de clients'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const totalCustomers = customerData.reduce((sum, d) => sum + d.total_customers_affected, 0);
+            document.getElementById('sidebarInfo').innerHTML = 
+                '<p><strong>Total cumulé:</strong> ' + totalCustomers.toLocaleString() + ' clients</p>' +
+                '<p><strong>Période:</strong> ' + Object.keys(dates).sort()[0] + ' à ' + 
+                Object.keys(dates).sort()[Object.keys(dates).length-1] + '</p>';
         }
         
         function filterDataByDateTime(date, hour) {
@@ -90,7 +195,7 @@
                 type: 'FeatureCollection',
                 features: allData.total.features.filter(f => {
                     if (!f.properties.datetimes_affected) return false;
-                    const datetimes = f.properties.datetimes_affected.split(',');
+                    const datetimes = f.properties.datetimes_affected.split(',').map(s => s.trim());
                     return datetimes.some(dt => {
                         if (hour === 'all') {
                             return dt.startsWith(date);
@@ -100,7 +205,7 @@
                         }
                     });
                 }).map(f => {
-                    const datetimes = f.properties.datetimes_affected.split(',');
+                    const datetimes = f.properties.datetimes_affected.split(',').map(s => s.trim());
                     let matchingCount = 0;
                     datetimes.forEach(dt => {
                         if (hour === 'all' && dt.startsWith(date)) {
@@ -134,13 +239,14 @@
             if (currentLayer) map.removeLayer(currentLayer);
             
             const isFiltered = date !== 'all';
+            const useFixedColor = isFiltered;
             
             currentLayer = L.geoJSON(data, {
                 style: f => ({
-                    fillColor: getColor(isFiltered ? f.properties.filtered_hours_count : f.properties.hours_count),
+                    fillColor: useFixedColor ? '#a50f15' : getColor(f.properties.hours_count),
                     weight: 0.5,
                     color: '#fff',
-                    fillOpacity: 0.75
+                    fillOpacity: useFixedColor ? 0.8 : 0.75
                 }),
                 onEachFeature: (f, layer) => {
                     const props = f.properties;
@@ -151,7 +257,7 @@
                                '<b>Nombre de jours impactés:</b> ' + props.days_affected + '<br>' +
                                '<b>Coordonnées du centroïde:</b><br>' +
                                'Lat: ' + props.centroid_lat.toFixed(6) + ', Lon: ' + props.centroid_lon.toFixed(6) + '<br>' +
-                               '<a class="detail-link" onclick="showDetails(' + props.hex_id + ')">Voir toutes les heures et jours impactés</a>';
+                               '<a class="detail-link" onclick="showDetails(' + props.hex_id + ')">Voir les détails complets</a>';
                     
                     layer.bindPopup(popup);
                 }
@@ -163,40 +269,47 @@
             if (!feature) return;
             
             const props = feature.properties;
-            const datetimes = props.datetimes_affected.split(',').sort();
+            const datetimes = props.datetimes_affected.split(',').map(s => s.trim()).sort();
             
             const byDate = {};
             datetimes.forEach(dt => {
                 const [date, time] = dt.split(' ');
                 if (!byDate[date]) byDate[date] = [];
-                byDate[date].push(time);
+                const hour = parseInt(time.split(':')[0]);
+                byDate[date].push(hour);
             });
             
             let html = '<h3>Hexagone #' + hexId + '</h3>';
-            html += '<p><b>Total heures impactées:</b> ' + props.hours_count + '</p>';
-            html += '<p><b>Total jours impactés:</b> ' + props.days_affected + '</p>';
-            html += '<p><b>Centroïde:</b> ' + props.centroid_lat.toFixed(6) + ', ' + props.centroid_lon.toFixed(6) + '</p>';
+            html += '<p><strong>Centroïde:</strong> ' + props.centroid_lat.toFixed(6) + ', ' + props.centroid_lon.toFixed(6) + '</p>';
             html += '<table class="detail-table">';
-            html += '<thead><tr><th>Date</th><th>Heures</th></tr></thead><tbody>';
+            html += '<thead><tr><th>Date</th><th>Première heure</th><th>Nombre d\'heures</th></tr></thead><tbody>';
+            
+            let totalDays = 0;
+            let totalHours = 0;
             
             Object.keys(byDate).sort().forEach(date => {
-                const hours = byDate[date].sort();
-                html += '<tr><td>' + date + '</td><td>' + hours.join(', ') + '</td></tr>';
+                const hours = byDate[date].sort((a, b) => a - b);
+                const firstHour = hours[0];
+                const numHours = hours.length;
+                totalDays++;
+                totalHours += numHours;
+                html += '<tr><td>' + date + '</td><td>' + firstHour + ':00</td><td>' + numHours + '</td></tr>';
             });
             
-            html += '</tbody></table>';
+            html += '</tbody><tfoot><tr><td><strong>Total</strong></td><td>' + totalDays + ' jours</td><td>' + totalHours + ' heures</td></tr></tfoot>';
+            html += '</table>';
             
             document.getElementById('modalContent').innerHTML = html;
             document.getElementById('detailModal').classList.add('active');
             document.getElementById('modalOverlay').classList.add('active');
         }
         
-        function closeModal() {
+        function closeDetailModal() {
             document.getElementById('detailModal').classList.remove('active');
             document.getElementById('modalOverlay').classList.remove('active');
         }
         
-        document.getElementById('modalOverlay').onclick = closeModal;
+        document.getElementById('modalOverlay').onclick = closeDetailModal;
         
         function getColor(d) {
             return d>80?'#67000d':d>60?'#a50f15':d>40?'#cb181d':d>20?'#ef3b2c':
@@ -217,13 +330,30 @@
             return div;
         };
         legend.addTo(map);
+        
+        var geocoder = L.Control.geocoder({
+            defaultMarkGeocode: false,
+            placeholder: 'Rechercher une adresse...',
+            errorMessage: 'Adresse non trouvée'
+        })
+        .on('markgeocode', function(e) {
+            var bbox = e.geocode.bbox;
+            var poly = L.polygon([
+                bbox.getSouthEast(),
+                bbox.getNorthEast(),
+                bbox.getNorthWest(),
+                bbox.getSouthWest()
+            ]);
+            map.fitBounds(poly.getBounds());
+        })
+        .addTo(map);
 
         var info = L.control({position:'topright'});
         info.onAdd = () => {
             var div = L.DomUtil.create('div','info');
             div.innerHTML = '<h4>Pannes de courant cumulatives</h4>' +
                            '<p><b>Taille des hexagones:</b> 1 km</p>' +
-                           '<p><b>Jours analysés:</b> 30</p>';
+                           '<p><b>Jours analysés:</b> 31</p>';
             return div;
         };
         info.addTo(map);
