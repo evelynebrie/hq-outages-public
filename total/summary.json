@@ -1,10 +1,10 @@
 {
-  "total_days": 31,
+  "total_days": 32,
   "total_files": 22,
-  "total_hexes_affected": 27120,
-  "mean_hours_affected": 7.03,
+  "total_hexes_affected": 27324,
+  "mean_hours_affected": 7.22,
   "max_hours_affected": 114,
   "hex_size_m": 1000,
-  "last_updated": "2025-12-13",
-  "processing_time_min": 92.5
+  "last_updated": "2025-12-14",
+  "processing_time_min": 95.4
 }
