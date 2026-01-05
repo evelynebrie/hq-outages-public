@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-01-04 18:16:31 UTC",
-  "last_update_date": "2026-01-04",
+  "generated_at": "2026-01-05 05:25:51 UTC",
+  "last_update_date": "2026-01-05",
   "new_dates_added": 4,
-  "total_hexes_affected": 321,
-  "total_unique_hours": 321,
+  "total_hexes_affected": 326,
+  "total_unique_hours": 326,
   "max_hours_any_hex": 1,
   "max_days_any_hex": 1,
   "date_range": {
@@ -14,7 +14,7 @@
   "optimization_info": {
     "processing_mode": "full rebuild from daily summaries",
     "rebuild_reason": "prevents double-counting across runs",
-    "snapshot_date": "2026-01-04"
+    "snapshot_date": "2026-01-05"
   },
   "validation": {
     "hours_within_range": true,
