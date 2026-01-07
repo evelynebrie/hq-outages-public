@@ -1,6 +1,6 @@
 {
 "type": "FeatureCollection",
-"name": "total_exposure",
+"name": "cumulative_2026-01-07",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": [
 { "type": "Feature", "properties": { "hex_id": 61922, "centroid_lon": -79.19439459707931, "centroid_lat": 48.782271874875015, "hours_count": 1, "datetimes_affected": "2026-01-05 18:32:12", "n_files": 708, "days_affected": 1 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -79.18739, 48.77993 ], [ -79.18782, 48.78511 ], [ -79.19483, 48.78745 ], [ -79.2014, 48.78461 ], [ -79.20097, 48.77943 ], [ -79.19396, 48.77709 ], [ -79.18739, 48.77993 ] ] ] } },
