@@ -2,53 +2,53 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-01-10 22:15:31
+Generated: 2026-01-10 23:16:06
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
-Total hexagons affected: 667
-Total occurrence count: 15,430
-Maximum occurrences (single hex): 165
-Mean occurrences per hex: 23.1
+Total hexagons affected: 677
+Total occurrence count: 15,737
+Maximum occurrences (single hex): 170
+Mean occurrences per hex: 23.2
 Median occurrences per hex: 12
 
-Date range: 2026-01-08 14:30:41 to 2026-01-10 17:01:47
+Date range: 2026-01-08 14:30:41 to 2026-01-10 18:01:40
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
-         1 occurrences:     44 hexagons (  6.6%)
-         2 occurrences:     57 hexagons (  8.6%)
-       3-5 occurrences:    108 hexagons ( 16.2%)
-      6-10 occurrences:    100 hexagons ( 15.0%)
-     11-20 occurrences:    110 hexagons ( 16.5%)
-     21-40 occurrences:    111 hexagons ( 16.6%)
-     41-60 occurrences:     60 hexagons (  9.0%)
-     61-80 occurrences:     47 hexagons (  7.0%)
-       81+ occurrences:     30 hexagons (  4.5%)
+         1 occurrences:     46 hexagons (  6.8%)
+         2 occurrences:     56 hexagons (  8.3%)
+       3-5 occurrences:    107 hexagons ( 15.8%)
+      6-10 occurrences:    107 hexagons ( 15.8%)
+     11-20 occurrences:    107 hexagons ( 15.8%)
+     21-40 occurrences:    117 hexagons ( 17.3%)
+     41-60 occurrences:     59 hexagons (  8.7%)
+     61-80 occurrences:     46 hexagons (  6.8%)
+       81+ occurrences:     32 hexagons (  4.7%)
 
 TOP 10 MOST AFFECTED HEXAGONS
 -----------------------------------------------------------------
 Hex ID     Occurrences          Days              Location
-295975             165             2   52.45213,  -76.71568
+295975             170             2   52.45213,  -76.71568
 989950             113             2   49.74788,  -68.72494
+550076             109             2   45.01841,  -73.83345
 745092             108             2   49.12659,  -71.55367
 517746             108             2   45.43448,  -74.16371
 988730             107             2   49.76412,  -68.73674
-550076             104             2   45.01841,  -73.83345
-330965             102             2   45.93083,  -76.12974
-335850             100             2   45.94691,  -76.07846
-553784              97             2   45.71945,  -73.78040
-453713              96             2   46.52086,  -74.83165
+330965             107             2   45.93083,  -76.12974
+335850             105             2   45.94691,  -76.07846
+553784             102             2   45.71945,  -73.78040
+454916             101             2   46.24025,  -74.81954
 
 RECENT DAILY ACTIVITY (Last 7 Days)
 -----------------------------------------------------------------
 2026-01-08: 67 hexagons affected, 249 occurrences
 2026-01-09: 340 hexagons affected, 3564 occurrences
-2026-01-10: 417 hexagons affected, 11617 occurrences
+2026-01-10: 427 hexagons affected, 11924 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
-2026-01: 667 hexagons, 15430 occurrences, 1.2 avg days affected
+2026-01: 677 hexagons, 15737 occurrences, 1.2 avg days affected
 
 =================================================================
 End of Report
