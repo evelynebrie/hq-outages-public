@@ -62,7 +62,7 @@
             
             const dateSelect = document.getElementById('dateSelect');
             const dates = [...new Set(allData.total.features.flatMap(f => {
-                return f.properties.datetimes_affected.split(',').map(dt => dt.split(' ')[0]);
+                return f.properties.datetimes_affected.split(',').map(dt => dt.trim().split(' ')[0]);
             }))].sort();
             
             for (const date of dates) {
@@ -92,7 +92,7 @@
             
             const filtered = JSON.parse(JSON.stringify(dailyData));
             filtered.features = filtered.features.map(f => {
-                const dts = f.properties.datetimes_affected.split(',');
+                const dts = f.properties.datetimes_affected.split(',').map(s => s.trim());
                 const matchingDts = dts.filter(dt => {
                     const dtHour = parseInt(dt.split(' ')[1].split(':')[0]);
                     return dtHour === parseInt(hour);
@@ -189,7 +189,7 @@
         document.getElementById('modalOverlay').onclick = closeDetailModal;
         
         function getColor(d) {
-            return d>80?'#67000d':d>60?'##a50f15':d>40?'#cb181d':d>20?'#ef3b2c':
+            return d>80?'#67000d':d>60?'#a50f15':d>40?'#cb181d':d>20?'#ef3b2c':
                    d>10?'#fb6a4a':d>5?'#fc9272':d>2?'#fcbba1':'#fee5d9';
         }
         
@@ -230,8 +230,8 @@
             var div = L.DomUtil.create('div','info');
             div.innerHTML = '<h4>Pannes de courant cumulatives</h4>' +
                            '<p><b>Taille des hexagones:</b> 1 km</p>' +
-                           '<p><b>Jours analysés:</b> 3</p>' +
-                           '<p style="font-size:11px;color:#999;">Mise à jour: 2026-01-04</p>';
+                           '<p><b>Jours analysés:</b> 8</p>' +
+                           '<p style="font-size:11px;color:#999;">Mise à jour: 2026-01-09</p>';
             return div;
         };
         info.addTo(map);
