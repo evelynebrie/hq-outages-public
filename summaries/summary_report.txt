@@ -2,54 +2,54 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-01-11 10:21:42
+Generated: 2026-01-11 11:15:56
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
-Total hexagons affected: 2,659
-Total occurrence count: 67,580
-Maximum occurrences (single hex): 222
-Mean occurrences per hex: 25.4
+Total hexagons affected: 2,681
+Total occurrence count: 68,395
+Maximum occurrences (single hex): 227
+Mean occurrences per hex: 25.5
 Median occurrences per hex: 14
 
-Date range: 2026-01-08 14:30:41 to 2026-01-11 05:02:12
+Date range: 2026-01-08 14:30:41 to 2026-01-11 06:01:44
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
-         1 occurrences:    164 hexagons (  6.2%)
-         2 occurrences:    179 hexagons (  6.7%)
-       3-5 occurrences:    404 hexagons ( 15.2%)
-      6-10 occurrences:    389 hexagons ( 14.6%)
-     11-20 occurrences:    442 hexagons ( 16.6%)
-     21-40 occurrences:    479 hexagons ( 18.0%)
-     41-60 occurrences:    278 hexagons ( 10.5%)
-     61-80 occurrences:    167 hexagons (  6.3%)
+         1 occurrences:    159 hexagons (  5.9%)
+         2 occurrences:    172 hexagons (  6.4%)
+       3-5 occurrences:    397 hexagons ( 14.8%)
+      6-10 occurrences:    406 hexagons ( 15.1%)
+     11-20 occurrences:    453 hexagons ( 16.9%)
+     21-40 occurrences:    492 hexagons ( 18.4%)
+     41-60 occurrences:    276 hexagons ( 10.3%)
+     61-80 occurrences:    169 hexagons (  6.3%)
        81+ occurrences:    157 hexagons (  5.9%)
 
 TOP 10 MOST AFFECTED HEXAGONS
 -----------------------------------------------------------------
 Hex ID     Occurrences          Days              Location
-295365             222             3   52.45981,  -76.72334
-295975             222             3   52.45213,  -76.71568
-296586             222             3   52.46002,  -76.70863
-297196             222             3   52.45235,  -76.70097
-330355             159             3   45.93856,  -76.13635
-330965             159             3   45.93083,  -76.12974
-331576             159             3   45.93869,  -76.12345
-334629             157             3   45.94679,  -76.09136
-335239             157             3   45.93906,  -76.08476
-335240             157             3   45.95465,  -76.08506
+295365             227             3   52.45981,  -76.72334
+295975             227             3   52.45213,  -76.71568
+296586             227             3   52.46002,  -76.70863
+297196             227             3   52.45235,  -76.70097
+330355             164             3   45.93856,  -76.13635
+330965             164             3   45.93083,  -76.12974
+331576             164             3   45.93869,  -76.12345
+334629             162             3   45.94679,  -76.09136
+335239             162             3   45.93906,  -76.08476
+335240             162             3   45.95465,  -76.08506
 
 RECENT DAILY ACTIVITY (Last 7 Days)
 -----------------------------------------------------------------
 2026-01-08: 254 hexagons affected, 975 occurrences
 2026-01-09: 1258 hexagons affected, 13824 occurrences
 2026-01-10: 1637 hexagons affected, 49699 occurrences
-2026-01-11: 284 hexagons affected, 3082 occurrences
+2026-01-11: 310 hexagons affected, 3897 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
-2026-01: 2659 hexagons, 67580 occurrences, 1.3 avg days affected
+2026-01: 2681 hexagons, 68395 occurrences, 1.3 avg days affected
 
 =================================================================
 End of Report
