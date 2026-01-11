@@ -107,7 +107,7 @@
                         "<b>Occurrences:</b> " + count + "<br>" +
                         "<b>Jours affectes:</b> " + (props.days_affected || 1) + "<br>" +
                         "<b>Centroide:</b> " + props.centroid_lat.toFixed(6) + ", " + props.centroid_lon.toFixed(6) + "<br>" +
-                        "<a class='detail-link' onclick='showDetails(" + props.hex_id + ")'>Voir details</a>";
+                        "<a class=\"detail-link\" onclick=\"showDetails(" + props.hex_id + ")\">Voir details</a>";
                     layer.bindPopup(popupContent);
                 }
             }).addTo(map);
@@ -141,17 +141,17 @@
             var html = "<h3>Hexagone #" + hexId + "</h3>";
             html += "<p><strong>Total occurrences:</strong> " + props.total_occurrences + "</p>";
             html += "<p><strong>Jours affectes:</strong> " + uniqueDates.length + "</p>";
-            html += "<p style='margin-top: 15px;'><strong>Details par jour:</strong></p>";
-            html += "<div style='max-height: 400px; overflow-y: auto;'>";
+            html += "<p style=\"margin-top: 15px;\"><strong>Details par jour:</strong></p>";
+            html += "<div style=\"max-height: 400px; overflow-y: auto;\">";
             
             for (var j = 0; j < uniqueDates.length; j++) {
                 var dateKey = uniqueDates[j];
                 var times = byDate[dateKey];
-                html += "<div class='date-row'>";
-                html += "<div class='date-header' onclick='toggleTimes(this)'>";
+                html += "<div class=\"date-row\">";
+                html += "<div class=\"date-header\" onclick=\"toggleTimes(this)\">";
                 html += "&#9654; " + dateKey + " (" + times.length + " occurrence" + (times.length > 1 ? "s" : "") + ")";
                 html += "</div>";
-                html += "<div class='times-list'>";
+                html += "<div class=\"times-list\">";
                 for (var k = 0; k < times.length; k++) {
                     html += "<div>" + times[k] + "</div>";
                 }
@@ -185,7 +185,7 @@
             var grades = [0, 2, 5, 10, 20, 40, 60, 80];
             div.innerHTML = "<h4>Occurrences</h4>";
             for (var i = 0; i < grades.length; i++) {
-                div.innerHTML += "<i style='background:" + getColor(grades[i] + 1) + "'></i>" +
+                div.innerHTML += "<i style=\"background:" + getColor(grades[i] + 1) + "\"></i>" +
                     grades[i] + (grades[i + 1] ? "-" + grades[i + 1] : "+") + "<br>";
             }
             return div;
@@ -198,7 +198,7 @@
             div.innerHTML = "<h4>Pannes de courant cumulatives</h4>" +
                 "<p><b>Taille des hexagones:</b> 1.0 km</p>" +
                 "<p><b>Jours analyses:</b> 3</p>" +
-                "<p style='font-size:11px;color:#999;'>Mise a jour: 2026-01-11 02:03</p>";
+                "<p style=\"font-size:11px;color:#999;\">Mise a jour: 2026-01-11 02:22</p>";
             return div;
         };
         info.addTo(map);
@@ -206,14 +206,12 @@
         var controls = L.control({position: "topleft"});
         controls.onAdd = function() {
             var div = L.DomUtil.create("div", "controls");
-            div.innerHTML = "<h4>Filtres</h4>" +
-                "<label>Date:</label>" +
-                "<select id='dateSelect' onchange='updateMap()'>" +
-                "<option value='all'>Toutes (cumulatif)</option>" +
-                "<option value='2026-01-08'>2026-01-08</option>
-                    <option value='2026-01-09'>2026-01-09</option>
-                    <option value='2026-01-10'>2026-01-10</option>" +
-                "</select>";
+            var selectHtml = "<h4>Filtres</h4><label>Date:</label><select id=\"dateSelect\" onchange=\"updateMap()\"><option value=\"all\">Toutes (cumulatif)</option>";
+            dates.forEach(function(d) {
+                selectHtml += "<option value=\"" + d + "\">" + d + "</option>";
+            });
+            selectHtml += "</select>";
+            div.innerHTML = selectHtml;
             return div;
         };
         controls.addTo(map);
