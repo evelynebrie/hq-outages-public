@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HQ Outages - Cumulative Analysis</title>
+    <title>HQ Outages - Pannes Hydro-Quebec</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.css" />
     <style>
@@ -29,6 +29,7 @@
         .times-list { display: none; margin-left: 20px; margin-top: 5px; font-size: 0.9em; color: #666; }
         .current-badge { background: #e74c3c; color: white; padding: 2px 8px; border-radius: 3px; font-size: 12px; margin-left: 5px; }
         .current-option { font-weight: bold; color: #e74c3c; }
+        .loading { color: #999; font-style: italic; }
     </style>
 </head>
 <body>
@@ -49,27 +50,43 @@
         
         var allData = { total: null, daily: {}, current: null };
         var currentLayer = null;
-        var lastReadingTime = "";
+        var lastReadingTime = "2026-01-10 22:01:50";
+        var dataLoaded = { total: false, current: false };
+        
+        // Load current outages FIRST (priority)
+        fetch("current.geojson")
+            .then(function(r) { 
+                if (!r.ok) throw new Error("HTTP " + r.status);
+                return r.json(); 
+            })
+            .then(function(data) {
+                console.log("Current outages loaded:", data.features ? data.features.length : 0, "features");
+                allData.current = data;
+                dataLoaded.current = true;
+                updateCurrentCount();
+                // If current is selected, update map
+                var dateSelect = document.getElementById("dateSelect");
+                if (dateSelect && dateSelect.value === "current") {
+                    updateMap();
+                }
+            })
+            .catch(function(e) { 
+                console.error("Error loading current.geojson:", e);
+                allData.current = { type: "FeatureCollection", features: [] };
+                dataLoaded.current = true;
+                updateCurrentCount();
+            });
         
         // Load total data
         fetch("total/total_exposure.geojson")
             .then(function(r) { return r.json(); })
             .then(function(data) {
+                console.log("Total data loaded:", data.features ? data.features.length : 0, "features");
                 allData.total = data;
+                dataLoaded.total = true;
+                // Initial map update - show current if loaded, otherwise total
                 updateMap();
             });
-        
-        // Load current outages
-        fetch("current.geojson")
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                allData.current = data;
-                if (data.features && data.features.length > 0 && data.features[0].properties.last_reading) {
-                    lastReadingTime = data.features[0].properties.last_reading;
-                    updateCurrentCount();
-                }
-            })
-            .catch(function(e) { console.log("No current outages file"); });
         
         var dates = ["2026-01-08","2026-01-09","2026-01-10"];
         
@@ -85,12 +102,18 @@
         
         function updateCurrentCount() {
             var countSpan = document.getElementById("currentCount");
-            if (countSpan && allData.current) {
-                var count = allData.current.features ? allData.current.features.length : 0;
-                countSpan.textContent = count + " hexagones";
+            if (countSpan) {
+                if (allData.current && allData.current.features) {
+                    var count = allData.current.features.length;
+                    countSpan.textContent = count + " hexagone" + (count !== 1 ? "s" : "");
+                    countSpan.className = count > 0 ? "current-badge" : "";
+                } else {
+                    countSpan.textContent = "0 hexagones";
+                    countSpan.className = "";
+                }
             }
             var timeSpan = document.getElementById("lastReading");
-            if (timeSpan && lastReadingTime) {
+            if (timeSpan) {
                 timeSpan.textContent = lastReadingTime;
             }
         }
@@ -108,20 +131,47 @@
         
         function updateMap() {
             var dateSelect = document.getElementById("dateSelect");
-            var dateFilter = dateSelect ? dateSelect.value : "all";
-            var data = allData.total;
+            var dateFilter = dateSelect ? dateSelect.value : "current";
+            var data = null;
             var isCurrent = false;
+            
+            console.log("updateMap called with filter:", dateFilter);
             
             if (dateFilter === "current") {
                 data = allData.current;
                 isCurrent = true;
-            } else if (dateFilter !== "all" && allData.daily[dateFilter]) {
+                if (!data || !data.features) {
+                    console.log("Current data not loaded yet, waiting...");
+                    // Show loading state or fall back to total
+                    if (allData.total) {
+                        data = allData.total;
+                        isCurrent = false;
+                    } else {
+                        return; // Nothing to show yet
+                    }
+                }
+            } else if (dateFilter === "all") {
+                data = allData.total;
+            } else if (allData.daily[dateFilter]) {
                 data = allData.daily[dateFilter];
+            } else {
+                data = allData.total;
             }
             
-            if (!data) return;
+            if (!data || !data.features) {
+                console.log("No data available for filter:", dateFilter);
+                return;
+            }
+            
+            console.log("Displaying", data.features.length, "features, isCurrent:", isCurrent);
             
             if (currentLayer) map.removeLayer(currentLayer);
+            
+            if (data.features.length === 0) {
+                // No features to display
+                console.log("No features to display");
+                return;
+            }
             
             currentLayer = L.geoJSON(data, {
                 style: function(f) {
@@ -138,12 +188,12 @@
                     var count = props.total_occurrences || props.occurrences_today || 1;
                     var popupContent = "<b>Hexagone #" + props.hex_id + "</b>";
                     if (isCurrent) {
-                        popupContent += "<span class=\"current-badge\">EN COURS</span>";
+                        popupContent += " <span class=\"current-badge\">EN COURS</span>";
                     }
                     popupContent += "<br><b>Occurrences totales:</b> " + count + "<br>" +
                         "<b>Jours affectes:</b> " + (props.days_affected || 1) + "<br>" +
                         "<b>Centroide:</b> " + props.centroid_lat.toFixed(6) + ", " + props.centroid_lon.toFixed(6) + "<br>" +
-                        "<a class=\"detail-link\" onclick=\"showDetails(" + props.hex_id + ")\">Voir details</a>";
+                        "<a class=\"detail-link\" onclick=\"showDetails(" + props.hex_id + ")\">Voir historique</a>";
                     layer.bindPopup(popupContent);
                 }
             }).addTo(map);
@@ -151,17 +201,22 @@
         
         function showDetails(hexId) {
             var feature = null;
-            for (var i = 0; i < allData.total.features.length; i++) {
-                if (allData.total.features[i].properties.hex_id === hexId) {
-                    feature = allData.total.features[i];
-                    break;
+            if (allData.total && allData.total.features) {
+                for (var i = 0; i < allData.total.features.length; i++) {
+                    if (allData.total.features[i].properties.hex_id === hexId) {
+                        feature = allData.total.features[i];
+                        break;
+                    }
                 }
             }
-            if (!feature) return;
+            if (!feature) {
+                alert("Historique non disponible pour cet hexagone");
+                return;
+            }
             
             var props = feature.properties;
             var allDatetimes = props.all_datetimes || "";
-            var datetimes = allDatetimes.split(",").map(function(s) { return s.trim(); }).sort();
+            var datetimes = allDatetimes.split(",").map(function(s) { return s.trim(); }).filter(function(s) { return s.length > 0; }).sort();
             
             var byDate = {};
             datetimes.forEach(function(dt) {
@@ -172,7 +227,7 @@
                 byDate[date].push(time);
             });
             
-            var uniqueDates = Object.keys(byDate).sort();
+            var uniqueDates = Object.keys(byDate).sort().reverse(); // Most recent first
             
             var html = "<h3>Hexagone #" + hexId + "</h3>";
             
@@ -192,7 +247,7 @@
             
             html += "<p><strong>Total occurrences:</strong> " + props.total_occurrences + "</p>";
             html += "<p><strong>Jours affectes:</strong> " + uniqueDates.length + "</p>";
-            html += "<p style=\"margin-top: 15px;\"><strong>Details par jour:</strong></p>";
+            html += "<p style=\"margin-top: 15px;\"><strong>Historique (recent en premier):</strong></p>";
             html += "<div style=\"max-height: 400px; overflow-y: auto;\">";
             
             for (var j = 0; j < uniqueDates.length; j++) {
@@ -235,11 +290,11 @@
             var div = L.DomUtil.create("div", "info legend");
             var grades = [0, 2, 5, 10, 20, 40, 60, 80];
             div.innerHTML = "<h4>Occurrences</h4>";
+            div.innerHTML += "<i style=\"background:#e74c3c\"></i>En cours<br>";
             for (var i = 0; i < grades.length; i++) {
                 div.innerHTML += "<i style=\"background:" + getColor(grades[i] + 1) + "\"></i>" +
                     grades[i] + (grades[i + 1] ? "-" + grades[i + 1] : "+") + "<br>";
             }
-            div.innerHTML += "<br><i style=\"background:#e74c3c\"></i>En cours";
             return div;
         };
         legend.addTo(map);
@@ -247,12 +302,13 @@
         var info = L.control({position: "topright"});
         info.onAdd = function() {
             var div = L.DomUtil.create("div", "info");
-            div.innerHTML = "<h4>Pannes de courant HQ</h4>" +
-                "<p><b>Taille des hexagones:</b> 1.0 km</p>" +
-                "<p><b>Jours analyses:</b> 3</p>" +
-                "<p><b>Derniere lecture:</b> <span id=\"lastReading\">chargement...</span></p>" +
-                "<p><b>Pannes en cours:</b> <span id=\"currentCount\">chargement...</span></p>" +
-                "<p style=\"font-size:11px;color:#999;\">Mise a jour: 2026-01-11 02:41</p>";
+            div.innerHTML = "<h4>Pannes Hydro-Quebec</h4>" +
+                "<p><b>Pannes en cours:</b> <span id=\"currentCount\" class=\"loading\">chargement...</span></p>" +
+                "<p><b>Derniere lecture:</b><br><span id=\"lastReading\" class=\"loading\">chargement...</span></p>" +
+                "<hr style=\"margin: 8px 0;\">" +
+                "<p style=\"font-size:11px;\"><b>Hexagones:</b> 1.0 km</p>" +
+                "<p style=\"font-size:11px;\"><b>Jours analyses:</b> 3</p>" +
+                "<p style=\"font-size:11px;color:#999;\">Genere: 2026-01-11 03:13</p>";
             return div;
         };
         info.addTo(map);
@@ -260,12 +316,16 @@
         var controls = L.control({position: "topleft"});
         controls.onAdd = function() {
             var div = L.DomUtil.create("div", "controls");
-            var selectHtml = "<h4>Filtres</h4><label>Affichage:</label><select id=\"dateSelect\" onchange=\"updateMap()\">";
-            selectHtml += "<option value=\"current\" class=\"current-option\">🔴 Pannes en cours</option>";
-            selectHtml += "<option value=\"all\">Toutes (cumulatif)</option>";
-            dates.forEach(function(d) {
+            var selectHtml = "<h4>Affichage</h4><select id=\"dateSelect\" onchange=\"updateMap()\">";
+            selectHtml += "<option value=\"current\" selected>&#128308; Pannes en cours</option>";
+            selectHtml += "<option value=\"all\">Historique complet</option>";
+            selectHtml += "<optgroup label=\"Par jour\">";
+            // Show dates in reverse order (most recent first)
+            var sortedDates = dates.slice().sort().reverse();
+            sortedDates.forEach(function(d) {
                 selectHtml += "<option value=\"" + d + "\">" + d + "</option>";
             });
+            selectHtml += "</optgroup>";
             selectHtml += "</select>";
             div.innerHTML = selectHtml;
             return div;
@@ -278,6 +338,9 @@
         }).on("markgeocode", function(e) {
             map.fitBounds(e.geocode.bbox);
         }).addTo(map);
+        
+        // Update current count once data is loaded
+        setTimeout(updateCurrentCount, 1000);
     </script>
 </body>
 </html>
