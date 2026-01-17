@@ -2,28 +2,28 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-01-16 23:52:25
+Generated: 2026-01-17 01:13:01
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
-Total hexagons affected: 16,676
-Total occurrence count: 463,248
+Total hexagons affected: 16,701
+Total occurrence count: 463,486
 Maximum occurrences (single hex): 626
 Mean occurrences per hex: 27.8
 Median occurrences per hex: 11
 
-Date range: 2026-01-01 00:42:56 to 2026-01-16 18:46:42
+Date range: 2026-01-01 00:42:56 to 2026-01-16 20:01:42
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
-         1 occurrences:   2966 hexagons ( 17.8%)
+         1 occurrences:   2965 hexagons ( 17.8%)
          2 occurrences:   1046 hexagons (  6.3%)
-       3-5 occurrences:   1805 hexagons ( 10.8%)
-      6-10 occurrences:   2160 hexagons ( 12.9%)
-     11-20 occurrences:   3499 hexagons ( 21.0%)
+       3-5 occurrences:   1831 hexagons ( 11.0%)
+      6-10 occurrences:   2156 hexagons ( 12.9%)
+     11-20 occurrences:   3503 hexagons ( 21.0%)
      21-40 occurrences:   3020 hexagons ( 18.1%)
-     41-60 occurrences:   1070 hexagons (  6.4%)
-     61-80 occurrences:    305 hexagons (  1.8%)
+     41-60 occurrences:   1065 hexagons (  6.4%)
+     61-80 occurrences:    310 hexagons (  1.9%)
        81+ occurrences:    805 hexagons (  4.8%)
 
 TOP 10 MOST AFFECTED HEXAGONS
@@ -48,11 +48,11 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-01-13: 1079 hexagons affected, 46031 occurrences
 2026-01-14: 1931 hexagons affected, 42070 occurrences
 2026-01-15: 1035 hexagons affected, 21539 occurrences
-2026-01-16: 386 hexagons affected, 4133 occurrences
+2026-01-16: 424 hexagons affected, 4371 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
-2026-01: 16676 hexagons, 463248 occurrences, 1.3 avg days affected
+2026-01: 16701 hexagons, 463486 occurrences, 1.3 avg days affected
 
 =================================================================
 End of Report
