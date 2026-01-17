@@ -2,26 +2,26 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-01-17 16:46:15
+Generated: 2026-01-17 16:56:58
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
-Total hexagons affected: 16,849
-Total occurrence count: 467,949
+Total hexagons affected: 16,868
+Total occurrence count: 467,996
 Maximum occurrences (single hex): 626
-Mean occurrences per hex: 27.8
+Mean occurrences per hex: 27.7
 Median occurrences per hex: 11
 
-Date range: 2026-01-01 00:42:56 to 2026-01-17 11:37:22
+Date range: 2026-01-01 00:42:56 to 2026-01-17 11:46:51
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
-         1 occurrences:   2981 hexagons ( 17.7%)
-         2 occurrences:   1076 hexagons (  6.4%)
-       3-5 occurrences:   1829 hexagons ( 10.9%)
-      6-10 occurrences:   2177 hexagons ( 12.9%)
-     11-20 occurrences:   3465 hexagons ( 20.6%)
-     21-40 occurrences:   3028 hexagons ( 18.0%)
+         1 occurrences:   2980 hexagons ( 17.7%)
+         2 occurrences:   1096 hexagons (  6.5%)
+       3-5 occurrences:   1829 hexagons ( 10.8%)
+      6-10 occurrences:   2174 hexagons ( 12.9%)
+     11-20 occurrences:   3468 hexagons ( 20.6%)
+     21-40 occurrences:   3028 hexagons ( 17.9%)
      41-60 occurrences:   1178 hexagons (  7.0%)
      61-80 occurrences:    310 hexagons (  1.8%)
        81+ occurrences:    805 hexagons (  4.8%)
@@ -48,11 +48,11 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-01-14: 1931 hexagons affected, 42070 occurrences
 2026-01-15: 1035 hexagons affected, 21539 occurrences
 2026-01-16: 595 hexagons affected, 5970 occurrences
-2026-01-17: 242 hexagons affected, 2864 occurrences
+2026-01-17: 261 hexagons affected, 2911 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
-2026-01: 16849 hexagons, 467949 occurrences, 1.4 avg days affected
+2026-01: 16868 hexagons, 467996 occurrences, 1.4 avg days affected
 
 =================================================================
 End of Report
