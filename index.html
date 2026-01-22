@@ -267,7 +267,7 @@
         
         var allData = { total: null, daily: {}, current: null };
         var currentLayer = null;
-        var lastReadingTime = "2026-01-21 23:31:51";
+        var lastReadingTime = "2026-01-22 00:02:02";
         var dataLoaded = { total: false, current: false };
         
         // Load current outages FIRST (priority)
@@ -305,7 +305,7 @@
                 updateMap();
             });
         
-        var dates = ["2026-01-01","2026-01-02","2026-01-03","2026-01-04","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-10","2026-01-11","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-17","2026-01-18","2026-01-19","2026-01-20","2026-01-21"];
+        var dates = ["2026-01-01","2026-01-02","2026-01-03","2026-01-04","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-10","2026-01-11","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-17","2026-01-18","2026-01-19","2026-01-20","2026-01-21","2026-01-22"];
         
         function loadDailyData() {
             dates.forEach(function(date) {
@@ -522,8 +522,8 @@
                 "<div class=\"info-row\"><span class=\"info-label\">Pannes en cours:</span> <span id=\"currentCount\" class=\"loading\">chargement...</span></div>" +
                 "<div class=\"info-row\"><span class=\"info-label\">Dernière lecture:</span> <span id=\"lastReading\" class=\"loading\">chargement...</span></div>" +
                 "<div class=\"info-row\"><span class=\"info-label\">Taille hexagones:</span> <span class=\"info-value\">1.0 km</span></div>" +
-                "<div class=\"info-row\"><span class=\"info-label\">Jours analysés:</span> <span class=\"info-value\">21</span></div>" +
-                "<div style=\"margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb;\"><span style=\"font-size:11px;color:#9ca3af;\">Généré: 2026-01-22 04:35</span></div>";
+                "<div class=\"info-row\"><span class=\"info-label\">Jours analysés:</span> <span class=\"info-value\">22</span></div>" +
+                "<div style=\"margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb;\"><span style=\"font-size:11px;color:#9ca3af;\">Généré: 2026-01-22 05:08</span></div>";
             return div;
         };
         info.addTo(map);
