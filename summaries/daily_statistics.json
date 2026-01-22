@@ -70,7 +70,7 @@
       "total_occurrences_today": 57731,
       "max_occurrences": 95,
       "mean_occurrences": 13.06,
-      "new_hexagons": 1416
+      "new_hexagons": 1414
     },
     "2026-01-10": {
       "date": "2026-01-10",
@@ -78,7 +78,7 @@
       "total_occurrences_today": 167908,
       "max_occurrences": 117,
       "mean_occurrences": 31.14,
-      "new_hexagons": 2453
+      "new_hexagons": 2432
     },
     "2026-01-11": {
       "date": "2026-01-11",
@@ -118,7 +118,7 @@
       "total_occurrences_today": 21539,
       "max_occurrences": 66,
       "mean_occurrences": 20.81,
-      "new_hexagons": 885
+      "new_hexagons": 836
     },
     "2026-01-16": {
       "date": "2026-01-16",
@@ -170,11 +170,11 @@
     },
     "2026-01-22": {
       "date": "2026-01-22",
-      "hexagons_affected": 779,
-      "total_occurrences_today": 823,
+      "hexagons_affected": 1245,
+      "total_occurrences_today": 2184,
       "max_occurrences": 5,
-      "mean_occurrences": 1.06,
-      "new_hexagons": 576
+      "mean_occurrences": 1.75,
+      "new_hexagons": 933
     }
   }
 }
