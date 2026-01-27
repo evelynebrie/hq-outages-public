@@ -2,27 +2,27 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-01-27 23:22:04
+Generated: 2026-01-27 23:45:51
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 27,929
-Total occurrence count: 598,699
+Total occurrence count: 600,063
 Maximum occurrences (single hex): 626
-Mean occurrences per hex: 21.4
+Mean occurrences per hex: 21.5
 Median occurrences per hex: 7
 
-Date range: 2026-01-01 00:42:56 to 2026-01-27 18:16:41
+Date range: 2026-01-01 00:42:56 to 2026-01-27 18:35:46
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
-         1 occurrences:   5869 hexagons ( 21.0%)
+         1 occurrences:   5835 hexagons ( 20.9%)
          2 occurrences:   1926 hexagons (  6.9%)
-       3-5 occurrences:   4189 hexagons ( 15.0%)
-      6-10 occurrences:   4353 hexagons ( 15.6%)
+       3-5 occurrences:   4157 hexagons ( 14.9%)
+      6-10 occurrences:   4419 hexagons ( 15.8%)
      11-20 occurrences:   4255 hexagons ( 15.2%)
-     21-40 occurrences:   4232 hexagons ( 15.2%)
-     41-60 occurrences:   1667 hexagons (  6.0%)
+     21-40 occurrences:   4155 hexagons ( 14.9%)
+     41-60 occurrences:   1744 hexagons (  6.2%)
      61-80 occurrences:    442 hexagons (  1.6%)
        81+ occurrences:    996 hexagons (  3.6%)
 
@@ -48,11 +48,11 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-01-24: 1637 hexagons affected, 25783 occurrences
 2026-01-25: 2234 hexagons affected, 27710 occurrences
 2026-01-26: 1537 hexagons affected, 12529 occurrences
-2026-01-27: 1352 hexagons affected, 6170 occurrences
+2026-01-27: 1352 hexagons affected, 7534 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
-2026-01: 27929 hexagons, 598699 occurrences, 1.3 avg days affected
+2026-01: 27929 hexagons, 600063 occurrences, 1.3 avg days affected
 
 =================================================================
 End of Report
