@@ -222,7 +222,15 @@
       "total_occurrences_today": 3868,
       "max_occurrences": 48,
       "mean_occurrences": 13.2,
-      "new_hexagons": 193
+      "new_hexagons": 130
+    },
+    "2026-01-29": {
+      "date": "2026-01-29",
+      "hexagons_affected": 64,
+      "total_occurrences_today": 89,
+      "max_occurrences": 3,
+      "mean_occurrences": 1.39,
+      "new_hexagons": 1
     }
   }
 }
