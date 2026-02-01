@@ -250,11 +250,11 @@
     },
     "2026-02-01": {
       "date": "2026-02-01",
-      "hexagons_affected": 18,
-      "total_occurrences_today": 18,
-      "max_occurrences": 1,
-      "mean_occurrences": 1,
-      "new_hexagons": 7
+      "hexagons_affected": 24,
+      "total_occurrences_today": 69,
+      "max_occurrences": 4,
+      "mean_occurrences": 2.88,
+      "new_hexagons": 13
     }
   }
 }
