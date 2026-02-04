@@ -2,17 +2,17 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-02-03 23:45:29
+Generated: 2026-02-04 00:02:43
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 30,487
-Total occurrence count: 673,680
-Maximum occurrences (single hex): 752
+Total occurrence count: 673,980
+Maximum occurrences (single hex): 753
 Mean occurrences per hex: 22.1
 Median occurrences per hex: 8
 
-Date range: 2026-01-01 00:42:56 to 2026-02-03 18:41:49
+Date range: 2026-01-01 00:42:56 to 2026-02-03 18:46:59
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
@@ -29,16 +29,16 @@ OCCURRENCE DISTRIBUTION
 TOP 10 MOST AFFECTED HEXAGONS
 -----------------------------------------------------------------
 Hex ID     Occurrences          Days              Location
-296591             752             8   52.53785,  -76.71165
-296592             752             8   52.55341,  -76.71225
-296593             752             8   52.56897,  -76.71286
-297202             752             8   52.54573,  -76.70458
-297203             752             8   52.56130,  -76.70518
-297204             752             8   52.57686,  -76.70579
-297205             752             8   52.59243,  -76.70639
-297206             752             8   52.60799,  -76.70700
-297813             752             8   52.55362,  -76.69751
-297814             752             8   52.56919,  -76.69811
+296591             753             8   52.53785,  -76.71165
+296592             753             8   52.55341,  -76.71225
+296593             753             8   52.56897,  -76.71286
+297202             753             8   52.54573,  -76.70458
+297203             753             8   52.56130,  -76.70518
+297204             753             8   52.57686,  -76.70579
+297205             753             8   52.59243,  -76.70639
+297206             753             8   52.60799,  -76.70700
+297813             753             8   52.55362,  -76.69751
+297814             753             8   52.56919,  -76.69811
 
 RECENT DAILY ACTIVITY (Last 7 Days)
 -----------------------------------------------------------------
@@ -48,12 +48,12 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-01-31: 573 hexagons affected, 4026 occurrences
 2026-02-01: 210 hexagons affected, 1474 occurrences
 2026-02-02: 1335 hexagons affected, 16560 occurrences
-2026-02-03: 647 hexagons affected, 31530 occurrences
+2026-02-03: 647 hexagons affected, 31830 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
 2026-01: 29325 hexagons, 624116 occurrences, 1.4 avg days affected
-2026-02: 1844 hexagons, 49564 occurrences, 1.2 avg days affected
+2026-02: 1844 hexagons, 49864 occurrences, 1.2 avg days affected
 
 =================================================================
 End of Report
