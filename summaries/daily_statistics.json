@@ -283,10 +283,18 @@
     "2026-02-05": {
       "date": "2026-02-05",
       "hexagons_affected": 744,
-      "total_occurrences_today": 30263,
+      "total_occurrences_today": 30543,
       "max_occurrences": 82,
-      "mean_occurrences": 40.68,
-      "new_hexagons": 280
+      "mean_occurrences": 41.05,
+      "new_hexagons": 221
+    },
+    "2026-02-06": {
+      "date": "2026-02-06",
+      "hexagons_affected": 70,
+      "total_occurrences_today": 140,
+      "max_occurrences": 2,
+      "mean_occurrences": 2,
+      "new_hexagons": 0
     }
   }
 }
