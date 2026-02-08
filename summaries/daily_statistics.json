@@ -306,11 +306,11 @@
     },
     "2026-02-08": {
       "date": "2026-02-08",
-      "hexagons_affected": 11,
-      "total_occurrences_today": 72,
+      "hexagons_affected": 82,
+      "total_occurrences_today": 143,
       "max_occurrences": 12,
-      "mean_occurrences": 6.55,
-      "new_hexagons": 5
+      "mean_occurrences": 1.74,
+      "new_hexagons": 76
     }
   }
 }
