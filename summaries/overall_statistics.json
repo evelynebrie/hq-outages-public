@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-10 23:25:24",
+  "generated_at": "2026-03-10 23:54:25",
   "total_hexagons_affected": 34667,
   "total_occurrences": 802578,
   "max_occurrences_per_hex": 911,
@@ -10,7 +10,7 @@
     "last": "2026-03-10 18:01:26"
   },
   "num_daily_summaries": 46,
-  "num_monthly_summaries": 3,
+  "num_monthly_summaries": 0,
   "occurrence_distribution": {
     "occurrence_bin": ["1", "2", "3-5", "6-10", "11-20", "21-40", "41-60", "61-80", "81+"],
     "count": [6659, 2060, 4253, 5676, 6682, 5563, 2097, 548, 1129],
