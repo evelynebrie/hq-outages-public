@@ -305,7 +305,7 @@
                 updateMap();
             });
         
-        var dates = ["2026-01-01","2026-01-02","2026-01-03","2026-01-04","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-10","2026-01-11","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-17","2026-01-18","2026-01-19","2026-01-20","2026-01-21","2026-01-22","2026-01-23","2026-01-24","2026-01-25","2026-01-26","2026-01-27","2026-01-28","2026-01-29","2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-07","2026-02-08","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-03-10"];
+        var dates = ["2026-01-01","2026-01-02","2026-01-03","2026-01-04","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-10","2026-01-11","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-17","2026-01-18","2026-01-19","2026-01-20","2026-01-21","2026-01-22","2026-01-23","2026-01-24","2026-01-25","2026-01-26","2026-01-27","2026-01-28","2026-01-29","2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-07","2026-02-08","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-03-10"];
         
         function loadDailyData() {
             dates.forEach(function(date) {
@@ -506,7 +506,7 @@
             var div = L.DomUtil.create("div", "info legend");
             var grades = [0, 2, 5, 10, 20, 40, 60, 80];
             div.innerHTML = "<h4>Occurrences</h4>";
-            div.innerHTML += "<div class=\"legend-item\"><i style=\"background:#ef4444\"></i> En cours</div>";
+            div.innerHTML += "<div class=\"legend-item\"><i style=\"background:#ef4444;border:2px solid #dc2626\"></i> En cours</div>";
             for (var i = 0; i < grades.length; i++) {
                 div.innerHTML += "<div class=\"legend-item\"><i style=\"background:" + getColor(grades[i] + 1) + "\"></i> " +
                     grades[i] + (grades[i + 1] ? "–" + grades[i + 1] : "+") + "</div>";
@@ -522,8 +522,8 @@
                 "<div class=\"info-row\"><span class=\"info-label\">Pannes en cours:</span> <span id=\"currentCount\" class=\"loading\">chargement...</span></div>" +
                 "<div class=\"info-row\"><span class=\"info-label\">Dernière lecture:</span> <span id=\"lastReading\" class=\"loading\">chargement...</span></div>" +
                 "<div class=\"info-row\"><span class=\"info-label\">Taille hexagones:</span> <span class=\"info-value\">1.0 km</span></div>" +
-                "<div class=\"info-row\"><span class=\"info-label\">Jours analysés:</span> <span class=\"info-value\">23</span></div>" +
-                "<div style=\"margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb;\"><span style=\"font-size:11px;color:#9ca3af;\">Généré: 2026-03-10 23:54</span></div>";
+                "<div class=\"info-row\"><span class=\"info-label\">Jours analysés:</span> <span class=\"info-value\">47</span></div>" +
+                "<div style=\"margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb;\"><span style=\"font-size:11px;color:#9ca3af;\">Généré: 2026-03-11 00:24</span></div>";
             return div;
         };
         info.addTo(map);
