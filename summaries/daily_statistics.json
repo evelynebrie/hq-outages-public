@@ -598,15 +598,15 @@
       "total_occurrences_today": 80446,
       "max_occurrences": 72,
       "mean_occurrences": 8.84,
-      "new_hexagons": 3369
+      "new_hexagons": 3364
     },
     "2026-03-17": {
       "date": "2026-03-17",
-      "hexagons_affected": 1208,
-      "total_occurrences_today": 1208,
-      "max_occurrences": 1,
-      "mean_occurrences": 1,
-      "new_hexagons": 0
+      "hexagons_affected": 1238,
+      "total_occurrences_today": 3609,
+      "max_occurrences": 3,
+      "mean_occurrences": 2.92,
+      "new_hexagons": 19
     }
   }
 }
