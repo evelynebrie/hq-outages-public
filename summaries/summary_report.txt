@@ -2,26 +2,26 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-03-17 03:46:56
+Generated: 2026-03-17 04:12:07
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
-Total hexagons affected: 73,139
-Total occurrence count: 2,101,650
+Total hexagons affected: 73,140
+Total occurrence count: 2,104,407
 Maximum occurrences (single hex): 911
-Mean occurrences per hex: 28.7
+Mean occurrences per hex: 28.8
 Median occurrences per hex: 13
 
-Date range: 2026-01-01 00:42:56 to 2026-03-16 23:13:53
+Date range: 2026-01-01 00:42:56 to 2026-03-16 23:46:41
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
-         1 occurrences:   6684 hexagons (  9.1%)
+         1 occurrences:   6685 hexagons (  9.1%)
          2 occurrences:   2816 hexagons (  3.9%)
-       3-5 occurrences:  10323 hexagons ( 14.1%)
-      6-10 occurrences:  12550 hexagons ( 17.2%)
-     11-20 occurrences:  13168 hexagons ( 18.0%)
-     21-40 occurrences:  13715 hexagons ( 18.8%)
+       3-5 occurrences:   9498 hexagons ( 13.0%)
+      6-10 occurrences:  13369 hexagons ( 18.3%)
+     11-20 occurrences:  13167 hexagons ( 18.0%)
+     21-40 occurrences:  13722 hexagons ( 18.8%)
      41-60 occurrences:   5282 hexagons (  7.2%)
      61-80 occurrences:   3378 hexagons (  4.6%)
        81+ occurrences:   5223 hexagons (  7.1%)
@@ -48,12 +48,12 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-03-13: 2013 hexagons affected, 58446 occurrences
 2026-03-14: 1046 hexagons affected, 18796 occurrences
 2026-03-15: 1532 hexagons affected, 15239 occurrences
-2026-03-16: 9096 hexagons affected, 77689 occurrences
+2026-03-16: 9099 hexagons affected, 80446 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
 2026-02: 20776 hexagons, 238797 occurrences, 1.1 avg days affected
-2026-03: 38314 hexagons, 1060924 occurrences, 1.5 avg days affected
+2026-03: 38316 hexagons, 1063681 occurrences, 1.5 avg days affected
 
 =================================================================
 End of Report
