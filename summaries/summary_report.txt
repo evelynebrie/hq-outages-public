@@ -2,26 +2,26 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-03-20 05:30:13
+Generated: 2026-03-20 05:36:48
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 90,633
-Total occurrence count: 3,127,153
+Total occurrence count: 3,127,236
 Maximum occurrences (single hex): 911
 Mean occurrences per hex: 34.5
 Median occurrences per hex: 17
 
-Date range: 2026-01-01 00:42:56 to 2026-03-20 01:16:33
+Date range: 2026-01-01 00:42:56 to 2026-03-20 01:31:39
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
          1 occurrences:   7178 hexagons (  7.9%)
          2 occurrences:   2979 hexagons (  3.3%)
-       3-5 occurrences:   8294 hexagons (  9.2%)
-      6-10 occurrences:  14995 hexagons ( 16.5%)
-     11-20 occurrences:  18356 hexagons ( 20.2%)
-     21-40 occurrences:  16991 hexagons ( 18.8%)
+       3-5 occurrences:   8282 hexagons (  9.1%)
+      6-10 occurrences:  15007 hexagons ( 16.6%)
+     11-20 occurrences:  18354 hexagons ( 20.2%)
+     21-40 occurrences:  16993 hexagons ( 18.8%)
      41-60 occurrences:   7712 hexagons (  8.5%)
      61-80 occurrences:   4269 hexagons (  4.7%)
        81+ occurrences:   9859 hexagons ( 10.9%)
@@ -48,12 +48,12 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-03-17: 37001 hexagons affected, 821564 occurrences
 2026-03-18: 6554 hexagons affected, 185152 occurrences
 2026-03-19: 1221 hexagons affected, 15569 occurrences
-2026-03-20: 135 hexagons affected, 461 occurrences
+2026-03-20: 135 hexagons affected, 544 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
 2026-02: 20776 hexagons, 238797 occurrences, 1.1 avg days affected
-2026-03: 61906 hexagons, 2086427 occurrences, 1.7 avg days affected
+2026-03: 61906 hexagons, 2086510 occurrences, 1.7 avg days affected
 
 =================================================================
 End of Report
