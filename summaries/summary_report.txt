@@ -2,27 +2,27 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-03-27 14:31:51
+Generated: 2026-03-27 14:38:42
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
-Total hexagons affected: 95,136
-Total occurrence count: 3,243,776
+Total hexagons affected: 95,140
+Total occurrence count: 3,243,924
 Maximum occurrences (single hex): 911
 Mean occurrences per hex: 34.1
 Median occurrences per hex: 17
 
-Date range: 2026-01-01 00:42:56 to 2026-03-27 10:16:35
+Date range: 2026-01-01 00:42:56 to 2026-03-27 10:31:36
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
-         1 occurrences:   6954 hexagons (  7.3%)
+         1 occurrences:   6958 hexagons (  7.3%)
          2 occurrences:   3641 hexagons (  3.8%)
-       3-5 occurrences:   7507 hexagons (  7.9%)
-      6-10 occurrences:  17156 hexagons ( 18.0%)
+       3-5 occurrences:   7501 hexagons (  7.9%)
+      6-10 occurrences:  17162 hexagons ( 18.0%)
      11-20 occurrences:  19021 hexagons ( 20.0%)
-     21-40 occurrences:  18323 hexagons ( 19.3%)
-     41-60 occurrences:   8056 hexagons (  8.5%)
+     21-40 occurrences:  18322 hexagons ( 19.3%)
+     41-60 occurrences:   8057 hexagons (  8.5%)
      61-80 occurrences:   4442 hexagons (  4.7%)
        81+ occurrences:  10036 hexagons ( 10.6%)
 
@@ -48,12 +48,12 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-03-24: 4332 hexagons affected, 41223 occurrences
 2026-03-25: 2531 hexagons affected, 22845 occurrences
 2026-03-26: 2568 hexagons affected, 26230 occurrences
-2026-03-27: 452 hexagons affected, 3205 occurrences
+2026-03-27: 456 hexagons affected, 3353 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
 2026-02: 20776 hexagons, 238797 occurrences, 1.1 avg days affected
-2026-03: 68721 hexagons, 2203050 occurrences, 1.7 avg days affected
+2026-03: 68725 hexagons, 2203198 occurrences, 1.7 avg days affected
 
 =================================================================
 End of Report
