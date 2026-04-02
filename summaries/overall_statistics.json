@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-04-02 12:43:03",
-  "total_hexagons_affected": 98241,
-  "total_occurrences": 3302229,
+  "generated_at": "2026-04-02 12:50:09",
+  "total_hexagons_affected": 98249,
+  "total_occurrences": 3302718,
   "max_occurrences_per_hex": 911,
-  "mean_occurrences_per_hex": 33.6136,
+  "mean_occurrences_per_hex": 33.6158,
   "median_occurrences_per_hex": 17,
   "date_range": {
     "first": "2026-01-01 00:42:56",
-    "last": "2026-04-02 08:31:38"
+    "last": "2026-04-02 08:46:43"
   },
   "num_daily_summaries": 92,
   "num_monthly_summaries": 3,
   "occurrence_distribution": {
     "occurrence_bin": ["1", "2", "3-5", "6-10", "11-20", "21-40", "41-60", "61-80", "81+"],
-    "count": [7982, 4052, 7660, 17731, 19489, 18415, 8225, 4468, 10219],
-    "percentage": [8.12, 4.12, 7.8, 18.05, 19.84, 18.74, 8.37, 4.55, 10.4]
+    "count": [7980, 4061, 7661, 17730, 19490, 18404, 8232, 4472, 10219],
+    "percentage": [8.12, 4.13, 7.8, 18.05, 19.84, 18.73, 8.38, 4.55, 10.4]
   },
   "top_20_hexagons": {
     "hex_id": [296591, 296592, 296593, 297202, 297203, 297204, 297205, 297206, 297813, 297814, 297815, 297816, 297817, 298425, 298426, 298427, 298428, 299036, 299037, 299038],
