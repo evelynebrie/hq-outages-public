@@ -2,27 +2,27 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-04-03 14:46:13
+Generated: 2026-04-03 14:53:29
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
-Total hexagons affected: 100,090
-Total occurrence count: 3,336,018
+Total hexagons affected: 100,092
+Total occurrence count: 3,336,914
 Maximum occurrences (single hex): 912
 Mean occurrences per hex: 33.3
 Median occurrences per hex: 17
 
-Date range: 2026-01-01 00:42:56 to 2026-04-03 10:31:31
+Date range: 2026-01-01 00:42:56 to 2026-04-03 10:47:00
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
-         1 occurrences:   8371 hexagons (  8.4%)
+         1 occurrences:   8373 hexagons (  8.4%)
          2 occurrences:   4295 hexagons (  4.3%)
        3-5 occurrences:   7979 hexagons (  8.0%)
-      6-10 occurrences:  17126 hexagons ( 17.1%)
-     11-20 occurrences:  20838 hexagons ( 20.8%)
-     21-40 occurrences:  18343 hexagons ( 18.3%)
-     41-60 occurrences:   8408 hexagons (  8.4%)
+      6-10 occurrences:  17115 hexagons ( 17.1%)
+     11-20 occurrences:  20848 hexagons ( 20.8%)
+     21-40 occurrences:  18340 hexagons ( 18.3%)
+     41-60 occurrences:   8412 hexagons (  8.4%)
      61-80 occurrences:   4462 hexagons (  4.5%)
        81+ occurrences:  10268 hexagons ( 10.3%)
 
@@ -48,13 +48,13 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-03-31: 2121 hexagons affected, 17453 occurrences
 2026-04-01: 1370 hexagons affected, 12545 occurrences
 2026-04-02: 1588 hexagons affected, 13887 occurrences
-2026-04-03: 5465 hexagons affected, 23121 occurrences
+2026-04-03: 5471 hexagons affected, 24017 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
 2026-02: 20776 hexagons, 238797 occurrences, 1.1 avg days affected
 2026-03: 72216 hexagons, 2245739 occurrences, 1.7 avg days affected
-2026-04: 8338 hexagons, 49553 occurrences, 1.0 avg days affected
+2026-04: 8342 hexagons, 50449 occurrences, 1.0 avg days affected
 
 =================================================================
 End of Report
