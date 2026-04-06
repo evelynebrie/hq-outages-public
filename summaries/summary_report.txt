@@ -2,25 +2,25 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-04-06 16:43:59
+Generated: 2026-04-06 16:51:20
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
-Total hexagons affected: 102,784
-Total occurrence count: 3,468,813
+Total hexagons affected: 102,785
+Total occurrence count: 3,468,879
 Maximum occurrences (single hex): 912
 Mean occurrences per hex: 33.7
 Median occurrences per hex: 17
 
-Date range: 2026-01-01 00:42:56 to 2026-04-06 12:31:52
+Date range: 2026-01-01 00:42:56 to 2026-04-06 12:46:47
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
-         1 occurrences:   8092 hexagons (  7.9%)
+         1 occurrences:   8093 hexagons (  7.9%)
          2 occurrences:   4712 hexagons (  4.6%)
        3-5 occurrences:   7750 hexagons (  7.5%)
-      6-10 occurrences:  17884 hexagons ( 17.4%)
-     11-20 occurrences:  20638 hexagons ( 20.1%)
+      6-10 occurrences:  17879 hexagons ( 17.4%)
+     11-20 occurrences:  20643 hexagons ( 20.1%)
      21-40 occurrences:  19442 hexagons ( 18.9%)
      41-60 occurrences:   8809 hexagons (  8.6%)
      61-80 occurrences:   4603 hexagons (  4.5%)
@@ -48,13 +48,13 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-04-03: 6537 hexagons affected, 40121 occurrences
 2026-04-04: 2406 hexagons affected, 19108 occurrences
 2026-04-05: 6220 hexagons affected, 89456 occurrences
-2026-04-06: 546 hexagons affected, 7231 occurrences
+2026-04-06: 548 hexagons affected, 7297 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
 2026-02: 20776 hexagons, 238797 occurrences, 1.1 avg days affected
 2026-03: 72216 hexagons, 2245739 occurrences, 1.7 avg days affected
-2026-04: 17142 hexagons, 182348 occurrences, 1.1 avg days affected
+2026-04: 17143 hexagons, 182414 occurrences, 1.1 avg days affected
 
 =================================================================
 End of Report
