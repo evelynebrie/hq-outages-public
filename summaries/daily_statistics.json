@@ -794,10 +794,10 @@
     },
     "2026-04-10": {
       "date": "2026-04-10",
-      "hexagons_affected": 64,
-      "total_occurrences_today": 64,
-      "max_occurrences": 1,
-      "mean_occurrences": 1,
+      "hexagons_affected": 65,
+      "total_occurrences_today": 125,
+      "max_occurrences": 2,
+      "mean_occurrences": 1.92,
       "new_hexagons": 0
     }
   }
