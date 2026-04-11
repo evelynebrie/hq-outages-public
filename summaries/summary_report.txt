@@ -2,17 +2,17 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-04-11 18:42:28
+Generated: 2026-04-11 18:49:47
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 104,371
-Total occurrence count: 3,521,852
+Total occurrence count: 3,521,895
 Maximum occurrences (single hex): 912
 Mean occurrences per hex: 33.7
 Median occurrences per hex: 17
 
-Date range: 2026-01-01 00:42:56 to 2026-04-11 14:32:03
+Date range: 2026-01-01 00:42:56 to 2026-04-11 14:46:38
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
@@ -20,10 +20,10 @@ OCCURRENCE DISTRIBUTION
          2 occurrences:   4869 hexagons (  4.7%)
        3-5 occurrences:   7709 hexagons (  7.4%)
       6-10 occurrences:  17087 hexagons ( 16.4%)
-     11-20 occurrences:  21505 hexagons ( 20.6%)
-     21-40 occurrences:  19859 hexagons ( 19.0%)
-     41-60 occurrences:   8883 hexagons (  8.5%)
-     61-80 occurrences:   4606 hexagons (  4.4%)
+     11-20 occurrences:  21504 hexagons ( 20.6%)
+     21-40 occurrences:  19860 hexagons ( 19.0%)
+     41-60 occurrences:   8881 hexagons (  8.5%)
+     61-80 occurrences:   4608 hexagons (  4.4%)
        81+ occurrences:  11061 hexagons ( 10.6%)
 
 TOP 10 MOST AFFECTED HEXAGONS
@@ -48,13 +48,13 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-04-08: 923 hexagons affected, 5632 occurrences
 2026-04-09: 2826 hexagons affected, 29343 occurrences
 2026-04-10: 1132 hexagons affected, 5455 occurrences
-2026-04-11: 1438 hexagons affected, 3616 occurrences
+2026-04-11: 1438 hexagons affected, 3659 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
 2026-02: 20776 hexagons, 238797 occurrences, 1.1 avg days affected
 2026-03: 72216 hexagons, 2245739 occurrences, 1.7 avg days affected
-2026-04: 22758 hexagons, 235387 occurrences, 1.1 avg days affected
+2026-04: 22758 hexagons, 235430 occurrences, 1.1 avg days affected
 
 =================================================================
 End of Report
