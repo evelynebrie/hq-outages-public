@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-04-11 20:12:24",
+  "generated_at": "2026-04-11 20:19:54",
   "total_hexagons_affected": 104505,
-  "total_occurrences": 3522773,
+  "total_occurrences": 3523053,
   "max_occurrences_per_hex": 912,
-  "mean_occurrences_per_hex": 33.7091,
+  "mean_occurrences_per_hex": 33.7118,
   "median_occurrences_per_hex": 17,
   "date_range": {
     "first": "2026-01-01 00:42:56",
-    "last": "2026-04-11 16:01:55"
+    "last": "2026-04-11 16:16:59"
   },
   "num_daily_summaries": 101,
   "num_monthly_summaries": 3,
