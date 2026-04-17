@@ -2,25 +2,25 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-04-17 17:28:29
+Generated: 2026-04-17 17:35:47
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
-Total hexagons affected: 107,760
-Total occurrence count: 3,635,684
+Total hexagons affected: 107,761
+Total occurrence count: 3,635,936
 Maximum occurrences (single hex): 912
 Mean occurrences per hex: 33.7
 Median occurrences per hex: 17
 
-Date range: 2026-01-01 00:42:56 to 2026-04-17 13:16:33
+Date range: 2026-01-01 00:42:56 to 2026-04-17 13:27:44
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
-         1 occurrences:   9482 hexagons (  8.8%)
-         2 occurrences:   4804 hexagons (  4.5%)
-       3-5 occurrences:   7488 hexagons (  7.0%)
-      6-10 occurrences:  18332 hexagons ( 17.0%)
-     11-20 occurrences:  22113 hexagons ( 20.5%)
+         1 occurrences:   9483 hexagons (  8.8%)
+         2 occurrences:   4803 hexagons (  4.5%)
+       3-5 occurrences:   7473 hexagons (  6.9%)
+      6-10 occurrences:  18347 hexagons ( 17.0%)
+     11-20 occurrences:  22114 hexagons ( 20.5%)
      21-40 occurrences:  19533 hexagons ( 18.1%)
      41-60 occurrences:   9756 hexagons (  9.1%)
      61-80 occurrences:   4875 hexagons (  4.5%)
@@ -48,13 +48,13 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-04-14: 868 hexagons affected, 14709 occurrences
 2026-04-15: 2319 hexagons affected, 24406 occurrences
 2026-04-16: 1412 hexagons affected, 14438 occurrences
-2026-04-17: 800 hexagons affected, 5968 occurrences
+2026-04-17: 803 hexagons affected, 6220 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
 2026-02: 20776 hexagons, 238797 occurrences, 1.1 avg days affected
 2026-03: 72216 hexagons, 2245739 occurrences, 1.7 avg days affected
-2026-04: 30651 hexagons, 349219 occurrences, 1.2 avg days affected
+2026-04: 30654 hexagons, 349471 occurrences, 1.2 avg days affected
 
 =================================================================
 End of Report
