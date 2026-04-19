@@ -2,25 +2,25 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-04-19 17:14:01
+Generated: 2026-04-19 17:21:30
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 109,691
-Total occurrence count: 3,723,961
+Total occurrence count: 3,724,446
 Maximum occurrences (single hex): 938
-Mean occurrences per hex: 33.9
+Mean occurrences per hex: 34.0
 Median occurrences per hex: 17
 
-Date range: 2026-01-01 00:42:56 to 2026-04-19 13:01:40
+Date range: 2026-01-01 00:42:56 to 2026-04-19 13:16:25
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
          1 occurrences:   9377 hexagons (  8.6%)
          2 occurrences:   5941 hexagons (  5.4%)
-       3-5 occurrences:   7249 hexagons (  6.6%)
-      6-10 occurrences:  18286 hexagons ( 16.7%)
-     11-20 occurrences:  22449 hexagons ( 20.5%)
+       3-5 occurrences:   7239 hexagons (  6.6%)
+      6-10 occurrences:  18294 hexagons ( 16.7%)
+     11-20 occurrences:  22451 hexagons ( 20.5%)
      21-40 occurrences:  19748 hexagons ( 18.0%)
      41-60 occurrences:   9879 hexagons (  9.0%)
      61-80 occurrences:   4852 hexagons (  4.4%)
@@ -48,13 +48,13 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-04-16: 1412 hexagons affected, 14438 occurrences
 2026-04-17: 1018 hexagons affected, 9061 occurrences
 2026-04-18: 4876 hexagons affected, 49813 occurrences
-2026-04-19: 1598 hexagons affected, 35371 occurrences
+2026-04-19: 1601 hexagons affected, 35856 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
 2026-02: 20776 hexagons, 238797 occurrences, 1.1 avg days affected
 2026-03: 72216 hexagons, 2245739 occurrences, 1.7 avg days affected
-2026-04: 34886 hexagons, 437496 occurrences, 1.3 avg days affected
+2026-04: 34886 hexagons, 437981 occurrences, 1.3 avg days affected
 
 =================================================================
 End of Report
