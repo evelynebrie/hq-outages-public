@@ -81,16 +81,10 @@
         <p style="font-size:11px;color:#999;">Mise à jour: <span id="update-date">Chargement...</span></p>
     </div>
 
-    <div class="legend">
-        <h4>Heures (nombre)</h4>
-        <div><i style="background:#fee5d9"></i>0–2</div>
-        <div><i style="background:#fcbba1"></i>2–5</div>
-        <div><i style="background:#fc9272"></i>5–10</div>
-        <div><i style="background:#fb6a4a"></i>10–20</div>
-        <div><i style="background:#ef3b2c"></i>20–40</div>
-        <div><i style="background:#cb181d"></i>40–60</div>
-        <div><i style="background:#a50f15"></i>60–80</div>
-        <div><i style="background:#67000d"></i>80+</div>
+    <div class="legend" id="legend">
+        <h4>Impact relatif des pannes</h4>
+        <div id="legendItems"><div style="font-size:12px;color:#999;">Chargement...</div></div>
+        <div id="legendFooter" style="font-size:11px;color:#666;margin-top:10px;padding-top:8px;border-top:1px solid #e5e7eb;line-height:1.4;max-width:280px;"></div>
     </div>
 
     <div class="controls">
@@ -148,10 +142,72 @@
 
         var allData = { daily: {}, total: null };
         var currentFeatures = null;
+        var quartileBreaks = null; // computed from overall total_occurrences on load
+
+        var QUARTILE_COLORS = ['#fee0d2', '#fcbba1', '#fc9272', '#ef3b2c', '#a50f15'];
+
+        function percentile(sortedVals, p) {
+            var idx = (sortedVals.length - 1) * p;
+            var lo = Math.floor(idx);
+            var hi = Math.ceil(idx);
+            if (lo === hi) return sortedVals[lo];
+            return sortedVals[lo] + (sortedVals[hi] - sortedVals[lo]) * (idx - lo);
+        }
+
+        function computeQuartiles(features) {
+            var values = [];
+            for (var i = 0; i < features.length; i++) {
+                var v = features[i].properties.total_occurrences;
+                if (typeof v === 'number' && !isNaN(v)) values.push(v);
+            }
+            values.sort(function(a, b) { return a - b; });
+            if (values.length === 0) return null;
+            return {
+                min: values[0],
+                q1: Math.round(percentile(values, 0.20)),
+                q2: Math.round(percentile(values, 0.40)),
+                q3: Math.round(percentile(values, 0.60)),
+                q4: Math.round(percentile(values, 0.80)),
+                max: values[values.length - 1]
+            };
+        }
 
         function getColor(d) {
-            return d>80?'#67000d':d>60?'#a50f15':d>40?'#cb181d':d>20?'#ef3b2c':
-                   d>10?'#fb6a4a':d>5?'#fc9272':d>2?'#fcbba1':'#fee5d9';
+            if (!quartileBreaks) return '#fcbba1';
+            if (d <= quartileBreaks.q1) return QUARTILE_COLORS[0];
+            if (d <= quartileBreaks.q2) return QUARTILE_COLORS[1];
+            if (d <= quartileBreaks.q3) return QUARTILE_COLORS[2];
+            if (d <= quartileBreaks.q4) return QUARTILE_COLORS[3];
+            return QUARTILE_COLORS[4];
+        }
+
+        function updateLegend() {
+            var container = document.getElementById('legendItems');
+            var footer = document.getElementById('legendFooter');
+            if (!container) return;
+            if (!quartileBreaks) {
+                container.innerHTML = '<div style="font-size:12px;color:#999;">Chargement...</div>';
+                if (footer) footer.innerHTML = '';
+                return;
+            }
+            var q = quartileBreaks;
+            var labels = ['Minimal', 'Faible', 'Modéré', 'Élevé', 'Intense'];
+            var html = '';
+            for (var i = 0; i < 5; i++) {
+                html += '<div><i style="background:' + QUARTILE_COLORS[i] + '"></i>' + labels[i] + '</div>';
+            }
+            container.innerHTML = html;
+
+            if (footer) {
+                var sentence = "Un hexagone est classé comme minimal lorsqu'il compte entre " +
+                    q.min + " et " + q.q1 + " occurrences de pannes (mesurées aux 15 minutes), faible entre " +
+                    (q.q1 + 1) + " et " + q.q2 + ", modéré entre " +
+                    (q.q2 + 1) + " et " + q.q3 + ", élevé entre " +
+                    (q.q3 + 1) + " et " + q.q4 + " et intense entre " +
+                    (q.q4 + 1) + " et " + q.max + ". Ces valeurs sont mises à jour quotidiennement pour refléter une proportion égale d'observations dans chaque niveau d'impact.";
+                footer.innerHTML = '<div>' + sentence + '</div>' +
+                    '<div style="margin-top:6px;">Chaque niveau regroupe 20% des hexagones.</div>';
+            }
         }
 
         async function loadAllDailyData() {
@@ -170,6 +226,11 @@
             };
 
             console.log(`Loaded ${allData.total.features.length} hexagons from ${regions.length} regions`);
+
+            // Compute quartile breaks from overall total_occurrences distribution
+            quartileBreaks = computeQuartiles(allData.total.features);
+            console.log('Quartile breaks:', quartileBreaks);
+            updateLegend();
 
             const dateSelect = document.getElementById('dateSelect');
             const dates = [...new Set(allData.total.features.flatMap(f => {
