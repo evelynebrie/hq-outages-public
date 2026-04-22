@@ -1,30 +1,39 @@
 {
   "monthly_summaries": {
+    "2026-01": {
+      "month": "2026-01",
+      "hexagons_affected": 29360,
+      "total_occurrences_month": 472241,
+      "total_days_affected": 40172,
+      "max_occurrences": 467,
+      "mean_occurrences": 16.08,
+      "mean_days_affected": 1.37
+    },
     "2026-02": {
       "month": "2026-02",
-      "hexagons_affected": 20776,
-      "total_occurrences_month": 238797,
-      "total_days_affected": 22795,
-      "max_occurrences": 174,
-      "mean_occurrences": 11.49,
-      "mean_days_affected": 1.1
+      "hexagons_affected": 26954,
+      "total_occurrences_month": 312177,
+      "total_days_affected": 32081,
+      "max_occurrences": 225,
+      "mean_occurrences": 11.58,
+      "mean_days_affected": 1.19
     },
     "2026-03": {
       "month": "2026-03",
-      "hexagons_affected": 72216,
-      "total_occurrences_month": 2245739,
-      "total_days_affected": 125449,
+      "hexagons_affected": 72088,
+      "total_occurrences_month": 2197921,
+      "total_days_affected": 125117,
       "max_occurrences": 359,
-      "mean_occurrences": 31.1,
+      "mean_occurrences": 30.49,
       "mean_days_affected": 1.74
     },
     "2026-04": {
       "month": "2026-04",
-      "hexagons_affected": 37053,
-      "total_occurrences_month": 474364,
-      "total_days_affected": 47297,
-      "max_occurrences": 324,
-      "mean_occurrences": 12.8,
+      "hexagons_affected": 37036,
+      "total_occurrences_month": 473404,
+      "total_days_affected": 47276,
+      "max_occurrences": 317,
+      "mean_occurrences": 12.78,
       "mean_days_affected": 1.28
     }
   }
