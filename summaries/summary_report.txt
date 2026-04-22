@@ -2,26 +2,26 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-04-22 21:45:11
+Generated: 2026-04-22 21:52:25
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 110,364
-Total occurrence count: 3,473,623
+Total occurrence count: 3,473,972
 Maximum occurrences (single hex): 719
 Mean occurrences per hex: 31.5
 Median occurrences per hex: 15
 
-Date range: 2026-01-01 00:42:56 to 2026-04-22 17:31:33
+Date range: 2026-01-01 00:42:56 to 2026-04-22 17:46:40
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
          1 occurrences:   9943 hexagons (  9.0%)
          2 occurrences:   6748 hexagons (  6.1%)
        3-5 occurrences:   8765 hexagons (  7.9%)
-      6-10 occurrences:  19251 hexagons ( 17.4%)
-     11-20 occurrences:  21425 hexagons ( 19.4%)
-     21-40 occurrences:  19885 hexagons ( 18.0%)
+      6-10 occurrences:  19249 hexagons ( 17.4%)
+     11-20 occurrences:  21414 hexagons ( 19.4%)
+     21-40 occurrences:  19898 hexagons ( 18.0%)
      41-60 occurrences:   8779 hexagons (  8.0%)
      61-80 occurrences:   4369 hexagons (  4.0%)
        81+ occurrences:  11199 hexagons ( 10.2%)
@@ -48,14 +48,14 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-04-19: 2049 hexagons affected, 45450 occurrences
 2026-04-20: 988 hexagons affected, 8692 occurrences
 2026-04-21: 2206 hexagons affected, 21432 occurrences
-2026-04-22: 1013 hexagons affected, 13585 occurrences
+2026-04-22: 1015 hexagons affected, 13934 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
 2026-01: 29360 hexagons, 472241 occurrences, 1.4 avg days affected
 2026-02: 26954 hexagons, 312177 occurrences, 1.2 avg days affected
 2026-03: 72088 hexagons, 2197921 occurrences, 1.7 avg days affected
-2026-04: 37916 hexagons, 491284 occurrences, 1.3 avg days affected
+2026-04: 37916 hexagons, 491633 occurrences, 1.3 avg days affected
 
 =================================================================
 End of Report
