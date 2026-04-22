@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartographie des pannes au Québec</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+        #map { height: 100vh; width: 100%; }
+        
+        /* Main title banner - minimalist style */
+        .main-title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: #ffffff;
+            color: #000000;
+            padding: 14px 28px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            font-family: "JetBrains Mono", monospace;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-align: center;
+            border: 1px solid #e5e5e5;
+        }
+        
+        /* Clean controls box */
+        .controls {
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            min-width: 220px;
+            border: 1px solid #e5e5e5;
+        }
+        .controls h4 {
+            margin: 0 0 10px 0;
+            color: #1a1a1a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .controls select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #d4d4d4;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            color: #1a1a1a;
+        }
+        .controls select:hover {
+            border-color: #a3a3a3;
+        }
+        .toggle-data-btn {
+            width: 100%;
+            padding: 8px 10px;
+            margin-top: 10px;
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            color: #1a1a1a;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            font-weight: 500;
+        }
+        .toggle-data-btn:hover {
+            background: #e5e7eb;
+            border-color: #9ca3af;
+        }
+        .toggle-data-btn:active {
+            background: #d1d5db;
+        }
+        .controls select:focus {
+            outline: none;
+            border-color: #525252;
+        }
+        
+        /* Enhanced info box */
+        .info {
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 260px;
+        }
+        .info h4 {
+            margin: 0 0 14px 0;
+            color: #000000;
+            font-size: 16px;
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            font-weight: 500;
+            color: #6b7280;
+            font-size: 13px;
+        }
+        .info-value {
+            font-weight: 600;
+            color: #111827;
+            font-size: 14px;
+        }
+        
+        /* Legend styling */
+        .legend {
+            line-height: 24px;
+            color: #374151;
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .legend h4 {
+            margin: 0 0 12px 0;
+            color: #000000;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .legend i {
+            width: 20px;
+            height: 20px;
+            float: left;
+            margin-right: 10px;
+            opacity: 0.85;
+            border-radius: 3px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+        .legend-info-wrap {
+            position: relative;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .legend-info-btn {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: #374151;
+            border: none;
+            cursor: pointer;
+            font-style: italic;
+            font-family: Georgia, "Times New Roman", serif;
+            font-weight: bold;
+            font-size: 13px;
+            display: flex; align-items: center; justify-content: center;
+            padding: 0; line-height: 1;
+            transition: background 0.15s;
+        }
+        .legend-info-btn:hover { background: #d1d5db; }
+        .legend-info-popover {
+            display: none;
+            position: absolute;
+            right: 0;
+            bottom: 30px;
+            width: 280px;
+            background: white;
+            color: #374151;
+            font-size: 11px;
+            line-height: 1.5;
+            padding: 10px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            z-index: 1500;
+        }
+        .legend-info-popover.open { display: block; }
+        
+        /* Enhanced badges - bright yellow */
+        .current-badge {
+            background: #f5d05d;
+            color: #422006;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        
+        /* Modal styling */
+        .detail-link {
+            color: #2563eb;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .detail-link:hover {
+            color: #1e40af;
+            text-decoration: underline;
+        }
+        #detailModal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 10000;
+            display: none;
+            min-width: 320px;
+            max-width: 500px;
+        }
+        #detailModal.active { display: block; }
+        #detailModal h3 {
+            margin: 0 0 16px 0;
+            color: #1e40af;
+            font-size: 20px;
+        }
+        #modalOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 9999;
+            display: none;
+            backdrop-filter: blur(2px);
+        }
+        #modalOverlay.active { display: block; }
+
+        /* Info button (FAQ trigger) */
+        .info-btn {
+            position: absolute;
+            bottom: 30px;
+            left: 10px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 20px;
+            font-style: italic;
+            font-weight: bold;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: transform 0.15s, box-shadow 0.15s;
+            padding: 0;
+        }
+        .info-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+        #faqModal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 10000;
+            display: none;
+            min-width: 320px;
+            max-width: 640px;
+        }
+        #faqModal.active { display: block; }
+        #faqModal h3 {
+            margin: 0 0 16px 0;
+            color: #111827;
+            font-size: 20px;
+        }
+        #faqModal h4 {
+            margin: 20px 0 6px;
+            color: #1f2937;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        #faqModal h4:first-of-type { margin-top: 0; }
+        #faqModal p {
+            margin: 0 0 12px;
+            color: #4b5563;
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        /* Welcome modal */
+        #welcomeModal {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 32px 36px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-height: 85vh;
+            overflow-y: auto;
+            z-index: 10000;
+            display: none;
+            max-width: 560px;
+            width: 90%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        #welcomeModal.active { display: block; }
+        #welcomeModal h2 {
+            margin: 0 0 18px;
+            color: #111827;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        #welcomeModal p {
+            margin: 0 0 14px;
+            color: #374151;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: left;
+        }
+        .welcome-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 22px 0 18px;
+        }
+        .btn-secondary, .btn-primary {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 2px solid #111827;
+        }
+        .btn-secondary { background: white; color: #111827; }
+        .btn-secondary:hover { background: #f3f4f6; }
+        .btn-primary { background: #111827; color: white; }
+        .btn-primary:hover { background: #374151; border-color: #374151; }
+        .welcome-logos {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+            padding-top: 18px;
+            border-top: 1px solid #e5e7eb;
+            flex-wrap: wrap;
+        }
+        .welcome-logos img {
+            max-height: 42px;
+            max-width: 140px;
+            object-fit: contain;
+            opacity: 0.9;
+        }
+
+        .date-row {
+            margin: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+            padding: 8px 0;
+        }
+        .date-header {
+            cursor: pointer;
+            font-weight: 600;
+            color: #111827;
+            padding: 6px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        .date-header:hover {
+            background: #f3f4f6;
+        }
+        .times-list {
+            display: none;
+            margin-left: 24px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .times-list div {
+            padding: 4px 0;
+        }
+        
+        .loading {
+            color: #9ca3af;
+            font-style: italic;
+            font-size: 13px;
+        }
+        
+        /* Close button */
+        .close-btn {
+            float: right;
+            border: none;
+            background: #f3f4f6;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .close-btn:hover {
+            background: #e5e7eb;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-title">Cartographie des pannes au Québec</div>
+    <div id="map"></div>
+    <button class="info-btn" onclick="openFaqModal()" title="À propos de la carte" aria-label="Informations">i</button>
+
+    <div id="modalOverlay" class="active" onclick="closeAllModals()"></div>
+    <div id="welcomeModal" class="active">
+        <button onclick="closeWelcomeModal()" class="close-btn">✕</button>
+        <h2>Où sont les pannes?</h2>
+        <p>Cet outil vous permet de localiser les pannes de courant ayant eu lieu au Québec depuis le 1<sup>er</sup> janvier 2026.</p>
+        <p>L&apos;objectif de cette carte est de promouvoir la transparence de l&apos;information au sujet des pannes de courant au Québec. Chaque occurrence de panne représente une panne de 15 minutes.</p>
+        <div class="welcome-actions">
+            <button class="btn-secondary" onclick="openFaqFromWelcome()">À propos de ce projet</button>
+            <button class="btn-primary" onclick="closeWelcomeModal()">Commencer</button>
+        </div>
+        <div class="welcome-logos">
+            <img src="logos/ivado-rgb_logo-full-degrade.png" alt="IVADO">
+            <img src="logos/udem-logo.svg" alt="Université de Montréal">
+        </div>
+    </div>
+    <div id="detailModal">
+        <button onclick="closeDetailModal()" class="close-btn">✕</button>
+        <div id="modalContent"></div>
+    </div>
+    <div id="faqModal">
+        <button onclick="closeFaqModal()" class="close-btn">✕</button>
+        <h3>À propos de ce projet</h3>
+        <p>Ce projet est dirigé par Evelyne Brie, professeure adjointe en science politique affiliée à IVADO à l&apos;Université de Montréal. Vous pouvez la contacter par courriel au <a href="mailto:evelyne.brie@umontreal.ca">evelyne.brie@umontreal.ca</a>.</p>
+        <p>Ses recherches portent sur la cohésion sociale, les inégalités structurelles et la prise de décision en matière de politique urbaine. «&nbsp;Où sont les pannes?&nbsp;» fait partie de ce travail et vise à mettre en lumière les disparités en matière de coupures électriques au Québec.</p>
+        <h3>FAQ</h3>
+        <h4>D&apos;où proviennent ces données?</h4>
+        <p>Les données sont collectées à chaque 15 minutes du site Info-Pannes d&apos;Hydro-Québec. Elles sont ensuite converties sur une grille hexagonale pour permettre de calculer les pannes cumulatives sur des aires géographiques d&apos;un kilomètre.</p>
+        <h4>Qu&apos;est-ce qui constitue une occurrence de panne?</h4>
+        <p>Une occurrence de panne est une lecture de panne, mesurée à chaque 15 minutes, via le site d&apos;Info-Pannes d&apos;Hydro-Québec. Par exemple, pour une coupure électrique d&apos;une durée totale d&apos;une heure, 4 occurrences sont comptabilisées. Cette technique permet de comparer la durée totale des pannes, plutôt que de comptabiliser des coupures de courant de durées différentes.</p>
+        <h4>Une panne est indiquée dans l&apos;hexagone où je réside, mais mon logement n&apos;est pas affecté. S&apos;agit-il d&apos;une erreur?</h4>
+        <p>Non. Les hexagones indiquent l&apos;occurrence d&apos;une panne à n&apos;importe quel endroit au sein de cet hexagone. Autrement dit, si vos voisins sont affectés par une panne sans que vous le soyez, l&apos;historique des pannes indiquera une occurrence sans que vous ayez été affecté.</p>
+        <h4>Dans quel but cette carte a-t-elle été créée?</h4>
+        <p>L&apos;objectif de cette carte est de promouvoir la transparence de l&apos;information au sujet des pannes de courant au Québec. L&apos;outil actuel d&apos;Info-Pannes d&apos;Hydro-Québec permet seulement de visualiser les pannes actuelles ou planifiées, sans partager d&apos;information sur les pannes résolues.</p>
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.js"></script>
+    <script>
+        var map = L.map("map").setView([45.75, -73.35], 10);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "OpenStreetMap"
+        }).addTo(map);
+
+        // Add address search bar
+        L.Control.geocoder({
+            defaultMarkGeocode: false,
+            placeholder: "Rechercher une adresse...",
+            errorMessage: "Adresse non trouvée",
+            position: "topleft"
+        }).on("markgeocode", function(e) {
+            var bbox = e.geocode.bbox;
+            var poly = L.polygon([
+                bbox.getSouthEast(),
+                bbox.getNorthEast(),
+                bbox.getNorthWest(),
+                bbox.getSouthWest()
+            ]);
+            map.fitBounds(poly.getBounds());
+        }).addTo(map);
+
+        var allData = { total: null, daily: {}, current: null };
+        var currentLayer = null;
+        var lastReadingTime = "2026-04-22 13:02:41";
+        var dataLoaded = { total: false, current: false };
+        var hexDataVisible = true;
+        var previousView = "all";
+
+        function toggleHexData() {
+            var btn = document.getElementById("toggleDataBtn");
+            var dateSelect = document.getElementById("dateSelect");
+
+            if (hexDataVisible) {
+                // Hide data
+                if (currentLayer) {
+                    map.removeLayer(currentLayer);
+                }
+                previousView = dateSelect.value;
+                btn.textContent = "Afficher les données";
+                hexDataVisible = false;
+            } else {
+                // Show data
+                dateSelect.value = previousView;
+                updateMap();
+                btn.textContent = "Masquer les données";
+                hexDataVisible = true;
+            }
+        }
+
+        // Load current outages FIRST (priority)
+        fetch("current.geojson")
+            .then(function(r) { 
+                if (!r.ok) throw new Error("HTTP " + r.status);
+                return r.json(); 
+            })
+            .then(function(data) {
+                console.log("Current outages loaded:", data.features ? data.features.length : 0, "features");
+                allData.current = data;
+                dataLoaded.current = true;
+                updateCurrentCount();
+                // If current is selected, update map
+                var dateSelect = document.getElementById("dateSelect");
+                if (dateSelect && dateSelect.value === "current") {
+                    updateMap();
+                }
+            })
+            .catch(function(e) { 
+                console.error("Error loading current.geojson:", e);
+                allData.current = { type: "FeatureCollection", features: [] };
+                dataLoaded.current = true;
+                updateCurrentCount();
+            });
+        
+        // Load regional data files and merge them
+        var regions = ["west", "central_west", "central", "central_east", "east", "far_east"];
+        var regionalPromises = regions.map(function(region) {
+            return fetch("total/total_exposure_" + region + ".geojson").then(function(r) { return r.json(); });
+        });
+
+        Promise.all(regionalPromises)
+            .then(function(regionalData) {
+                // Merge all regions
+                var allFeatures = [];
+                regionalData.forEach(function(data) {
+                    if (data.features) {
+                        allFeatures = allFeatures.concat(data.features);
+                    }
+                });
+                allData.total = { type: "FeatureCollection", features: allFeatures };
+                console.log("Total data loaded from", regions.length, "regions:", allFeatures.length, "features");
+                // Compute quartile breaks from overall total_occurrences distribution
+                quartileBreaks = computeQuartiles(allData.total.features);
+                console.log("Quartile breaks:", quartileBreaks);
+                rebuildLegend();
+                // Update stats panel totals
+                var totalOcc = 0;
+                allData.total.features.forEach(function(f) {
+                    var v = f.properties.total_occurrences;
+                    if (typeof v === "number" && !isNaN(v)) totalOcc += v;
+                });
+                var totalOccSpan = document.getElementById("totalOccurrences");
+                if (totalOccSpan) totalOccSpan.innerHTML = "<span class=\"info-value\">" + totalOcc.toLocaleString("fr-CA") + "</span>";
+                var welcomeCountEl = document.getElementById("welcomeCount");
+                if (welcomeCountEl) welcomeCountEl.textContent = totalOcc.toLocaleString("fr-CA");
+                var hexCountSpan = document.getElementById("totalHexCount");
+                if (hexCountSpan) hexCountSpan.innerHTML = "<span class=\"info-value\">" + allData.total.features.length.toLocaleString("fr-CA") + "</span>";
+                dataLoaded.total = true;
+                updateMap();
+            })
+            .catch(function(e) {
+                console.error("Error loading regional data:", e);
+            });
+        
+        var dates = ["2026-01-01","2026-01-02","2026-01-03","2026-01-04","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-10","2026-01-11","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-17","2026-01-18","2026-01-19","2026-01-20","2026-01-21","2026-01-22","2026-01-23","2026-01-24","2026-01-25","2026-01-26","2026-01-27","2026-01-28","2026-01-29","2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-07","2026-02-08","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-20","2026-04-21","2026-04-22"];
+        
+        function loadDailyData() {
+            dates.forEach(function(date) {
+                fetch("daily/daily_" + date + ".geojson")
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) { allData.daily[date] = data; })
+                    .catch(function(e) {});
+            });
+        }
+        loadDailyData();
+
+        // Auto-refresh: Reload data every 5 minutes to get latest updates
+        function refreshData() {
+            console.log("Auto-refreshing data...");
+
+            // Reload current outages
+            fetch("current.geojson?" + Date.now())
+                .then(function(r) {
+                    if (!r.ok) throw new Error("HTTP " + r.status);
+                    return r.json();
+                })
+                .then(function(data) {
+                    allData.current = data;
+                    updateCurrentCount();
+                    var dateSelect = document.getElementById("dateSelect");
+                    if (dateSelect && dateSelect.value === "current") {
+                        updateMap();
+                    }
+
+                    // Show brief update notification
+                    showUpdateNotification();
+                })
+                .catch(function(e) {
+                    console.error("Error refreshing current.geojson:", e);
+                });
+        }
+
+        function showUpdateNotification() {
+            var notification = document.createElement("div");
+            notification.style.cssText = "position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 12px 20px; border-radius: 6px; font-size: 14px; z-index: 10000; box-shadow: 0 4px 6px rgba(0,0,0,0.1);";
+            notification.textContent = "✓ Données mises à jour";
+            document.body.appendChild(notification);
+
+            setTimeout(function() {
+                notification.style.opacity = "0";
+                notification.style.transition = "opacity 0.5s";
+                setTimeout(function() { document.body.removeChild(notification); }, 500);
+            }, 2000);
+        }
+
+        // Refresh every 5 minutes (300000 ms)
+        setInterval(refreshData, 300000);
+
+        function updateCurrentCount() {
+            var countSpan = document.getElementById("currentCount");
+            if (countSpan) {
+                if (allData.current && allData.current.features) {
+                    var count = allData.current.features.length;
+                    if (count > 0) {
+                        countSpan.innerHTML = "<span class=\"current-badge\">" + count + " hexagone" + (count !== 1 ? "s" : "") + "</span>";
+                    } else {
+                        countSpan.innerHTML = "<span class=\"info-value\">0 hexagones</span>";
+                    }
+                } else {
+                    countSpan.innerHTML = "<span class=\"info-value\">0 hexagones</span>";
+                }
+            }
+            var timeSpan = document.getElementById("lastReading");
+            if (timeSpan) {
+                timeSpan.innerHTML = "<span class=\"info-value\" style=\"font-size:12px;\">" + lastReadingTime + "</span>";
+            }
+        }
+        
+        var quartileBreaks = null; // computed from overall total_occurrences on load
+        var QUARTILE_COLORS = ["#fee0d2", "#fcbba1", "#fc9272", "#ef3b2c", "#a50f15"];
+
+        function percentile(sortedVals, p) {
+            var idx = (sortedVals.length - 1) * p;
+            var lo = Math.floor(idx);
+            var hi = Math.ceil(idx);
+            if (lo === hi) return sortedVals[lo];
+            return sortedVals[lo] + (sortedVals[hi] - sortedVals[lo]) * (idx - lo);
+        }
+
+        function computeQuartiles(features) {
+            var values = [];
+            for (var i = 0; i < features.length; i++) {
+                var v = features[i].properties.total_occurrences;
+                if (typeof v === "number" && !isNaN(v)) values.push(v);
+            }
+            values.sort(function(a, b) { return a - b; });
+            if (values.length === 0) return null;
+            return {
+                min: values[0],
+                q1: Math.round(percentile(values, 0.20)),
+                q2: Math.round(percentile(values, 0.40)),
+                q3: Math.round(percentile(values, 0.60)),
+                q4: Math.round(percentile(values, 0.80)),
+                max: values[values.length - 1]
+            };
+        }
+
+        function getColor(d) {
+            if (!quartileBreaks) return "#fcbba1";
+            if (d <= quartileBreaks.q1) return QUARTILE_COLORS[0];
+            if (d <= quartileBreaks.q2) return QUARTILE_COLORS[1];
+            if (d <= quartileBreaks.q3) return QUARTILE_COLORS[2];
+            if (d <= quartileBreaks.q4) return QUARTILE_COLORS[3];
+            return QUARTILE_COLORS[4];
+        }
+
+        function rebuildLegend() {
+            var container = document.getElementById("legendItems");
+            if (!container || !quartileBreaks) return;
+            var q = quartileBreaks;
+            var labels = ["Minimal", "Faible", "Modéré", "Élevé", "Intense"];
+            var html = "";
+            for (var i = 0; i < 5; i++) {
+                html += "<div class=\"legend-item\"><i style=\"background:" + QUARTILE_COLORS[i] + "\"></i> " + labels[i] + "</div>";
+            }
+            var sentence = "Un hexagone est classé comme ayant un impact minimal lorsqu&apos;il compte entre " +
+                q.min + " et " + q.q1 + " occurrences de pannes (mesurées aux 15 minutes), faible entre " +
+                (q.q1 + 1) + " et " + q.q2 + ", modéré entre " +
+                (q.q2 + 1) + " et " + q.q3 + ", élevé entre " +
+                (q.q3 + 1) + " et " + q.q4 + " et intense entre " +
+                (q.q4 + 1) + " et " + q.max + ". Chaque niveau regroupe 20% des hexagones. Ces valeurs sont mises à jour automatiquement pour refléter une proportion égale d&apos;observations dans chaque niveau d&apos;impact.";
+            html +=
+                "<div class=\"legend-info-wrap\">" +
+                "<div id=\"legendInfoPopover\" class=\"legend-info-popover\">" + sentence + "</div>" +
+                "<button type=\"button\" class=\"legend-info-btn\" aria-label=\"Comment sont calculés les seuils\" onclick=\"toggleLegendInfo(event)\">i</button>" +
+                "</div>";
+            container.innerHTML = html;
+        }
+
+        function toggleLegendInfo(evt) {
+            if (evt) evt.stopPropagation();
+            var pop = document.getElementById("legendInfoPopover");
+            if (!pop) return;
+            var willOpen = !pop.classList.contains("open");
+            pop.classList.toggle("open", willOpen);
+            if (willOpen) {
+                setTimeout(function() {
+                    document.addEventListener("click", function h(e) {
+                        if (!e.target.closest(".legend-info-wrap")) {
+                            pop.classList.remove("open");
+                            document.removeEventListener("click", h);
+                        }
+                    });
+                }, 0);
+            }
+        }
+        
+        function updateMap() {
+            var dateSelect = document.getElementById("dateSelect");
+            var dateFilter = dateSelect ? dateSelect.value : "all";
+            var data = null;
+            var isCurrent = false;
+            
+            console.log("updateMap called with filter:", dateFilter);
+            
+            if (dateFilter === "current") {
+                data = allData.current;
+                isCurrent = true;
+                if (!data || !data.features) {
+                    console.log("Current data not loaded yet, waiting...");
+                    if (allData.total) {
+                        data = allData.total;
+                        isCurrent = false;
+                    } else {
+                        return;
+                    }
+                }
+            } else if (dateFilter === "all") {
+                data = allData.total;
+            } else if (allData.daily[dateFilter]) {
+                data = allData.daily[dateFilter];
+            } else {
+                data = allData.total;
+            }
+            
+            if (!data || !data.features) {
+                console.log("No data available for filter:", dateFilter);
+                return;
+            }
+            
+            console.log("Displaying", data.features.length, "features, isCurrent:", isCurrent);
+            
+            if (currentLayer) map.removeLayer(currentLayer);
+            
+            if (data.features.length === 0) {
+                console.log("No features to display");
+                return;
+            }
+            
+            currentLayer = L.geoJSON(data, {
+                style: function(f) {
+                    var count = f.properties.total_occurrences || f.properties.occurrences_today || 1;
+                    return {
+                        fillColor: isCurrent ? "#fde68a" : getColor(count),
+                        weight: isCurrent ? 2.5 : 0.5,
+                        color: isCurrent ? "#b45309" : "#fff",
+                        fillOpacity: isCurrent ? 0.75 : 0.75
+                    };
+                },
+                onEachFeature: function(f, layer) {
+                    var props = f.properties;
+                    var count = props.total_occurrences || props.occurrences_today || 1;
+                    var popupContent = "<b>Hexagone #" + props.hex_id + "</b>";
+                    if (isCurrent) {
+                        popupContent += " <span class=\"current-badge\">EN COURS</span>";
+                    }
+                    popupContent += "<br><b>Occurrences totales:</b> " + count + "<br>" +
+                        "<b>Jours affectés:</b> " + (props.days_affected || 1) + "<br>" +
+                        "<b>Centroïde:</b> " + props.centroid_lat.toFixed(6) + ", " + props.centroid_lon.toFixed(6) + "<br>" +
+                        "<a class=\"detail-link\" onclick=\"showDetails(" + props.hex_id + ")\">Voir historique</a>";
+                    layer.bindPopup(popupContent);
+                }
+            }).addTo(map);
+        }
+        
+        function showDetails(hexId) {
+            var feature = null;
+            if (allData.total && allData.total.features) {
+                for (var i = 0; i < allData.total.features.length; i++) {
+                    if (allData.total.features[i].properties.hex_id === hexId) {
+                        feature = allData.total.features[i];
+                        break;
+                    }
+                }
+            }
+            if (!feature) {
+                alert("Historique non disponible pour cet hexagone");
+                return;
+            }
+            
+            var props = feature.properties;
+            var allDatetimes = props.all_datetimes || "";
+            var datetimes = allDatetimes.split(",").map(function(s) { return s.trim(); }).filter(function(s) { return s.length > 0; }).sort();
+            
+            var byDate = {};
+            datetimes.forEach(function(dt) {
+                var parts = dt.split(" ");
+                var date = parts[0];
+                var time = parts[1] || "";
+                if (!byDate[date]) byDate[date] = [];
+                byDate[date].push(time);
+            });
+            
+            var uniqueDates = Object.keys(byDate).sort().reverse();
+
+            var html = "<h3>Hexagone #" + hexId + "</h3>";
+
+            var isCurrentlyAffected = false;
+            if (allData.current && allData.current.features) {
+                for (var c = 0; c < allData.current.features.length; c++) {
+                    if (allData.current.features[c].properties.hex_id === hexId) {
+                        isCurrentlyAffected = true;
+                        break;
+                    }
+                }
+            }
+            if (isCurrentlyAffected) {
+                html += "<p><span class=\"current-badge\">PANNE EN COURS</span></p>";
+            }
+
+            html += "<p><strong>Total occurrences:</strong> " + props.total_occurrences + "</p>";
+            html += "<p><strong>Jours affectés:</strong> " + uniqueDates.length + "</p>";
+            html += "<p style=\"margin-top: 15px;\"><strong>Historique :</strong></p>";
+            html += "<div style=\"max-height: 400px; overflow-y: auto;\">";
+
+            for (var j = 0; j < uniqueDates.length; j++) {
+                var dateKey = uniqueDates[j];
+                var times = byDate[dateKey];
+                html += "<div class=\"date-row\">";
+                html += "<div class=\"date-header\" onclick=\"toggleTimes(this)\">";
+                html += "&#9654; " + dateKey + " (" + times.length + " occurrence" + (times.length > 1 ? "s" : "") + ")";
+                html += "</div>";
+                html += "<div class=\"times-list\">";
+                for (var k = 0; k < times.length; k++) {
+                    html += "<div>" + times[k] + "</div>";
+                }
+                html += "</div></div>";
+            }
+
+            html += "</div>";
+
+            document.getElementById("modalContent").innerHTML = html;
+            document.getElementById("detailModal").classList.add("active");
+            document.getElementById("modalOverlay").classList.add("active");
+        }
+
+        function toggleTimes(header) {
+            var timesList = header.nextElementSibling;
+            if (timesList.style.display === "block") {
+                timesList.style.display = "none";
+            } else {
+                timesList.style.display = "block";
+            }
+        }
+        
+        function closeDetailModal() {
+            document.getElementById("detailModal").classList.remove("active");
+            document.getElementById("modalOverlay").classList.remove("active");
+        }
+        function openFaqModal() {
+            document.getElementById("faqModal").classList.add("active");
+            document.getElementById("modalOverlay").classList.add("active");
+        }
+        function closeFaqModal() {
+            document.getElementById("faqModal").classList.remove("active");
+            document.getElementById("modalOverlay").classList.remove("active");
+        }
+        function closeWelcomeModal() {
+            document.getElementById("welcomeModal").classList.remove("active");
+            if (!document.getElementById("faqModal").classList.contains("active") &&
+                !document.getElementById("detailModal").classList.contains("active")) {
+                document.getElementById("modalOverlay").classList.remove("active");
+            }
+        }
+        function openFaqFromWelcome() {
+            document.getElementById("welcomeModal").classList.remove("active");
+            openFaqModal();
+        }
+        function closeAllModals() {
+            closeDetailModal();
+            closeFaqModal();
+            closeWelcomeModal();
+        }
+
+        var legend = L.control({position: "bottomright"});
+        legend.onAdd = function() {
+            var div = L.DomUtil.create("div", "info legend");
+            div.id = "legend";
+            div.innerHTML = "<h4>Impact relatif des pannes</h4>" +
+                "<div id=\"legendItems\"><div style=\"font-size:12px;color:#999;\">Chargement...</div></div>";
+            return div;
+        };
+        legend.addTo(map);
+        if (quartileBreaks) { rebuildLegend(); }
+        
+        var info = L.control({position: "topright"});
+        info.onAdd = function() {
+            var div = L.DomUtil.create("div", "info");
+            div.innerHTML = "<h4>Statistiques</h4>" +
+                "<div class=\"info-row\"><span class=\"info-label\">Pannes en cours:</span> <span id=\"currentCount\" class=\"loading\">chargement...</span></div>" +
+                "<div class=\"info-row\"><span class=\"info-label\">Dernière lecture:</span> <span id=\"lastReading\" class=\"loading\">chargement...</span></div>" +
+                "<div class=\"info-row\"><span class=\"info-label\">Nombre total d&apos;occurrences<br>en 2026:</span> <span id=\"totalOccurrences\" class=\"loading\">chargement...</span></div>" +
+                "<div class=\"info-row\"><span class=\"info-label\">Nombre d&apos;hexagones impactés<br>en 2026:</span> <span id=\"totalHexCount\" class=\"loading\">chargement...</span></div>" +
+                "<div style=\"margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb;font-size:11px;color:#9ca3af;line-height:1.6;\">" +
+                    "<div>Généré: 2026-04-22 13:16</div>" +
+                    "<div>Taille hexagones: 1.0 km</div>" +
+                    "<div>Jours analysés: 112</div>" +
+                    "<div>1 occurrence: panne de 15 minutes</div>" +
+                "</div>";
+            return div;
+        };
+        info.addTo(map);
+        
+        var controls = L.control({position: "topleft"});
+        controls.onAdd = function() {
+            var div = L.DomUtil.create("div", "controls");
+            var selectHtml = "<h4>Affichage</h4><select id=\"dateSelect\" onchange=\"updateMap()\">";
+            selectHtml += "<option value=\"all\" selected>Historique complet</option>";
+            selectHtml += "<option value=\"current\">Pannes en cours</option>";
+            selectHtml += "<optgroup label=\"Par jour\">";
+            var sortedDates = dates.slice().sort().reverse();
+            sortedDates.forEach(function(d) {
+                selectHtml += "<option value=\"" + d + "\">" + d + "</option>";
+            });
+            selectHtml += "</optgroup>";
+            selectHtml += "</select>";
+            selectHtml += "<button id=\"toggleDataBtn\" onclick=\"toggleHexData()\" class=\"toggle-data-btn\">Masquer les données</button>";
+            div.innerHTML = selectHtml;
+            return div;
+        };
+        controls.addTo(map);
+        
+        L.Control.geocoder({
+            defaultMarkGeocode: false,
+            placeholder: "Rechercher une adresse..."
+        }).on("markgeocode", function(e) {
+            map.fitBounds(e.geocode.bbox);
+        }).addTo(map);
+        
+        setTimeout(updateCurrentCount, 1000);
+    </script>
+</body>
+</html>

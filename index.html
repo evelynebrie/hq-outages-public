@@ -3,100 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cartographie des pannes au Québec</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <title>Pannes de courant Hydro-Québec - Analyse cumulative (Mapbox)</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
     <style>
         * { box-sizing: border-box; }
-        body { margin: 0; font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-        #map { height: 100vh; width: 100%; }
-        
-        /* Main title banner - minimalist style */
-        .main-title {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            background: #ffffff;
-            color: #000000;
-            padding: 14px 28px;
-            border-radius: 6px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-            font-family: "JetBrains Mono", monospace;
-            font-size: 15px;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            text-align: center;
-            border: 1px solid #e5e5e5;
-        }
-        
-        /* Clean controls box */
-        .controls {
-            padding: 14px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 6px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-            min-width: 220px;
-            border: 1px solid #e5e5e5;
-        }
-        .controls h4 {
-            margin: 0 0 10px 0;
-            color: #1a1a1a;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .controls select {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #d4d4d4;
-            border-radius: 4px;
-            font-size: 13px;
-            font-family: inherit;
-            background: white;
-            cursor: pointer;
-            transition: border-color 0.2s;
-            color: #1a1a1a;
-        }
-        .controls select:hover {
-            border-color: #a3a3a3;
-        }
-        .toggle-data-btn {
-            width: 100%;
-            padding: 8px 10px;
-            margin-top: 10px;
-            background: #f3f4f6;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 13px;
-            font-family: inherit;
-            color: #1a1a1a;
-            cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s;
-            font-weight: 500;
-        }
-        .toggle-data-btn:hover {
-            background: #e5e7eb;
-            border-color: #9ca3af;
-        }
-        .toggle-data-btn:active {
-            background: #d1d5db;
-        }
-        .controls select:focus {
-            outline: none;
-            border-color: #525252;
-        }
-        
-        /* Enhanced info box */
+        body { margin:0; padding:0; font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        .mapboxgl-popup-content { padding: 15px; max-width: 300px; }
+
+        /* Stats panel (Statistiques) */
         .info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
             padding: 16px;
             background: white;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             min-width: 260px;
+            max-width: 320px;
+            z-index: 1;
         }
         .info h4 {
             margin: 0 0 14px 0;
@@ -114,57 +43,40 @@
             padding: 8px 0;
             border-bottom: 1px solid #f3f4f6;
         }
-        .info-row:last-child {
-            border-bottom: none;
-        }
-        .info-label {
-            font-weight: 500;
-            color: #6b7280;
-            font-size: 13px;
-        }
-        .info-value {
+        .info-row:last-child { border-bottom: none; }
+        .info-label { font-weight: 500; color: #6b7280; font-size: 13px; }
+        .info-value { font-weight: 600; color: #111827; font-size: 14px; }
+        .loading { color: #9ca3af; font-size: 12px; font-style: italic; }
+
+        /* Yellow badge for Pannes en cours */
+        .current-badge {
+            background: #f5d05d;
+            color: #422006;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
             font-weight: 600;
-            color: #111827;
-            font-size: 14px;
+            letter-spacing: 0.02em;
         }
-        
-        /* Legend styling */
+
+        /* Legend */
         .legend {
-            line-height: 24px;
-            color: #374151;
-            padding: 16px;
-            background: white;
-            border-radius: 12px;
+            position: absolute;
+            bottom: 30px;
+            right: 10px;
+            line-height:20px;
+            color:#555;
+            background:white;
+            padding:14px;
+            border-radius:12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-width: 320px;
+            z-index: 1;
         }
-        .legend h4 {
-            margin: 0 0 12px 0;
-            color: #000000;
-            font-size: 16px;
-            font-weight: 600;
-        }
-        .legend i {
-            width: 20px;
-            height: 20px;
-            float: left;
-            margin-right: 10px;
-            opacity: 0.85;
-            border-radius: 3px;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 6px;
-            font-size: 13px;
-        }
-        .legend-info-wrap {
-            position: relative;
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 10px;
-            padding-top: 8px;
-            border-top: 1px solid #e5e7eb;
-        }
+        .legend i { width:18px; height:18px; float:left; margin-right:8px; opacity:0.85; border-radius: 3px; }
+        .legend h4 { margin:0 0 10px; font-size:14px; color:#111827; }
+        .legend > div { margin-bottom: 4px; }
+        .legend-info-wrap { position: relative; display: flex; justify-content: flex-end; margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb; }
         .legend-info-btn {
             width: 22px; height: 22px;
             border-radius: 50%;
@@ -198,69 +110,174 @@
             z-index: 1500;
         }
         .legend-info-popover.open { display: block; }
-        
-        /* Enhanced badges - bright yellow */
-        .current-badge {
-            background: #f5d05d;
-            color: #422006;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-        }
-        
-        /* Modal styling */
-        .detail-link {
-            color: #2563eb;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        .detail-link:hover {
-            color: #1e40af;
-            text-decoration: underline;
-        }
-        #detailModal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+
+        /* Filter controls */
+        .controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
             background: white;
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-height: 80vh;
-            overflow-y: auto;
-            z-index: 10000;
-            display: none;
-            min-width: 320px;
-            max-width: 500px;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            width: 300px;
+            z-index: 1;
+            box-sizing: border-box;
         }
-        #detailModal.active { display: block; }
-        #detailModal h3 {
-            margin: 0 0 16px 0;
-            color: #1e40af;
-            font-size: 20px;
+        .controls h4 { margin: 0 0 12px; font-size: 14px; color: #111827; }
+
+        /* Résumé complet button */
+        .summary-btn {
+            position: relative;
+            display: flex; flex-direction: column; width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e5e7eb; background: white;
+            border-radius: 8px; cursor: pointer; text-align: left; font-family: inherit;
+            margin-bottom: 8px; transition: all 0.15s;
+            box-sizing: border-box;
         }
-        #modalOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .summary-btn strong { font-size: 13px; color: #111827; }
+        .summary-btn small { font-size: 11px; color: #4b5563; margin-top: 2px; }
+        .summary-btn:hover { border-color: #9ca3af; }
+        .summary-btn.active { border-color: #111827; }
+        .summary-btn.active::after,
+        .current-btn.active::after {
+            content: '✓';
+            position: absolute;
+            top: -8px; right: -8px;
+            width: 22px; height: 22px;
+            background: #111827; color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        /* Pannes en cours — yellow */
+        .current-btn {
+            position: relative;
+            display: flex; flex-direction: column; width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #fcd34d;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 8px; cursor: pointer; text-align: left; font-family: inherit;
+            margin-bottom: 8px; transition: all 0.2s;
+            box-sizing: border-box;
+        }
+        .current-btn strong { font-size: 13px; color: #78350f; display: flex; align-items: center; gap: 8px; }
+        .current-btn strong::before {
+            content: '';
+            width: 8px; height: 8px; background: #f59e0b;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
+            animation: pulse-dot 2s infinite;
+        }
+        .current-btn small { font-size: 11px; color: #92400e; margin-top: 3px; margin-left: 16px; }
+        .current-btn:hover {
+            border-color: #f59e0b;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.15);
+        }
+        .current-btn.active {
+            border-color: #d97706;
+            background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
+        }
+        @keyframes pulse-dot {
+            0%, 100% { box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25); }
+            50%      { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.08); }
+        }
+
+        .or-divider { text-align: center; font-size: 11px; color: #9ca3af; margin: 12px 0; }
+
+        /* Calendar */
+        .calendar { position: relative; border: 2px solid #e5e7eb; border-radius: 8px; padding: 10px; transition: all 0.15s; }
+        .calendar.active { border-color: #111827; }
+        .calendar.active::after {
+            content: '✓';
+            position: absolute;
+            top: -8px; right: -8px;
+            width: 22px; height: 22px;
+            background: #111827;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .month-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .month-nav button { background: none; border: none; font-size: 16px; cursor: pointer; color: #374151; padding: 2px 8px; border-radius: 4px; font-family: inherit; }
+        .month-nav button:hover { background: #f3f4f6; }
+        .month-nav button:disabled { color: #d1d5db; cursor: default; background: none; }
+        .month-label { font-size: 13px; font-weight: 600; text-transform: capitalize; }
+
+        .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+        .day-header { font-size: 10px; color: #9ca3af; text-align: center; padding: 4px 0; font-weight: 600; }
+        .day { border: none; background: transparent; padding: 6px 0; font-size: 11px; cursor: pointer; border-radius: 4px; font-family: inherit; color: inherit; }
+        .day.day-blank { visibility: hidden; cursor: default; }
+        .day:hover:not(:disabled):not(.day-blank) { outline: 2px solid #111827; outline-offset: -2px; }
+        .day:disabled { color: #d1d5db; cursor: default; background: #f9fafb; }
+        .day.selected { outline: 2px solid #111827; outline-offset: -2px; font-weight: bold; }
+
+        /* Day intensity classes (quintile palette) */
+        .day.i-0 { background: #f9fafb; color: #9ca3af; }
+        .day.i-1 { background: #fee0d2; }
+        .day.i-2 { background: #fcbba1; }
+        .day.i-3 { background: #fc9272; }
+        .day.i-4 { background: #ef3b2c; color: white; }
+        .day.i-5 { background: #a50f15; color: white; }
+
+        .legend-mini { display: flex; align-items: center; gap: 5px; margin-top: 8px; font-size: 10px; color: #6b7280; }
+        .legend-mini .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; }
+
+        .time-section { margin-top: 12px; padding-top: 12px; border-top: 1px solid #f3f4f6; }
+        .time-section label { display: block; margin-bottom: 6px; font-size: 12px; color: #6b7280; font-weight: 500; }
+        .time-section select { width: 100%; padding: 8px 10px; border: 1px solid #d4d4d4; border-radius: 6px; font-size: 13px; font-family: inherit; background: white; box-sizing: border-box; }
+
+        /* Geocoder embedded in controls box */
+        .geocoder-container .mapboxgl-ctrl-geocoder {
             width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 9999;
-            display: none;
-            backdrop-filter: blur(2px);
+            max-width: 100%;
+            min-width: 0;
+            box-shadow: none;
+            border: 1px solid #d4d4d4;
+            border-radius: 6px;
+            font-size: 13px;
         }
-        #modalOverlay.active { display: block; }
+        .geocoder-container .mapboxgl-ctrl-geocoder--input {
+            height: 36px;
+            padding: 6px 6px 6px 34px;
+            font-family: inherit;
+            font-size: 13px;
+        }
+        .geocoder-container .mapboxgl-ctrl-geocoder--icon-search {
+            top: 9px; left: 8px;
+        }
+
+        /* Detail modal */
+        .detail-link { color:#1e88e5; cursor:pointer; text-decoration:underline; font-size:12px; }
+        .detail-link:hover { color:#1565c0; }
+        .modal-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:2000; }
+        .modal-overlay.active { display:block; }
+        .detail-modal { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:25px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.3); z-index:2001; max-width:90%; max-height:90%; overflow-y:auto; }
+        .detail-modal.active { display:block; }
+        .detail-modal h3 { margin:0 0 15px; color:#333; }
+        .detail-modal p { margin:10px 0; color:#666; }
+        .date-row { margin: 8px 0; border-bottom: 1px solid #f3f4f6; padding: 8px 0; }
+        .date-header { cursor: pointer; font-weight: 600; color: #111827; padding: 6px; border-radius: 6px; transition: background 0.2s; }
+        .date-header:hover { background: #f3f4f6; }
+        .times-list { display: none; margin-left: 24px; margin-top: 8px; font-size: 13px; color: #6b7280; }
+        .times-list div { padding: 4px 0; }
+        .close-modal { position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer; color:#999; }
+        .close-modal:hover { color:#333; }
+        .mapboxgl-ctrl-geocoder { max-width: 300px; }
 
         /* Info button (FAQ trigger) */
         .info-btn {
             position: absolute;
-            bottom: 30px;
+            bottom: 140px;
             left: 10px;
             width: 36px;
             height: 36px;
@@ -277,7 +294,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            z-index: 100;
             transition: transform 0.15s, box-shadow 0.15s;
             padding: 0;
         }
@@ -285,36 +302,18 @@
             transform: scale(1.08);
             box-shadow: 0 6px 16px rgba(0,0,0,0.2);
         }
-        #faqModal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 28px;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-height: 80vh;
-            overflow-y: auto;
-            z-index: 10000;
-            display: none;
-            min-width: 320px;
-            max-width: 640px;
-        }
-        #faqModal.active { display: block; }
-        #faqModal h3 {
-            margin: 0 0 16px 0;
-            color: #111827;
-            font-size: 20px;
-        }
-        #faqModal h4 {
+
+        /* FAQ modal content */
+        .faq-modal { max-width: 640px; }
+        .faq-modal h3 { margin: 0 0 16px; color: #111827; }
+        .faq-modal h4 {
             margin: 20px 0 6px;
             color: #1f2937;
             font-size: 14px;
             font-weight: 600;
         }
-        #faqModal h4:first-of-type { margin-top: 0; }
-        #faqModal p {
+        .faq-modal h4:first-of-type { margin-top: 0; }
+        .faq-modal p {
             margin: 0 0 12px;
             color: #4b5563;
             font-size: 13px;
@@ -322,31 +321,14 @@
         }
 
         /* Welcome modal */
-        #welcomeModal {
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 32px 36px;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-height: 85vh;
-            overflow-y: auto;
-            z-index: 10000;
-            display: none;
-            max-width: 560px;
-            width: 90%;
-            text-align: center;
-            box-sizing: border-box;
-        }
-        #welcomeModal.active { display: block; }
-        #welcomeModal h2 {
+        .welcome-modal { max-width: 560px; padding: 32px 36px; text-align: center; }
+        .welcome-modal h2 {
             margin: 0 0 18px;
             color: #111827;
             font-size: 24px;
             font-weight: 700;
         }
-        #welcomeModal p {
+        .welcome-modal p {
             margin: 0 0 14px;
             color: #374151;
             font-size: 14px;
@@ -369,9 +351,15 @@
             transition: all 0.15s;
             border: 2px solid #111827;
         }
-        .btn-secondary { background: white; color: #111827; }
+        .btn-secondary {
+            background: white;
+            color: #111827;
+        }
         .btn-secondary:hover { background: #f3f4f6; }
-        .btn-primary { background: #111827; color: white; }
+        .btn-primary {
+            background: #111827;
+            color: white;
+        }
         .btn-primary:hover { background: #374151; border-color: #374151; }
         .welcome-logos {
             display: flex;
@@ -389,71 +377,161 @@
             opacity: 0.9;
         }
 
-        .date-row {
-            margin: 8px 0;
-            border-bottom: 1px solid #f3f4f6;
-            padding: 8px 0;
+        /* Loading overlay */
+        .map-loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.96);
+            padding: 22px 32px;
+            border-radius: 12px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+            z-index: 100;
+            text-align: center;
+            min-width: 200px;
         }
-        .date-header {
-            cursor: pointer;
-            font-weight: 600;
-            color: #111827;
-            padding: 6px;
-            border-radius: 6px;
-            transition: background 0.2s;
-        }
-        .date-header:hover {
-            background: #f3f4f6;
-        }
-        .times-list {
-            display: none;
-            margin-left: 24px;
-            margin-top: 8px;
-            font-size: 13px;
-            color: #6b7280;
-        }
-        .times-list div {
-            padding: 4px 0;
-        }
-        
-        .loading {
-            color: #9ca3af;
-            font-style: italic;
-            font-size: 13px;
-        }
-        
-        /* Close button */
-        .close-btn {
-            float: right;
-            border: none;
-            background: #f3f4f6;
+        .map-loader.hidden { display: none; }
+        .spinner {
             width: 32px;
             height: 32px;
-            border-radius: 8px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border: 3px solid #e5e7eb;
+            border-top-color: #6b7280;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 10px;
         }
-        .close-btn:hover {
-            background: #e5e7eb;
-            transform: scale(1.05);
-        }
+        .map-loader-text { font-size: 13px; color: #374151; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <div class="main-title">Cartographie des pannes au Québec</div>
     <div id="map"></div>
+
+    <div id="mapLoader" class="map-loader">
+        <div class="spinner"></div>
+        <div class="map-loader-text">Chargement des données...</div>
+    </div>
+
+    <div class="info">
+        <h4>Statistiques</h4>
+        <div class="info-row">
+            <span class="info-label">Pannes en cours:</span>
+            <span id="currentCount" class="loading">chargement...</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Dernière lecture:</span>
+            <span id="lastReading" class="loading">chargement...</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Nombre total d'occurrences<br>en 2026:</span>
+            <span id="totalOccurrences" class="loading">chargement...</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Nombre d'hexagones impactés<br>en 2026:</span>
+            <span id="totalHexCount" class="loading">chargement...</span>
+        </div>
+        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb; font-size:11px; color:#9ca3af; line-height:1.6;">
+            <div>Généré: <span id="genDate">—</span></div>
+            <div>Taille hexagones: 1.0 km</div>
+            <div>Jours analysés: <span id="daysCount">—</span></div>
+            <div>1 occurrence: panne de 15 minutes</div>
+        </div>
+    </div>
+
+    <div class="legend" id="legend">
+        <h4>Impact relatif des pannes</h4>
+        <div id="legendItems"><div style="font-size:12px;color:#999;">Chargement...</div></div>
+        <div id="legendFooter" style="font-size:11px;color:#666;margin-top:10px;padding-top:8px;border-top:1px solid #e5e7eb;line-height:1.4;"></div>
+    </div>
+
+    <div class="controls">
+        <div id="geocoderContainer" class="geocoder-container"></div>
+
+        <h4 style="margin-top:14px;">Affichage</h4>
+
+        <button class="summary-btn" id="hideBtn" onclick="setView('none')">
+            <strong>Masquer les hexagones</strong>
+            <small>Carte de base seulement</small>
+        </button>
+
+        <button class="summary-btn active" id="summaryBtn" onclick="setView('all')">
+            <strong>Résumé complet</strong>
+            <small>Depuis le 1er janvier 2026</small>
+        </button>
+
+        <button class="current-btn" id="currentBtn" onclick="setView('current')">
+            <strong>Pannes en cours</strong>
+            <small>Lecture la plus récente</small>
+        </button>
+
+        <div class="or-divider">— ou choisir un jour —</div>
+
+        <div class="calendar" id="calendarBox">
+            <div class="month-nav">
+                <button id="prevMonth" onclick="navigateMonth(-1)" aria-label="Mois précédent">‹</button>
+                <span class="month-label" id="monthLabel">—</span>
+                <button id="nextMonth" onclick="navigateMonth(1)" aria-label="Mois suivant">›</button>
+            </div>
+            <div class="days-grid" id="daysGrid">
+                <div class="day-header">L</div>
+                <div class="day-header">M</div>
+                <div class="day-header">M</div>
+                <div class="day-header">J</div>
+                <div class="day-header">V</div>
+                <div class="day-header">S</div>
+                <div class="day-header">D</div>
+            </div>
+            <div class="legend-mini">
+                <span class="sw i-0"></span>
+                <span class="sw i-1"></span>
+                <span class="sw i-2"></span>
+                <span class="sw i-3"></span>
+                <span class="sw i-4"></span>
+                <span class="sw i-5"></span>
+            </div>
+        </div>
+
+        <div class="time-section" id="timeSection" style="display: none;">
+            <label>Heure :</label>
+            <select id="hourSelect" onchange="onHourChange()">
+                <option value="all">Journée complète</option>
+                <option value="0">0h00 – 0h59</option>
+                <option value="1">1h00 – 1h59</option>
+                <option value="2">2h00 – 2h59</option>
+                <option value="3">3h00 – 3h59</option>
+                <option value="4">4h00 – 4h59</option>
+                <option value="5">5h00 – 5h59</option>
+                <option value="6">6h00 – 6h59</option>
+                <option value="7">7h00 – 7h59</option>
+                <option value="8">8h00 – 8h59</option>
+                <option value="9">9h00 – 9h59</option>
+                <option value="10">10h00 – 10h59</option>
+                <option value="11">11h00 – 11h59</option>
+                <option value="12">12h00 – 12h59</option>
+                <option value="13">13h00 – 13h59</option>
+                <option value="14">14h00 – 14h59</option>
+                <option value="15">15h00 – 15h59</option>
+                <option value="16">16h00 – 16h59</option>
+                <option value="17">17h00 – 17h59</option>
+                <option value="18">18h00 – 18h59</option>
+                <option value="19">19h00 – 19h59</option>
+                <option value="20">20h00 – 20h59</option>
+                <option value="21">21h00 – 21h59</option>
+                <option value="22">22h00 – 22h59</option>
+                <option value="23">23h00 – 23h59</option>
+            </select>
+        </div>
+    </div>
+
     <button class="info-btn" onclick="openFaqModal()" title="À propos de la carte" aria-label="Informations">i</button>
 
-    <div id="modalOverlay" class="active" onclick="closeAllModals()"></div>
-    <div id="welcomeModal" class="active">
-        <button onclick="closeWelcomeModal()" class="close-btn">✕</button>
+    <div id="modalOverlay" class="modal-overlay active"></div>
+    <div id="welcomeModal" class="detail-modal welcome-modal active">
+        <span class="close-modal" onclick="closeWelcomeModal()">×</span>
         <h2>Où sont les pannes?</h2>
         <p>Cet outil vous permet de localiser les pannes de courant ayant eu lieu au Québec depuis le 1<sup>er</sup> janvier 2026.</p>
-        <p>L&apos;objectif de cette carte est de promouvoir la transparence de l&apos;information au sujet des pannes de courant au Québec. Chaque occurrence de panne représente une panne de 15 minutes.</p>
+        <p>L'objectif de cette carte est de promouvoir la transparence de l'information au sujet des pannes de courant au Québec. Chaque occurrence de panne représente une panne de 15 minutes.</p>
         <div class="welcome-actions">
             <button class="btn-secondary" onclick="openFaqFromWelcome()">À propos de ce projet</button>
             <button class="btn-primary" onclick="closeWelcomeModal()">Commencer</button>
@@ -463,219 +541,49 @@
             <img src="logos/udem-logo.svg" alt="Université de Montréal">
         </div>
     </div>
-    <div id="detailModal">
-        <button onclick="closeDetailModal()" class="close-btn">✕</button>
+    <div id="detailModal" class="detail-modal">
+        <span class="close-modal" onclick="closeDetailModal()">×</span>
         <div id="modalContent"></div>
     </div>
-    <div id="faqModal">
-        <button onclick="closeFaqModal()" class="close-btn">✕</button>
+    <div id="faqModal" class="detail-modal faq-modal">
+        <span class="close-modal" onclick="closeFaqModal()">×</span>
         <h3>À propos de ce projet</h3>
-        <p>Ce projet est dirigé par Evelyne Brie, professeure adjointe en science politique affiliée à IVADO à l&apos;Université de Montréal. Vous pouvez la contacter par courriel au <a href="mailto:evelyne.brie@umontreal.ca">evelyne.brie@umontreal.ca</a>.</p>
+        <p>Ce projet est dirigé par Evelyne Brie, professeure adjointe en science politique affiliée à IVADO à l'Université de Montréal. Vous pouvez la contacter par courriel au <a href="mailto:evelyne.brie@umontreal.ca">evelyne.brie@umontreal.ca</a>.</p>
         <p>Ses recherches portent sur la cohésion sociale, les inégalités structurelles et la prise de décision en matière de politique urbaine. «&nbsp;Où sont les pannes?&nbsp;» fait partie de ce travail et vise à mettre en lumière les disparités en matière de coupures électriques au Québec.</p>
         <h3>FAQ</h3>
-        <h4>D&apos;où proviennent ces données?</h4>
-        <p>Les données sont collectées à chaque 15 minutes du site Info-Pannes d&apos;Hydro-Québec. Elles sont ensuite converties sur une grille hexagonale pour permettre de calculer les pannes cumulatives sur des aires géographiques d&apos;un kilomètre.</p>
-        <h4>Qu&apos;est-ce qui constitue une occurrence de panne?</h4>
-        <p>Une occurrence de panne est une lecture de panne, mesurée à chaque 15 minutes, via le site d&apos;Info-Pannes d&apos;Hydro-Québec. Par exemple, pour une coupure électrique d&apos;une durée totale d&apos;une heure, 4 occurrences sont comptabilisées. Cette technique permet de comparer la durée totale des pannes, plutôt que de comptabiliser des coupures de courant de durées différentes.</p>
-        <h4>Une panne est indiquée dans l&apos;hexagone où je réside, mais mon logement n&apos;est pas affecté. S&apos;agit-il d&apos;une erreur?</h4>
-        <p>Non. Les hexagones indiquent l&apos;occurrence d&apos;une panne à n&apos;importe quel endroit au sein de cet hexagone. Autrement dit, si vos voisins sont affectés par une panne sans que vous le soyez, l&apos;historique des pannes indiquera une occurrence sans que vous ayez été affecté.</p>
+        <h4>D'où proviennent ces données?</h4>
+        <p>Les données sont collectées à chaque 15 minutes du site Info-Pannes d'Hydro-Québec. Elles sont ensuite converties sur une grille hexagonale pour permettre de calculer les pannes cumulatives sur des aires géographiques d'un kilomètre.</p>
+        <h4>Qu'est-ce qui constitue une occurrence de panne?</h4>
+        <p>Une occurrence de panne est une lecture de panne, mesurée à chaque 15 minutes, via le site d'Info-Pannes d'Hydro-Québec. Par exemple, pour une coupure électrique d'une durée totale d'une heure, 4 occurrences sont comptabilisées. Cette technique permet de comparer la durée totale des pannes, plutôt que de comptabiliser des coupures de courant de durées différentes.</p>
+        <h4>Une panne est indiquée dans l'hexagone où je réside, mais mon logement n'est pas affecté. S'agit-il d'une erreur?</h4>
+        <p>Non. Les hexagones indiquent l'occurrence d'une panne à n'importe quel endroit au sein de cet hexagone. Autrement dit, si vos voisins sont affectés par une panne sans que vous le soyez, l'historique des pannes indiquera une occurrence sans que vous ayez été affecté.</p>
         <h4>Dans quel but cette carte a-t-elle été créée?</h4>
-        <p>L&apos;objectif de cette carte est de promouvoir la transparence de l&apos;information au sujet des pannes de courant au Québec. L&apos;outil actuel d&apos;Info-Pannes d&apos;Hydro-Québec permet seulement de visualiser les pannes actuelles ou planifiées, sans partager d&apos;information sur les pannes résolues.</p>
+        <p>L'objectif de cette carte est de promouvoir la transparence de l'information au sujet des pannes de courant au Québec. L'outil actuel d'Info-Pannes d'Hydro-Québec permet seulement de visualiser les pannes actuelles ou planifiées, sans partager d'information sur les pannes résolues.</p>
     </div>
-    
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.js"></script>
+
     <script>
-        var map = L.map("map").setView([45.75, -73.35], 10);
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution: "OpenStreetMap"
-        }).addTo(map);
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZXZlbHluZWJyaWUiLCJhIjoiY2themE5OGF2MDdxazJybG9oNzUyaXoxNSJ9.njPe2lcTp82DKjDeGkHaQA';
 
-        // Add address search bar
-        L.Control.geocoder({
-            defaultMarkGeocode: false,
-            placeholder: "Rechercher une adresse...",
-            errorMessage: "Adresse non trouvée",
-            position: "topleft"
-        }).on("markgeocode", function(e) {
-            var bbox = e.geocode.bbox;
-            var poly = L.polygon([
-                bbox.getSouthEast(),
-                bbox.getNorthEast(),
-                bbox.getNorthWest(),
-                bbox.getSouthWest()
-            ]);
-            map.fitBounds(poly.getBounds());
-        }).addTo(map);
-
-        var allData = { total: null, daily: {}, current: null };
-        var currentLayer = null;
-        var lastReadingTime = "2026-04-22 13:02:41";
-        var dataLoaded = { total: false, current: false };
-        var hexDataVisible = true;
-        var previousView = "all";
-
-        function toggleHexData() {
-            var btn = document.getElementById("toggleDataBtn");
-            var dateSelect = document.getElementById("dateSelect");
-
-            if (hexDataVisible) {
-                // Hide data
-                if (currentLayer) {
-                    map.removeLayer(currentLayer);
-                }
-                previousView = dateSelect.value;
-                btn.textContent = "Afficher les données";
-                hexDataVisible = false;
-            } else {
-                // Show data
-                dateSelect.value = previousView;
-                updateMap();
-                btn.textContent = "Masquer les données";
-                hexDataVisible = true;
-            }
-        }
-
-        // Load current outages FIRST (priority)
-        fetch("current.geojson")
-            .then(function(r) { 
-                if (!r.ok) throw new Error("HTTP " + r.status);
-                return r.json(); 
-            })
-            .then(function(data) {
-                console.log("Current outages loaded:", data.features ? data.features.length : 0, "features");
-                allData.current = data;
-                dataLoaded.current = true;
-                updateCurrentCount();
-                // If current is selected, update map
-                var dateSelect = document.getElementById("dateSelect");
-                if (dateSelect && dateSelect.value === "current") {
-                    updateMap();
-                }
-            })
-            .catch(function(e) { 
-                console.error("Error loading current.geojson:", e);
-                allData.current = { type: "FeatureCollection", features: [] };
-                dataLoaded.current = true;
-                updateCurrentCount();
-            });
-        
-        // Load regional data files and merge them
-        var regions = ["west", "central_west", "central", "central_east", "east", "far_east"];
-        var regionalPromises = regions.map(function(region) {
-            return fetch("total/total_exposure_" + region + ".geojson").then(function(r) { return r.json(); });
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/outdoors-v12',
+            center: [-71.2, 46.8],
+            zoom: 7.5
         });
 
-        Promise.all(regionalPromises)
-            .then(function(regionalData) {
-                // Merge all regions
-                var allFeatures = [];
-                regionalData.forEach(function(data) {
-                    if (data.features) {
-                        allFeatures = allFeatures.concat(data.features);
-                    }
-                });
-                allData.total = { type: "FeatureCollection", features: allFeatures };
-                console.log("Total data loaded from", regions.length, "regions:", allFeatures.length, "features");
-                // Compute quartile breaks from overall total_occurrences distribution
-                quartileBreaks = computeQuartiles(allData.total.features);
-                console.log("Quartile breaks:", quartileBreaks);
-                rebuildLegend();
-                // Update stats panel totals
-                var totalOcc = 0;
-                allData.total.features.forEach(function(f) {
-                    var v = f.properties.total_occurrences;
-                    if (typeof v === "number" && !isNaN(v)) totalOcc += v;
-                });
-                var totalOccSpan = document.getElementById("totalOccurrences");
-                if (totalOccSpan) totalOccSpan.innerHTML = "<span class=\"info-value\">" + totalOcc.toLocaleString("fr-CA") + "</span>";
-                var welcomeCountEl = document.getElementById("welcomeCount");
-                if (welcomeCountEl) welcomeCountEl.textContent = totalOcc.toLocaleString("fr-CA");
-                var hexCountSpan = document.getElementById("totalHexCount");
-                if (hexCountSpan) hexCountSpan.innerHTML = "<span class=\"info-value\">" + allData.total.features.length.toLocaleString("fr-CA") + "</span>";
-                dataLoaded.total = true;
-                updateMap();
-            })
-            .catch(function(e) {
-                console.error("Error loading regional data:", e);
-            });
-        
-        var dates = ["2026-01-01","2026-01-02","2026-01-03","2026-01-04","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-10","2026-01-11","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-17","2026-01-18","2026-01-19","2026-01-20","2026-01-21","2026-01-22","2026-01-23","2026-01-24","2026-01-25","2026-01-26","2026-01-27","2026-01-28","2026-01-29","2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-07","2026-02-08","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-20","2026-04-21","2026-04-22"];
-        
-        function loadDailyData() {
-            dates.forEach(function(date) {
-                fetch("daily/daily_" + date + ".geojson")
-                    .then(function(r) { return r.json(); })
-                    .then(function(data) { allData.daily[date] = data; })
-                    .catch(function(e) {});
-            });
+        var allData = { daily: {}, total: null, current: null };
+        var currentFeatures = null;
+        var quartileBreaks = null;
+        var QUARTILE_COLORS = ['#fee0d2', '#fcbba1', '#fc9272', '#ef3b2c', '#a50f15'];
+
+        function hideLoader() {
+            var el = document.getElementById('mapLoader');
+            if (el) el.classList.add('hidden');
         }
-        loadDailyData();
-
-        // Auto-refresh: Reload data every 5 minutes to get latest updates
-        function refreshData() {
-            console.log("Auto-refreshing data...");
-
-            // Reload current outages
-            fetch("current.geojson?" + Date.now())
-                .then(function(r) {
-                    if (!r.ok) throw new Error("HTTP " + r.status);
-                    return r.json();
-                })
-                .then(function(data) {
-                    allData.current = data;
-                    updateCurrentCount();
-                    var dateSelect = document.getElementById("dateSelect");
-                    if (dateSelect && dateSelect.value === "current") {
-                        updateMap();
-                    }
-
-                    // Show brief update notification
-                    showUpdateNotification();
-                })
-                .catch(function(e) {
-                    console.error("Error refreshing current.geojson:", e);
-                });
+        function setLoaderText(t) {
+            var el = document.querySelector('.map-loader-text');
+            if (el) el.textContent = t;
         }
-
-        function showUpdateNotification() {
-            var notification = document.createElement("div");
-            notification.style.cssText = "position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 12px 20px; border-radius: 6px; font-size: 14px; z-index: 10000; box-shadow: 0 4px 6px rgba(0,0,0,0.1);";
-            notification.textContent = "✓ Données mises à jour";
-            document.body.appendChild(notification);
-
-            setTimeout(function() {
-                notification.style.opacity = "0";
-                notification.style.transition = "opacity 0.5s";
-                setTimeout(function() { document.body.removeChild(notification); }, 500);
-            }, 2000);
-        }
-
-        // Refresh every 5 minutes (300000 ms)
-        setInterval(refreshData, 300000);
-
-        function updateCurrentCount() {
-            var countSpan = document.getElementById("currentCount");
-            if (countSpan) {
-                if (allData.current && allData.current.features) {
-                    var count = allData.current.features.length;
-                    if (count > 0) {
-                        countSpan.innerHTML = "<span class=\"current-badge\">" + count + " hexagone" + (count !== 1 ? "s" : "") + "</span>";
-                    } else {
-                        countSpan.innerHTML = "<span class=\"info-value\">0 hexagones</span>";
-                    }
-                } else {
-                    countSpan.innerHTML = "<span class=\"info-value\">0 hexagones</span>";
-                }
-            }
-            var timeSpan = document.getElementById("lastReading");
-            if (timeSpan) {
-                timeSpan.innerHTML = "<span class=\"info-value\" style=\"font-size:12px;\">" + lastReadingTime + "</span>";
-            }
-        }
-        
-        var quartileBreaks = null; // computed from overall total_occurrences on load
-        var QUARTILE_COLORS = ["#fee0d2", "#fcbba1", "#fc9272", "#ef3b2c", "#a50f15"];
 
         function percentile(sortedVals, p) {
             var idx = (sortedVals.length - 1) * p;
@@ -689,7 +597,7 @@
             var values = [];
             for (var i = 0; i < features.length; i++) {
                 var v = features[i].properties.total_occurrences;
-                if (typeof v === "number" && !isNaN(v)) values.push(v);
+                if (typeof v === 'number' && !isNaN(v)) values.push(v);
             }
             values.sort(function(a, b) { return a - b; });
             if (values.length === 0) return null;
@@ -704,7 +612,7 @@
         }
 
         function getColor(d) {
-            if (!quartileBreaks) return "#fcbba1";
+            if (!quartileBreaks) return '#fcbba1';
             if (d <= quartileBreaks.q1) return QUARTILE_COLORS[0];
             if (d <= quartileBreaks.q2) return QUARTILE_COLORS[1];
             if (d <= quartileBreaks.q3) return QUARTILE_COLORS[2];
@@ -712,146 +620,431 @@
             return QUARTILE_COLORS[4];
         }
 
-        function rebuildLegend() {
-            var container = document.getElementById("legendItems");
-            if (!container || !quartileBreaks) return;
-            var q = quartileBreaks;
-            var labels = ["Minimal", "Faible", "Modéré", "Élevé", "Intense"];
-            var html = "";
-            for (var i = 0; i < 5; i++) {
-                html += "<div class=\"legend-item\"><i style=\"background:" + QUARTILE_COLORS[i] + "\"></i> " + labels[i] + "</div>";
+        function updateLegend() {
+            var container = document.getElementById('legendItems');
+            var footer = document.getElementById('legendFooter');
+            if (!container) return;
+            if (!quartileBreaks) {
+                container.innerHTML = '<div style="font-size:12px;color:#999;">Chargement...</div>';
+                if (footer) footer.innerHTML = '';
+                return;
             }
-            var sentence = "Un hexagone est classé comme ayant un impact minimal lorsqu&apos;il compte entre " +
-                q.min + " et " + q.q1 + " occurrences de pannes (mesurées aux 15 minutes), faible entre " +
-                (q.q1 + 1) + " et " + q.q2 + ", modéré entre " +
-                (q.q2 + 1) + " et " + q.q3 + ", élevé entre " +
-                (q.q3 + 1) + " et " + q.q4 + " et intense entre " +
-                (q.q4 + 1) + " et " + q.max + ". Chaque niveau regroupe 20% des hexagones. Ces valeurs sont mises à jour automatiquement pour refléter une proportion égale d&apos;observations dans chaque niveau d&apos;impact.";
-            html +=
-                "<div class=\"legend-info-wrap\">" +
-                "<div id=\"legendInfoPopover\" class=\"legend-info-popover\">" + sentence + "</div>" +
-                "<button type=\"button\" class=\"legend-info-btn\" aria-label=\"Comment sont calculés les seuils\" onclick=\"toggleLegendInfo(event)\">i</button>" +
-                "</div>";
+            var q = quartileBreaks;
+            var labels = ['Minimal', 'Faible', 'Modéré', 'Élevé', 'Intense'];
+            var html = '';
+            for (var i = 0; i < 5; i++) {
+                html += '<div><i style="background:' + QUARTILE_COLORS[i] + '"></i>' + labels[i] + '</div>';
+            }
             container.innerHTML = html;
+
+            if (footer) {
+                var sentence = "Un hexagone est classé comme ayant un impact minimal lorsqu'il compte entre " +
+                    q.min + " et " + q.q1 + " occurrences de pannes (mesurées aux 15 minutes), faible entre " +
+                    (q.q1 + 1) + " et " + q.q2 + ", modéré entre " +
+                    (q.q2 + 1) + " et " + q.q3 + ", élevé entre " +
+                    (q.q3 + 1) + " et " + q.q4 + " et intense entre " +
+                    (q.q4 + 1) + " et " + q.max + ". Chaque niveau regroupe 20% des hexagones. Ces valeurs sont mises à jour automatiquement pour refléter une proportion égale d'observations dans chaque niveau d'impact.";
+                footer.innerHTML =
+                    '<div class="legend-info-wrap">' +
+                    '<div id="legendInfoPopover" class="legend-info-popover">' + sentence + '</div>' +
+                    '<button type="button" class="legend-info-btn" aria-label="Comment sont calculés les seuils" onclick="toggleLegendInfo(event)">i</button>' +
+                    '</div>';
+            }
         }
 
-        function toggleLegendInfo(evt) {
-            if (evt) evt.stopPropagation();
-            var pop = document.getElementById("legendInfoPopover");
-            if (!pop) return;
-            var willOpen = !pop.classList.contains("open");
-            pop.classList.toggle("open", willOpen);
-            if (willOpen) {
-                setTimeout(function() {
-                    document.addEventListener("click", function h(e) {
-                        if (!e.target.closest(".legend-info-wrap")) {
-                            pop.classList.remove("open");
-                            document.removeEventListener("click", h);
-                        }
+        function updateStatsPanel() {
+            if (!allData.total) return;
+            var features = allData.total.features;
+
+            // Total occurrences
+            var totalOcc = 0;
+            features.forEach(function(f) {
+                var v = f.properties.total_occurrences;
+                if (typeof v === 'number' && !isNaN(v)) totalOcc += v;
+            });
+            var totalOccEl = document.getElementById('totalOccurrences');
+            if (totalOccEl) {
+                totalOccEl.className = 'info-value';
+                totalOccEl.textContent = totalOcc.toLocaleString('fr-CA');
+            }
+            var welcomeCountEl = document.getElementById('welcomeCount');
+            if (welcomeCountEl) welcomeCountEl.textContent = totalOcc.toLocaleString('fr-CA');
+
+            // Hex count
+            var hexCountEl = document.getElementById('totalHexCount');
+            if (hexCountEl) {
+                hexCountEl.className = 'info-value';
+                hexCountEl.textContent = features.length.toLocaleString('fr-CA');
+            }
+
+            // Latest datetime across all hexes
+            var maxDt = '';
+            features.forEach(function(f) {
+                var s = f.properties.all_datetimes;
+                if (!s) return;
+                var parts = s.split(',');
+                for (var i = 0; i < parts.length; i++) {
+                    var t = parts[i].trim();
+                    if (t > maxDt) maxDt = t;
+                }
+            });
+            var lastReadingEl = document.getElementById('lastReading');
+            if (lastReadingEl) {
+                lastReadingEl.className = 'info-value';
+                lastReadingEl.textContent = maxDt || '—';
+            }
+
+            // Days count
+            var dates = new Set();
+            features.forEach(function(f) {
+                if (!f.properties.all_datetimes) return;
+                f.properties.all_datetimes.split(',').forEach(function(dt) {
+                    var d = dt.trim().split(' ')[0];
+                    if (d) dates.add(d);
+                });
+            });
+            var daysCountEl = document.getElementById('daysCount');
+            if (daysCountEl) daysCountEl.textContent = dates.size;
+
+            // Generated date (now)
+            var now = new Date();
+            var pad = function(n) { return n < 10 ? '0' + n : n; };
+            var genDateEl = document.getElementById('genDate');
+            if (genDateEl) {
+                genDateEl.textContent = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' +
+                    pad(now.getDate()) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+            }
+        }
+
+        function updateCurrentBadge() {
+            var el = document.getElementById('currentCount');
+            if (!el) return;
+            var count = (allData.current && allData.current.features) ? allData.current.features.length : 0;
+            el.className = '';
+            el.innerHTML = '<span class="current-badge">' + count + ' hexagone' + (count === 1 ? '' : 's') + '</span>';
+        }
+
+        // Parallel load: regional totals + current outages. Map shows as soon as totals ready.
+        async function loadCoreData() {
+            setLoaderText('Chargement des données...');
+            var regions = ['west', 'central_west', 'central', 'central_east', 'east', 'far_east'];
+
+            var totalsPromise = Promise.all(
+                regions.map(function(region) {
+                    return fetch('total/total_exposure_' + region + '.geojson').then(function(r) { return r.json(); });
+                })
+            );
+            var currentPromise = fetch('current.geojson').then(function(r) {
+                return r.ok ? r.json() : { type: 'FeatureCollection', features: [] };
+            }).catch(function() { return { type: 'FeatureCollection', features: [] }; });
+
+            var results = await Promise.all([totalsPromise, currentPromise]);
+            var regionalData = results[0];
+            allData.current = results[1];
+
+            allData.total = {
+                type: 'FeatureCollection',
+                features: regionalData.flatMap(function(d) { return d.features || []; })
+            };
+            console.log('Loaded ' + allData.total.features.length + ' hexagons from ' + regions.length + ' regions');
+
+            quartileBreaks = computeQuartiles(allData.total.features);
+            updateLegend();
+            updateStatsPanel();
+            updateCurrentBadge();
+
+            // Gather all available dates
+            var dateSet = new Set();
+            allData.total.features.forEach(function(f) {
+                if (!f.properties.all_datetimes) return;
+                f.properties.all_datetimes.split(',').forEach(function(dt) {
+                    var d = dt.trim().split(' ')[0];
+                    if (d) dateSet.add(d);
+                });
+            });
+            availableDates = Array.from(dateSet).sort();
+
+            // Initialize calendar on the most recent month with data
+            if (availableDates.length > 0) {
+                var last = availableDates[availableDates.length - 1];
+                var parts = last.split('-');
+                calendarMonth = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, 1);
+                computeDayIntensities();
+                renderCalendar();
+
+                // Clicking anywhere on the calendar box (padding, grid gaps, legend)
+                // without hitting a specific day selects today's data (latest date).
+                var calBox = document.getElementById('calendarBox');
+                if (calBox && !calBox.dataset.blankClickBound) {
+                    calBox.dataset.blankClickBound = '1';
+                    calBox.addEventListener('click', function(e) {
+                        if (e.target.closest('button')) return;
+                        if (availableDates.length === 0) return;
+                        setView('day', availableDates[availableDates.length - 1]);
                     });
-                }, 0);
+                }
+            }
+
+            return availableDates;
+        }
+
+        // Parallel load of per-day files (in background, non-blocking).
+        async function loadDailyDataInBackground(dates) {
+            setLoaderText('Chargement des données quotidiennes...');
+            var promises = dates.map(function(date) {
+                return fetch('daily/daily_' + date + '.geojson')
+                    .then(function(r) { return r.ok ? r.json() : null; })
+                    .then(function(data) { if (data) allData.daily[date] = data; })
+                    .catch(function() {});
+            });
+            await Promise.all(promises);
+            console.log('All daily files loaded');
+        }
+
+        // ---------- View state ----------
+        var currentView = 'all';    // 'all' | 'current' | 'day'
+        var currentDate = null;     // date string 'YYYY-MM-DD' when view === 'day'
+        var currentHour = 'all';    // 'all' or '0'..'23'
+        var calendarMonth = null;   // Date obj, first of month currently shown
+        var availableDates = [];    // sorted array of dates present in allData.total
+        var dayIntensityBuckets = {}; // { 'YYYY-MM-DD': 0..5 }
+        var INTENSITY_COLORS = ['#f9fafb', '#fee0d2', '#fcbba1', '#fc9272', '#ef3b2c', '#a50f15'];
+
+        function setView(view, date) {
+            currentView = view;
+            if (view === 'day' && date) currentDate = date;
+            updateSelectionUI();
+            updateMap();
+        }
+
+        function onHourChange() {
+            currentHour = document.getElementById('hourSelect').value;
+            if (currentView === 'day') updateMap();
+        }
+
+        function updateSelectionUI() {
+            document.getElementById('hideBtn').classList.toggle('active', currentView === 'none');
+            document.getElementById('summaryBtn').classList.toggle('active', currentView === 'all');
+            document.getElementById('currentBtn').classList.toggle('active', currentView === 'current');
+            document.querySelectorAll('.day[data-date]').forEach(function(el) {
+                el.classList.toggle('selected', currentView === 'day' && el.dataset.date === currentDate);
+            });
+            var timeSection = document.getElementById('timeSection');
+            if (timeSection) {
+                timeSection.style.display = currentView === 'day' ? 'block' : 'none';
+            }
+            var calendarBox = document.getElementById('calendarBox');
+            if (calendarBox) {
+                calendarBox.classList.toggle('active', currentView === 'day');
             }
         }
-        
+
+        function filterDayByHour(dailyData, hour) {
+            if (hour === 'all') return dailyData;
+            var filtered = { type: 'FeatureCollection', features: [] };
+            dailyData.features.forEach(function(f) {
+                var raw = f.properties.datetimes_today || f.properties.all_datetimes;
+                if (!raw) return;
+                var dts = raw.split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s.length > 0; });
+                var match = dts.filter(function(dt) {
+                    var parts = dt.split(/[ T]/);
+                    if (parts.length < 2) return false;
+                    var h = parseInt(parts[1].split(':')[0], 10);
+                    return h === parseInt(hour, 10);
+                });
+                if (match.length === 0) return;
+                var copy = Object.assign({}, f, {
+                    properties: Object.assign({}, f.properties, { filtered_hours_count: match.length })
+                });
+                filtered.features.push(copy);
+            });
+            return filtered;
+        }
+
         function updateMap() {
-            var dateSelect = document.getElementById("dateSelect");
-            var dateFilter = dateSelect ? dateSelect.value : "all";
+            if (currentView === 'none') {
+                if (map.getLayer('hex-layer')) map.setLayoutProperty('hex-layer', 'visibility', 'none');
+                if (map.getLayer('hex-outline')) map.setLayoutProperty('hex-outline', 'visibility', 'none');
+                return;
+            }
+            if (map.getLayer('hex-layer')) map.setLayoutProperty('hex-layer', 'visibility', 'visible');
+            if (map.getLayer('hex-outline')) map.setLayoutProperty('hex-outline', 'visibility', 'visible');
+
             var data = null;
-            var isCurrent = false;
-            
-            console.log("updateMap called with filter:", dateFilter);
-            
-            if (dateFilter === "current") {
+            if (currentView === 'all') {
+                data = allData.total;
+            } else if (currentView === 'current') {
                 data = allData.current;
-                isCurrent = true;
-                if (!data || !data.features) {
-                    console.log("Current data not loaded yet, waiting...");
-                    if (allData.total) {
-                        data = allData.total;
-                        isCurrent = false;
-                    } else {
-                        return;
-                    }
+            } else if (currentView === 'day' && currentDate) {
+                var day = allData.daily[currentDate];
+                if (day) data = filterDayByHour(day, currentHour);
+            }
+            if (!data) return;
+
+            currentFeatures = data;
+
+            // Style per view
+            var dayColor = '#a50f15';
+            if (currentView === 'day' && currentDate) {
+                var bucket = dayIntensityBuckets[currentDate];
+                if (typeof bucket === 'number') dayColor = INTENSITY_COLORS[bucket];
+            }
+            data.features.forEach(function(f) {
+                if (currentView === 'all') {
+                    f.properties.display_color = getColor(f.properties.total_occurrences);
+                    f.properties.display_hours = f.properties.total_occurrences;
+                } else if (currentView === 'current') {
+                    f.properties.display_color = '#fde68a';
+                    f.properties.display_hours = f.properties.total_occurrences || 0;
+                } else {
+                    f.properties.display_color = dayColor;
+                    f.properties.display_hours = (currentHour === 'all')
+                        ? (f.properties.occurrences_today || f.properties.total_occurrences || 0)
+                        : (f.properties.filtered_hours_count || 0);
                 }
-            } else if (dateFilter === "all") {
-                data = allData.total;
-            } else if (allData.daily[dateFilter]) {
-                data = allData.daily[dateFilter];
+            });
+
+            if (map.getSource('hex-data')) {
+                map.getSource('hex-data').setData(data);
             } else {
-                data = allData.total;
+                map.addSource('hex-data', { type: 'geojson', data: data });
+                map.addLayer({
+                    id: 'hex-layer', type: 'fill', source: 'hex-data',
+                    paint: { 'fill-color': ['get', 'display_color'], 'fill-opacity': 0.75 }
+                });
+                map.addLayer({
+                    id: 'hex-outline', type: 'line', source: 'hex-data',
+                    paint: { 'line-color': '#fff', 'line-width': 0.5 }
+                });
             }
-            
-            if (!data || !data.features) {
-                console.log("No data available for filter:", dateFilter);
-                return;
+
+            // Outline / opacity per view
+            if (currentView === 'current') {
+                map.setPaintProperty('hex-outline', 'line-color', '#b45309');
+                map.setPaintProperty('hex-outline', 'line-width', 1.5);
+                map.setPaintProperty('hex-layer', 'fill-opacity', 0.85);
+            } else if (currentView === 'day') {
+                map.setPaintProperty('hex-outline', 'line-color', '#000');
+                map.setPaintProperty('hex-outline', 'line-width', 1.2);
+                map.setPaintProperty('hex-layer', 'fill-opacity', 0.8);
+            } else {
+                map.setPaintProperty('hex-outline', 'line-color', '#fff');
+                map.setPaintProperty('hex-outline', 'line-width', 0.5);
+                map.setPaintProperty('hex-layer', 'fill-opacity', 0.75);
             }
-            
-            console.log("Displaying", data.features.length, "features, isCurrent:", isCurrent);
-            
-            if (currentLayer) map.removeLayer(currentLayer);
-            
-            if (data.features.length === 0) {
-                console.log("No features to display");
-                return;
-            }
-            
-            currentLayer = L.geoJSON(data, {
-                style: function(f) {
-                    var count = f.properties.total_occurrences || f.properties.occurrences_today || 1;
-                    return {
-                        fillColor: isCurrent ? "#fde68a" : getColor(count),
-                        weight: isCurrent ? 2.5 : 0.5,
-                        color: isCurrent ? "#b45309" : "#fff",
-                        fillOpacity: isCurrent ? 0.75 : 0.75
-                    };
-                },
-                onEachFeature: function(f, layer) {
-                    var props = f.properties;
-                    var count = props.total_occurrences || props.occurrences_today || 1;
-                    var popupContent = "<b>Hexagone #" + props.hex_id + "</b>";
-                    if (isCurrent) {
-                        popupContent += " <span class=\"current-badge\">EN COURS</span>";
-                    }
-                    popupContent += "<br><b>Occurrences totales:</b> " + count + "<br>" +
-                        "<b>Jours affectés:</b> " + (props.days_affected || 1) + "<br>" +
-                        "<b>Centroïde:</b> " + props.centroid_lat.toFixed(6) + ", " + props.centroid_lon.toFixed(6) + "<br>" +
-                        "<a class=\"detail-link\" onclick=\"showDetails(" + props.hex_id + ")\">Voir historique</a>";
-                    layer.bindPopup(popupContent);
-                }
-            }).addTo(map);
         }
-        
-        function showDetails(hexId) {
-            var feature = null;
-            if (allData.total && allData.total.features) {
-                for (var i = 0; i < allData.total.features.length; i++) {
-                    if (allData.total.features[i].properties.hex_id === hexId) {
-                        feature = allData.total.features[i];
-                        break;
-                    }
+
+        // ---------- Calendar ----------
+        function computeDayIntensities() {
+            // Count distinct 'YYYY-MM-DD' dates each hex was observed on, tally per day.
+            var countsPerDay = {};
+            allData.total.features.forEach(function(f) {
+                if (!f.properties.all_datetimes) return;
+                var seen = {};
+                f.properties.all_datetimes.split(',').forEach(function(dt) {
+                    var d = dt.trim().split(' ')[0];
+                    if (!seen[d]) { seen[d] = true; countsPerDay[d] = (countsPerDay[d] || 0) + 1; }
+                });
+            });
+
+            // Quintile-bucket the daily counts (1..5); days with 0 → 0
+            var values = Object.values(countsPerDay).filter(function(v) { return v > 0; }).sort(function(a,b){ return a-b; });
+            if (values.length === 0) { dayIntensityBuckets = {}; return; }
+            function pct(arr, p) {
+                var idx = (arr.length - 1) * p;
+                var lo = Math.floor(idx), hi = Math.ceil(idx);
+                return lo === hi ? arr[lo] : arr[lo] + (arr[hi] - arr[lo]) * (idx - lo);
+            }
+            var b1 = pct(values, 0.20), b2 = pct(values, 0.40), b3 = pct(values, 0.60), b4 = pct(values, 0.80);
+            Object.keys(countsPerDay).forEach(function(d) {
+                var c = countsPerDay[d];
+                var bucket = 1;
+                if (c > b4) bucket = 5;
+                else if (c > b3) bucket = 4;
+                else if (c > b2) bucket = 3;
+                else if (c > b1) bucket = 2;
+                dayIntensityBuckets[d] = bucket;
+            });
+        }
+
+        function firstOfMonth(d) { return new Date(d.getFullYear(), d.getMonth(), 1); }
+        function addMonth(d, delta) { return new Date(d.getFullYear(), d.getMonth() + delta, 1); }
+        function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+        function dateStr(y, m, d) { return y + '-' + pad2(m + 1) + '-' + pad2(d); }
+
+        function navigateMonth(delta) {
+            calendarMonth = addMonth(calendarMonth, delta);
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            if (!calendarMonth || availableDates.length === 0) return;
+
+            // Update month label (French)
+            var MONTHS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+            var label = MONTHS[calendarMonth.getMonth()] + ' ' + calendarMonth.getFullYear();
+            document.getElementById('monthLabel').textContent = label;
+
+            // Disable prev/next based on available range
+            var minD = availableDates[0];
+            var maxD = availableDates[availableDates.length - 1];
+            var firstShown = dateStr(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1);
+            var lastShown = dateStr(calendarMonth.getFullYear(), calendarMonth.getMonth(),
+                new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 0).getDate());
+            document.getElementById('prevMonth').disabled = firstShown <= minD;
+            document.getElementById('nextMonth').disabled = lastShown >= maxD;
+
+            var grid = document.getElementById('daysGrid');
+            // Remove old day cells but keep the 7 headers
+            grid.querySelectorAll('.day').forEach(function(el) { el.remove(); });
+
+            var year = calendarMonth.getFullYear();
+            var month = calendarMonth.getMonth();
+            var firstDayOfWeek = (new Date(year, month, 1).getDay() + 6) % 7; // Mon=0
+            var daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            for (var i = 0; i < firstDayOfWeek; i++) {
+                var blank = document.createElement('div');
+                blank.className = 'day day-blank';
+                grid.appendChild(blank);
+            }
+            for (var d = 1; d <= daysInMonth; d++) {
+                var ds = dateStr(year, month, d);
+                var btn = document.createElement('button');
+                btn.className = 'day';
+                btn.textContent = d;
+                btn.dataset.date = ds;
+                if (!allData.daily[ds] && !dayIntensityBuckets[ds]) {
+                    // No data at all for this date — disable
+                    if (ds < minD || ds > maxD) { btn.disabled = true; }
+                    else { btn.classList.add('i-0'); }
+                } else {
+                    var bucket = dayIntensityBuckets[ds] || 0;
+                    btn.classList.add('i-' + bucket);
                 }
+                if (ds === currentDate) btn.classList.add('selected');
+                btn.onclick = (function(date) { return function() { setView('day', date); }; })(ds);
+                grid.appendChild(btn);
             }
-            if (!feature) {
-                alert("Historique non disponible pour cet hexagone");
-                return;
-            }
-            
+        }
+
+        function showDetails(hexId) {
+            var feature = allData.total.features.find(function(f) { return f.properties.hex_id === hexId; });
+            if (!feature) return;
+
             var props = feature.properties;
-            var allDatetimes = props.all_datetimes || "";
-            var datetimes = allDatetimes.split(",").map(function(s) { return s.trim(); }).filter(function(s) { return s.length > 0; }).sort();
-            
+            var datetimes = (props.all_datetimes || '').split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s.length > 0; }).sort();
+
             var byDate = {};
             datetimes.forEach(function(dt) {
-                var parts = dt.split(" ");
-                var date = parts[0];
-                var time = parts[1] || "";
-                if (!byDate[date]) byDate[date] = [];
-                byDate[date].push(time);
+                var parts = dt.split(' ');
+                if (!byDate[parts[0]]) byDate[parts[0]] = [];
+                byDate[parts[0]].push(parts[1] || '');
             });
-            
+
             var uniqueDates = Object.keys(byDate).sort().reverse();
 
-            var html = "<h3>Hexagone #" + hexId + "</h3>";
+            var html = '<h3>Hexagone #' + hexId + '</h3>';
 
             var isCurrentlyAffected = false;
             if (allData.current && allData.current.features) {
@@ -863,129 +1056,136 @@
                 }
             }
             if (isCurrentlyAffected) {
-                html += "<p><span class=\"current-badge\">PANNE EN COURS</span></p>";
+                html += '<p><span class="current-badge">PANNE EN COURS</span></p>';
             }
 
-            html += "<p><strong>Total occurrences:</strong> " + props.total_occurrences + "</p>";
-            html += "<p><strong>Jours affectés:</strong> " + uniqueDates.length + "</p>";
-            html += "<p style=\"margin-top: 15px;\"><strong>Historique :</strong></p>";
-            html += "<div style=\"max-height: 400px; overflow-y: auto;\">";
+            html += '<p><strong>Total occurrences:</strong> ' + props.total_occurrences + '</p>';
+            html += '<p><strong>Jours affectés:</strong> ' + uniqueDates.length + '</p>';
+            html += '<p style="margin-top: 15px;"><strong>Historique :</strong></p>';
+            html += '<div style="max-height: 400px; overflow-y: auto;">';
 
             for (var j = 0; j < uniqueDates.length; j++) {
                 var dateKey = uniqueDates[j];
                 var times = byDate[dateKey];
-                html += "<div class=\"date-row\">";
-                html += "<div class=\"date-header\" onclick=\"toggleTimes(this)\">";
-                html += "&#9654; " + dateKey + " (" + times.length + " occurrence" + (times.length > 1 ? "s" : "") + ")";
-                html += "</div>";
-                html += "<div class=\"times-list\">";
+                html += '<div class="date-row">';
+                html += '<div class="date-header" onclick="toggleTimes(this)">';
+                html += '&#9654; ' + dateKey + ' (' + times.length + ' occurrence' + (times.length > 1 ? 's' : '') + ')';
+                html += '</div>';
+                html += '<div class="times-list">';
                 for (var k = 0; k < times.length; k++) {
-                    html += "<div>" + times[k] + "</div>";
+                    html += '<div>' + times[k] + '</div>';
                 }
-                html += "</div></div>";
+                html += '</div></div>';
             }
+            html += '</div>';
 
-            html += "</div>";
-
-            document.getElementById("modalContent").innerHTML = html;
-            document.getElementById("detailModal").classList.add("active");
-            document.getElementById("modalOverlay").classList.add("active");
+            document.getElementById('modalContent').innerHTML = html;
+            document.getElementById('detailModal').classList.add('active');
+            document.getElementById('modalOverlay').classList.add('active');
         }
 
         function toggleTimes(header) {
             var timesList = header.nextElementSibling;
-            if (timesList.style.display === "block") {
-                timesList.style.display = "none";
-            } else {
-                timesList.style.display = "block";
-            }
+            timesList.style.display = (timesList.style.display === 'block') ? 'none' : 'block';
         }
-        
+
         function closeDetailModal() {
-            document.getElementById("detailModal").classList.remove("active");
-            document.getElementById("modalOverlay").classList.remove("active");
+            document.getElementById('detailModal').classList.remove('active');
+            document.getElementById('modalOverlay').classList.remove('active');
         }
         function openFaqModal() {
-            document.getElementById("faqModal").classList.add("active");
-            document.getElementById("modalOverlay").classList.add("active");
+            document.getElementById('faqModal').classList.add('active');
+            document.getElementById('modalOverlay').classList.add('active');
         }
         function closeFaqModal() {
-            document.getElementById("faqModal").classList.remove("active");
-            document.getElementById("modalOverlay").classList.remove("active");
+            document.getElementById('faqModal').classList.remove('active');
+            document.getElementById('modalOverlay').classList.remove('active');
         }
+        function toggleLegendInfo(evt) {
+            if (evt) evt.stopPropagation();
+            var pop = document.getElementById('legendInfoPopover');
+            if (!pop) return;
+            var willOpen = !pop.classList.contains('open');
+            pop.classList.toggle('open', willOpen);
+            if (willOpen) {
+                setTimeout(function() {
+                    document.addEventListener('click', function h(e) {
+                        if (!e.target.closest('.legend-info-wrap')) {
+                            pop.classList.remove('open');
+                            document.removeEventListener('click', h);
+                        }
+                    });
+                }, 0);
+            }
+        }
+
         function closeWelcomeModal() {
-            document.getElementById("welcomeModal").classList.remove("active");
-            if (!document.getElementById("faqModal").classList.contains("active") &&
-                !document.getElementById("detailModal").classList.contains("active")) {
-                document.getElementById("modalOverlay").classList.remove("active");
+            document.getElementById('welcomeModal').classList.remove('active');
+            if (!document.getElementById('faqModal').classList.contains('active') &&
+                !document.getElementById('detailModal').classList.contains('active')) {
+                document.getElementById('modalOverlay').classList.remove('active');
             }
         }
         function openFaqFromWelcome() {
-            document.getElementById("welcomeModal").classList.remove("active");
+            document.getElementById('welcomeModal').classList.remove('active');
             openFaqModal();
         }
-        function closeAllModals() {
+        document.getElementById('modalOverlay').onclick = function() {
             closeDetailModal();
             closeFaqModal();
             closeWelcomeModal();
-        }
+        };
 
-        var legend = L.control({position: "bottomright"});
-        legend.onAdd = function() {
-            var div = L.DomUtil.create("div", "info legend");
-            div.id = "legend";
-            div.innerHTML = "<h4>Impact relatif des pannes</h4>" +
-                "<div id=\"legendItems\"><div style=\"font-size:12px;color:#999;\">Chargement...</div></div>";
-            return div;
-        };
-        legend.addTo(map);
-        if (quartileBreaks) { rebuildLegend(); }
-        
-        var info = L.control({position: "topright"});
-        info.onAdd = function() {
-            var div = L.DomUtil.create("div", "info");
-            div.innerHTML = "<h4>Statistiques</h4>" +
-                "<div class=\"info-row\"><span class=\"info-label\">Pannes en cours:</span> <span id=\"currentCount\" class=\"loading\">chargement...</span></div>" +
-                "<div class=\"info-row\"><span class=\"info-label\">Dernière lecture:</span> <span id=\"lastReading\" class=\"loading\">chargement...</span></div>" +
-                "<div class=\"info-row\"><span class=\"info-label\">Nombre total d&apos;occurrences<br>en 2026:</span> <span id=\"totalOccurrences\" class=\"loading\">chargement...</span></div>" +
-                "<div class=\"info-row\"><span class=\"info-label\">Nombre d&apos;hexagones impactés<br>en 2026:</span> <span id=\"totalHexCount\" class=\"loading\">chargement...</span></div>" +
-                "<div style=\"margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb;font-size:11px;color:#9ca3af;line-height:1.6;\">" +
-                    "<div>Généré: 2026-04-22 13:09</div>" +
-                    "<div>Taille hexagones: 1.0 km</div>" +
-                    "<div>Jours analysés: 112</div>" +
-                    "<div>1 occurrence: panne de 15 minutes</div>" +
-                "</div>";
-            return div;
-        };
-        info.addTo(map);
-        
-        var controls = L.control({position: "topleft"});
-        controls.onAdd = function() {
-            var div = L.DomUtil.create("div", "controls");
-            var selectHtml = "<h4>Affichage</h4><select id=\"dateSelect\" onchange=\"updateMap()\">";
-            selectHtml += "<option value=\"all\" selected>Historique complet</option>";
-            selectHtml += "<option value=\"current\">Pannes en cours</option>";
-            selectHtml += "<optgroup label=\"Par jour\">";
-            var sortedDates = dates.slice().sort().reverse();
-            sortedDates.forEach(function(d) {
-                selectHtml += "<option value=\"" + d + "\">" + d + "</option>";
+        // Initialize map
+        map.on('load', async function() {
+            try {
+                var dates = await loadCoreData();
+                updateMap();
+                hideLoader();
+                // Kick off per-day loads in the background so date filters work soon
+                loadDailyDataInBackground(dates);
+            } catch (e) {
+                console.error('Error loading data:', e);
+                setLoaderText('Erreur de chargement');
+            }
+
+            var geocoder = new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                mapboxgl: mapboxgl,
+                marker: true,
+                placeholder: 'Rechercher une adresse...',
+                countries: 'ca',
+                language: 'fr'
             });
-            selectHtml += "</optgroup>";
-            selectHtml += "</select>";
-            selectHtml += "<button id=\"toggleDataBtn\" onclick=\"toggleHexData()\" class=\"toggle-data-btn\">Masquer les données</button>";
-            div.innerHTML = selectHtml;
-            return div;
-        };
-        controls.addTo(map);
-        
-        L.Control.geocoder({
-            defaultMarkGeocode: false,
-            placeholder: "Rechercher une adresse..."
-        }).on("markgeocode", function(e) {
-            map.fitBounds(e.geocode.bbox);
-        }).addTo(map);
-        
-        setTimeout(updateCurrentCount, 1000);
+            document.getElementById('geocoderContainer').appendChild(geocoder.onAdd(map));
+            map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
+
+            map.on('click', 'hex-layer', function(e) {
+                if (e.features.length > 0) {
+                    var props = e.features[0].properties;
+                    var isCurrent = currentView === 'current';
+                    var count = isCurrent
+                        ? (props.occurrences_today || props.total_occurrences || 1)
+                        : (props.total_occurrences || props.occurrences_today || 1);
+
+                    var popupContent = '<div style="font-size:13px;">' +
+                        '<b>Hexagone #' + props.hex_id + '</b>';
+                    if (isCurrent) {
+                        popupContent += ' <span class="current-badge">EN COURS</span>';
+                    }
+                    popupContent += '<br><b>Occurrences totales:</b> ' + count + '<br>' +
+                        '<b>Jours affectés:</b> ' + (props.days_affected || 1) + '<br>' +
+                        '<b>Centroïde:</b> ' + Number(props.centroid_lat).toFixed(6) + ', ' + Number(props.centroid_lon).toFixed(6) + '<br>' +
+                        '<a class="detail-link" onclick="showDetails(' + props.hex_id + ')">Voir historique</a>' +
+                        '</div>';
+
+                    new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(popupContent).addTo(map);
+                }
+            });
+
+            map.on('mouseenter', 'hex-layer', function() { map.getCanvas().style.cursor = 'pointer'; });
+            map.on('mouseleave', 'hex-layer', function() { map.getCanvas().style.cursor = ''; });
+        });
     </script>
 </body>
 </html>
