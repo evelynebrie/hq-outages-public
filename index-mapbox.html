@@ -416,11 +416,6 @@
 
         <h4 style="margin-top:14px;">Affichage</h4>
 
-        <button class="summary-btn" id="hideBtn" onclick="setView('none')">
-            <strong>Masquer les hexagones</strong>
-            <small>Carte de base seulement</small>
-        </button>
-
         <button class="summary-btn active" id="summaryBtn" onclick="setView('all')">
             <strong>Résumé complet</strong>
             <small>Depuis le 1er janvier 2026</small>
@@ -496,9 +491,8 @@
     <div id="welcomeModal" class="detail-modal welcome-modal active">
         <span class="close-modal" onclick="closeWelcomeModal()">×</span>
         <h2>Où sont les pannes?</h2>
-        <p>Cet outil vous permet de localiser les pannes de courant ayant eu lieu au Québec depuis le 1<sup>er</sup> janvier 2026.</p>
-        <p>L'objectif de cette carte est de promouvoir la transparence de l'information au sujet des pannes de courant au Québec. Chaque occurrence de panne représente une panne de 15 minutes.</p>
-        <p>À ce jour, <strong id="welcomeCount">…</strong> occurrences ont été dénombrées au Québec depuis le début de l'année.</p>
+        <p>Cet outil vous permet de localiser les pannes de courant ayant eu lieu au Québec depuis le 1<sup>er</sup> janvier 2026. L'objectif de cette carte est de promouvoir la transparence de l'information au sujet des pannes de courant au Québec.</p>
+        <p>Chaque occurrence de panne représente une panne de 15 minutes. À ce jour, <strong id="welcomeCount">…</strong> occurrences ont été dénombrées au Québec depuis le début de l'année.</p>
         <div class="welcome-actions">
             <button class="btn-secondary" onclick="openFaqFromWelcome()">À propos de ce projet</button>
             <button class="btn-primary" onclick="closeWelcomeModal()">Commencer</button>
@@ -772,7 +766,6 @@
         var calendarMonth = null;   // Date obj, first of month currently shown
         var availableDates = [];    // sorted array of dates present in allData.total
         var dayIntensityBuckets = {}; // { 'YYYY-MM-DD': 0..5 }
-        var INTENSITY_COLORS = ['#f9fafb', '#fee0d2', '#fcbba1', '#fc9272', '#ef3b2c', '#a50f15'];
 
         function setView(view, date) {
             currentView = view;
@@ -787,7 +780,6 @@
         }
 
         function updateSelectionUI() {
-            document.getElementById('hideBtn').classList.toggle('active', currentView === 'none');
             document.getElementById('summaryBtn').classList.toggle('active', currentView === 'all');
             document.getElementById('currentBtn').classList.toggle('active', currentView === 'current');
             document.querySelectorAll('.day[data-date]').forEach(function(el) {
@@ -823,14 +815,6 @@
         }
 
         function updateMap() {
-            if (currentView === 'none') {
-                if (map.getLayer('hex-layer')) map.setLayoutProperty('hex-layer', 'visibility', 'none');
-                if (map.getLayer('hex-outline')) map.setLayoutProperty('hex-outline', 'visibility', 'none');
-                return;
-            }
-            if (map.getLayer('hex-layer')) map.setLayoutProperty('hex-layer', 'visibility', 'visible');
-            if (map.getLayer('hex-outline')) map.setLayoutProperty('hex-outline', 'visibility', 'visible');
-
             var data = null;
             if (currentView === 'all') {
                 data = allData.total;
@@ -845,11 +829,6 @@
             currentFeatures = data;
 
             // Style per view
-            var dayColor = '#a50f15';
-            if (currentView === 'day' && currentDate) {
-                var bucket = dayIntensityBuckets[currentDate];
-                if (typeof bucket === 'number') dayColor = INTENSITY_COLORS[bucket];
-            }
             data.features.forEach(function(f) {
                 if (currentView === 'all') {
                     f.properties.display_color = getColor(f.properties.total_occurrences);
@@ -858,7 +837,7 @@
                     f.properties.display_color = '#fde68a';
                     f.properties.display_hours = f.properties.total_occurrences || 0;
                 } else {
-                    f.properties.display_color = dayColor;
+                    f.properties.display_color = '#a50f15';
                     f.properties.display_hours = (currentHour === 'all')
                         ? (f.properties.occurrences_today || f.properties.total_occurrences || 0)
                         : (f.properties.filtered_hours_count || 0);
@@ -884,14 +863,10 @@
                 map.setPaintProperty('hex-outline', 'line-color', '#b45309');
                 map.setPaintProperty('hex-outline', 'line-width', 1.5);
                 map.setPaintProperty('hex-layer', 'fill-opacity', 0.85);
-            } else if (currentView === 'day') {
-                map.setPaintProperty('hex-outline', 'line-color', '#000');
-                map.setPaintProperty('hex-outline', 'line-width', 1.2);
-                map.setPaintProperty('hex-layer', 'fill-opacity', 0.8);
             } else {
                 map.setPaintProperty('hex-outline', 'line-color', '#fff');
                 map.setPaintProperty('hex-outline', 'line-width', 0.5);
-                map.setPaintProperty('hex-layer', 'fill-opacity', 0.75);
+                map.setPaintProperty('hex-layer', 'fill-opacity', currentView === 'all' ? 0.75 : 0.8);
             }
         }
 
