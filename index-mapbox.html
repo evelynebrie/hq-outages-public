@@ -231,11 +231,11 @@
         .detail-modal.active { display:block; }
         .detail-modal h3 { margin:0 0 15px; color:#333; }
         .detail-modal p { margin:10px 0; color:#666; }
-        .detail-table { width:100%; border-collapse:collapse; margin:15px 0; font-size:13px; }
-        .detail-table th, .detail-table td { padding:10px; text-align:left; border-bottom:1px solid #e0e0e0; }
-        .detail-table thead { background:#f5f5f5; }
-        .detail-table th { font-weight:600; color:#555; }
-        .detail-table tfoot { font-weight:600; background:#fafafa; }
+        .date-row { margin: 8px 0; border-bottom: 1px solid #f3f4f6; padding: 8px 0; }
+        .date-header { cursor: pointer; font-weight: 600; color: #2563eb; padding: 6px; border-radius: 6px; transition: background 0.2s; }
+        .date-header:hover { background: #eff6ff; }
+        .times-list { display: none; margin-left: 24px; margin-top: 8px; font-size: 13px; color: #6b7280; }
+        .times-list div { padding: 4px 0; }
         .close-modal { position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer; color:#999; }
         .close-modal:hover { color:#333; }
         .mapboxgl-ctrl-geocoder { max-width: 300px; }
@@ -416,6 +416,11 @@
 
         <h4 style="margin-top:14px;">Affichage</h4>
 
+        <button class="summary-btn" id="hideBtn" onclick="setView('none')">
+            <strong>Masquer les hexagones</strong>
+            <small>Carte de base seulement</small>
+        </button>
+
         <button class="summary-btn active" id="summaryBtn" onclick="setView('all')">
             <strong>Résumé complet</strong>
             <small>Depuis le 1er janvier 2026</small>
@@ -491,8 +496,9 @@
     <div id="welcomeModal" class="detail-modal welcome-modal active">
         <span class="close-modal" onclick="closeWelcomeModal()">×</span>
         <h2>Où sont les pannes?</h2>
-        <p>Cet outil vous permet de localiser les pannes de courant ayant eu lieu au Québec depuis le 1<sup>er</sup> janvier 2026. L'objectif de cette carte est de promouvoir la transparence de l'information au sujet des pannes de courant au Québec.</p>
-        <p>Chaque occurrence de panne représente une panne de 15 minutes. À ce jour, <strong id="welcomeCount">…</strong> occurrences ont été dénombrées au Québec depuis le début de l'année.</p>
+        <p>Cet outil vous permet de localiser les pannes de courant ayant eu lieu au Québec depuis le 1<sup>er</sup> janvier 2026.</p>
+        <p>L'objectif de cette carte est de promouvoir la transparence de l'information au sujet des pannes de courant au Québec. Chaque occurrence de panne représente une panne de 15 minutes.</p>
+        <p>À ce jour, <strong id="welcomeCount">…</strong> occurrences ont été dénombrées au Québec depuis le début de l'année.</p>
         <div class="welcome-actions">
             <button class="btn-secondary" onclick="openFaqFromWelcome()">À propos de ce projet</button>
             <button class="btn-primary" onclick="closeWelcomeModal()">Commencer</button>
@@ -729,6 +735,18 @@
                 calendarMonth = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, 1);
                 computeDayIntensities();
                 renderCalendar();
+
+                // Clicking anywhere on the calendar box (padding, grid gaps, legend)
+                // without hitting a specific day selects today's data (latest date).
+                var calBox = document.getElementById('calendarBox');
+                if (calBox && !calBox.dataset.blankClickBound) {
+                    calBox.dataset.blankClickBound = '1';
+                    calBox.addEventListener('click', function(e) {
+                        if (e.target.closest('button')) return;
+                        if (availableDates.length === 0) return;
+                        setView('day', availableDates[availableDates.length - 1]);
+                    });
+                }
             }
 
             return availableDates;
@@ -768,6 +786,7 @@
         }
 
         function updateSelectionUI() {
+            document.getElementById('hideBtn').classList.toggle('active', currentView === 'none');
             document.getElementById('summaryBtn').classList.toggle('active', currentView === 'all');
             document.getElementById('currentBtn').classList.toggle('active', currentView === 'current');
             document.querySelectorAll('.day[data-date]').forEach(function(el) {
@@ -803,6 +822,14 @@
         }
 
         function updateMap() {
+            if (currentView === 'none') {
+                if (map.getLayer('hex-layer')) map.setLayoutProperty('hex-layer', 'visibility', 'none');
+                if (map.getLayer('hex-outline')) map.setLayoutProperty('hex-outline', 'visibility', 'none');
+                return;
+            }
+            if (map.getLayer('hex-layer')) map.setLayoutProperty('hex-layer', 'visibility', 'visible');
+            if (map.getLayer('hex-outline')) map.setLayoutProperty('hex-outline', 'visibility', 'visible');
+
             var data = null;
             if (currentView === 'all') {
                 data = allData.total;
@@ -957,34 +984,60 @@
             if (!feature) return;
 
             var props = feature.properties;
-            var datetimes = props.all_datetimes.split(',').map(function(s) { return s.trim(); }).sort();
+            var datetimes = (props.all_datetimes || '').split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s.length > 0; }).sort();
 
             var byDate = {};
             datetimes.forEach(function(dt) {
                 var parts = dt.split(' ');
                 if (!byDate[parts[0]]) byDate[parts[0]] = [];
-                byDate[parts[0]].push(parts[1]);
+                byDate[parts[0]].push(parts[1] || '');
             });
+
+            var uniqueDates = Object.keys(byDate).sort().reverse();
 
             var html = '<h3>Hexagone #' + hexId + '</h3>';
-            html += '<p><strong>Centroïde:</strong> ' + props.centroid_lat.toFixed(6) + ', ' + props.centroid_lon.toFixed(6) + '</p>';
-            html += '<table class="detail-table">';
-            html += '<thead><tr><th>Date</th><th>Heures affectées</th><th>Nombre d\'occurrences</th></tr></thead><tbody>';
 
-            var totalDays = 0, totalOccurrences = 0;
-            Object.keys(byDate).sort().forEach(function(date) {
-                var times = byDate[date].sort();
-                totalDays++;
-                totalOccurrences += times.length;
-                html += '<tr><td>' + date + '</td><td>' + times.join(', ') + '</td><td>' + times.length + '</td></tr>';
-            });
+            var isCurrentlyAffected = false;
+            if (allData.current && allData.current.features) {
+                for (var c = 0; c < allData.current.features.length; c++) {
+                    if (allData.current.features[c].properties.hex_id === hexId) {
+                        isCurrentlyAffected = true;
+                        break;
+                    }
+                }
+            }
+            if (isCurrentlyAffected) {
+                html += '<p><span class="current-badge">PANNE EN COURS</span></p>';
+            }
 
-            html += '</tbody><tfoot><tr><td><strong>Total</strong></td><td>' + totalDays + ' jours</td><td>' + totalOccurrences + ' occurrences</td></tr></tfoot>';
-            html += '</table>';
+            html += '<p><strong>Total occurrences:</strong> ' + props.total_occurrences + '</p>';
+            html += '<p><strong>Jours affectés:</strong> ' + uniqueDates.length + '</p>';
+            html += '<p style="margin-top: 15px;"><strong>Historique :</strong></p>';
+            html += '<div style="max-height: 400px; overflow-y: auto;">';
+
+            for (var j = 0; j < uniqueDates.length; j++) {
+                var dateKey = uniqueDates[j];
+                var times = byDate[dateKey];
+                html += '<div class="date-row">';
+                html += '<div class="date-header" onclick="toggleTimes(this)">';
+                html += '&#9654; ' + dateKey + ' (' + times.length + ' occurrence' + (times.length > 1 ? 's' : '') + ')';
+                html += '</div>';
+                html += '<div class="times-list">';
+                for (var k = 0; k < times.length; k++) {
+                    html += '<div>' + times[k] + '</div>';
+                }
+                html += '</div></div>';
+            }
+            html += '</div>';
 
             document.getElementById('modalContent').innerHTML = html;
             document.getElementById('detailModal').classList.add('active');
             document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function toggleTimes(header) {
+            var timesList = header.nextElementSibling;
+            timesList.style.display = (timesList.style.display === 'block') ? 'none' : 'block';
         }
 
         function closeDetailModal() {
