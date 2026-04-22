@@ -305,7 +305,7 @@
 
         var allData = { total: null, daily: {}, current: null };
         var currentLayer = null;
-        var lastReadingTime = "2026-04-21 17:01:26";
+        var lastReadingTime = "2026-04-22 00:13:59";
         var dataLoaded = { total: false, current: false };
         var hexDataVisible = true;
         var previousView = "all";
@@ -372,6 +372,10 @@
                 });
                 allData.total = { type: "FeatureCollection", features: allFeatures };
                 console.log("Total data loaded from", regions.length, "regions:", allFeatures.length, "features");
+                // Compute quartile breaks from overall total_occurrences distribution
+                quartileBreaks = computeQuartiles(allData.total.features);
+                console.log("Quartile breaks:", quartileBreaks);
+                rebuildLegend();
                 dataLoaded.total = true;
                 updateMap();
             })
@@ -379,7 +383,7 @@
                 console.error("Error loading regional data:", e);
             });
         
-        var dates = ["2026-01-01","2026-01-02","2026-01-03","2026-01-04","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-10","2026-01-11","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-17","2026-01-18","2026-01-19","2026-01-20","2026-01-21","2026-01-22","2026-01-23","2026-01-24","2026-01-25","2026-01-26","2026-01-27","2026-01-28","2026-01-29","2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-07","2026-02-08","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-20","2026-04-21"];
+        var dates = ["2026-01-01","2026-01-02","2026-01-03","2026-01-04","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-10","2026-01-11","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-17","2026-01-18","2026-01-19","2026-01-20","2026-01-21","2026-01-22","2026-01-23","2026-01-24","2026-01-25","2026-01-26","2026-01-27","2026-01-28","2026-01-29","2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-07","2026-02-08","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-20","2026-04-21","2026-04-22"];
         
         function loadDailyData() {
             dates.forEach(function(date) {
@@ -453,15 +457,62 @@
             }
         }
         
+        var quartileBreaks = null; // computed from overall total_occurrences on load
+        var QUARTILE_COLORS = ["#fcbba1", "#fc9272", "#ef3b2c", "#a50f15"];
+
+        function percentile(sortedVals, p) {
+            var idx = (sortedVals.length - 1) * p;
+            var lo = Math.floor(idx);
+            var hi = Math.ceil(idx);
+            if (lo === hi) return sortedVals[lo];
+            return sortedVals[lo] + (sortedVals[hi] - sortedVals[lo]) * (idx - lo);
+        }
+
+        function computeQuartiles(features) {
+            var values = [];
+            for (var i = 0; i < features.length; i++) {
+                var v = features[i].properties.total_occurrences;
+                if (typeof v === "number" && !isNaN(v)) values.push(v);
+            }
+            values.sort(function(a, b) { return a - b; });
+            if (values.length === 0) return null;
+            return {
+                min: values[0],
+                q1: Math.round(percentile(values, 0.25)),
+                q2: Math.round(percentile(values, 0.50)),
+                q3: Math.round(percentile(values, 0.75)),
+                max: values[values.length - 1]
+            };
+        }
+
         function getColor(d) {
-            if (d > 80) return "#67000d";
-            if (d > 60) return "#a50f15";
-            if (d > 40) return "#cb181d";
-            if (d > 20) return "#ef3b2c";
-            if (d > 10) return "#fb6a4a";
-            if (d > 5) return "#fc9272";
-            if (d > 2) return "#fcbba1";
-            return "#fee5d9";
+            if (!quartileBreaks) return "#fcbba1";
+            if (d <= quartileBreaks.q1) return QUARTILE_COLORS[0];
+            if (d <= quartileBreaks.q2) return QUARTILE_COLORS[1];
+            if (d <= quartileBreaks.q3) return QUARTILE_COLORS[2];
+            return QUARTILE_COLORS[3];
+        }
+
+        function rebuildLegend() {
+            var container = document.getElementById("legendItems");
+            if (!container || !quartileBreaks) return;
+            var q = quartileBreaks;
+            var labels = [
+                { label: "1er quartile", lo: q.min, hi: q.q1 },
+                { label: "2e quartile",  lo: q.q1 + 1, hi: q.q2 },
+                { label: "3e quartile",  lo: q.q2 + 1, hi: q.q3 },
+                { label: "4e quartile",  lo: q.q3 + 1, hi: q.max }
+            ];
+            var html = "<div class=\"legend-item\"><i style=\"background:#ef4444;border:2px solid #dc2626\"></i> En cours</div>";
+            for (var i = 0; i < 4; i++) {
+                var L = labels[i];
+                var range = (L.lo === L.hi)
+                    ? (L.lo + " occurrence" + (L.lo === 1 ? "" : "s") + " de 15 min.")
+                    : (L.lo + " à " + L.hi + " occurrences de 15 min.");
+                html += "<div class=\"legend-item\"><i style=\"background:" + QUARTILE_COLORS[i] + "\"></i> " + L.label + " (" + range + ")</div>";
+            }
+            html += "<div style=\"font-size:10px;color:#666;margin-top:10px;padding-top:8px;border-top:1px solid #e5e7eb;line-height:1.4;\">1 quartile = 25% des données</div>";
+            container.innerHTML = html;
         }
         
         function updateMap() {
@@ -620,17 +671,13 @@
         var legend = L.control({position: "bottomright"});
         legend.onAdd = function() {
             var div = L.DomUtil.create("div", "info legend");
-            var grades = [0, 2, 5, 10, 20, 40, 60, 80];
-            div.innerHTML = "<h4>Occurrences</h4>";
-            div.innerHTML += "<div class=\"legend-item\"><i style=\"background:#ef4444;border:2px solid #dc2626\"></i> En cours</div>";
-            for (var i = 0; i < grades.length; i++) {
-                div.innerHTML += "<div class=\"legend-item\"><i style=\"background:" + getColor(grades[i] + 1) + "\"></i> " +
-                    grades[i] + (grades[i + 1] ? "–" + grades[i + 1] : "+") + "</div>";
-            }
-            div.innerHTML += "<div style=\"font-size:10px;color:#666;margin-top:12px;padding-top:8px;border-top:1px solid #e5e7eb;line-height:1.4;\">Occurrences = Nombre de fois qu&apos;une panne<br>a été détectée dans cet hexagone<br>lors des lectures aux 15 minutes</div>";
+            div.id = "legend";
+            div.innerHTML = "<h4>Quartiles d\u0027impact des pannes</h4>" +
+                "<div id=\"legendItems\"><div style=\"font-size:12px;color:#999;\">Chargement...</div></div>";
             return div;
         };
         legend.addTo(map);
+        if (quartileBreaks) { rebuildLegend(); }
         
         var info = L.control({position: "topright"});
         info.onAdd = function() {
@@ -639,8 +686,8 @@
                 "<div class=\"info-row\"><span class=\"info-label\">Pannes en cours:</span> <span id=\"currentCount\" class=\"loading\">chargement...</span></div>" +
                 "<div class=\"info-row\"><span class=\"info-label\">Dernière lecture:</span> <span id=\"lastReading\" class=\"loading\">chargement...</span></div>" +
                 "<div class=\"info-row\"><span class=\"info-label\">Taille hexagones:</span> <span class=\"info-value\">1.0 km</span></div>" +
-                "<div class=\"info-row\"><span class=\"info-label\">Jours analysés:</span> <span class=\"info-value\">111</span></div>" +
-                "<div style=\"margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb;\"><span style=\"font-size:11px;color:#9ca3af;\">Généré: 2026-04-21 23:04</span></div>";
+                "<div class=\"info-row\"><span class=\"info-label\">Jours analysés:</span> <span class=\"info-value\">112</span></div>" +
+                "<div style=\"margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb;\"><span style=\"font-size:11px;color:#9ca3af;\">Généré: 2026-04-22 00:27</span></div>";
             return div;
         };
         info.addTo(map);
