@@ -305,7 +305,7 @@
 
         var allData = { total: null, daily: {}, current: null };
         var currentLayer = null;
-        var lastReadingTime = "2026-04-22 09:01:44";
+        var lastReadingTime = "2026-04-22 09:16:20";
         var dataLoaded = { total: false, current: false };
         var hexDataVisible = true;
         var previousView = "all";
@@ -626,8 +626,8 @@
             }
             
             html += "<p><strong>Total occurrences:</strong> " + props.total_occurrences + "</p>";
-            html += "<p><strong>Jours affectes:</strong> " + uniqueDates.length + "</p>";
-            html += "<p style=\"margin-top: 15px;\"><strong>Historique (recent en premier):</strong></p>";
+            html += "<p><strong>Jours affectés:</strong> " + uniqueDates.length + "</p>";
+            html += "<p style=\"margin-top: 15px;\"><strong>Historique (récent en premier):</strong></p>";
             html += "<div style=\"max-height: 400px; overflow-y: auto;\">";
             
             for (var j = 0; j < uniqueDates.length; j++) {
@@ -684,7 +684,7 @@
                 "<div class=\"info-row\"><span class=\"info-label\">Dernière lecture:</span> <span id=\"lastReading\" class=\"loading\">chargement...</span></div>" +
                 "<div class=\"info-row\"><span class=\"info-label\">Taille hexagones:</span> <span class=\"info-value\">1.0 km</span></div>" +
                 "<div class=\"info-row\"><span class=\"info-label\">Jours analysés:</span> <span class=\"info-value\">112</span></div>" +
-                "<div style=\"margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb;\"><span style=\"font-size:11px;color:#9ca3af;\">Généré: 2026-04-22 09:20</span></div>";
+                "<div style=\"margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb;\"><span style=\"font-size:11px;color:#9ca3af;\">Généré: 2026-04-22 09:28</span></div>";
             return div;
         };
         info.addTo(map);
