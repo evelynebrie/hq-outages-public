@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cartographie des pannes au Québec</title>
+    <title>Où sont les pannes?</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <script data-goatcounter="https://ebudem.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
     <style>
         * { box-sizing: border-box; }
         body { margin: 0; font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
@@ -388,6 +390,47 @@
             object-fit: contain;
             opacity: 0.9;
         }
+        .visitor-pill {
+            display: none;
+            align-items: center;
+            gap: 7px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 1px solid #fcd34d;
+            color: #78350f;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12.5px;
+            font-weight: 500;
+            margin: 0 auto 16px;
+        }
+        .visitor-pill.visible { display: inline-flex; }
+        .visitor-pill::before {
+            content: "";
+            width: 7px; height: 7px;
+            background: #f59e0b;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
+            flex-shrink: 0;
+        }
+        .visitor-pill .num {
+            color: #78350f;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Inline spinner shown inside the welcome button while data loads */
+        .btn-spinner {
+            display: inline-block;
+            width: 14px; height: 14px;
+            border: 2px solid rgba(255,255,255,0.35);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: btn-spin 0.8s linear infinite;
+            vertical-align: -2px;
+            margin-right: 8px;
+        }
+        @keyframes btn-spin { to { transform: rotate(360deg); } }
+        .btn-primary[disabled] { cursor: wait; opacity: 0.9; }
 
         .date-row {
             margin: 8px 0;
@@ -456,7 +499,10 @@
         <p>L&apos;objectif de cette carte est de promouvoir la transparence de l&apos;information au sujet des pannes de courant au Québec. Chaque occurrence de panne représente une panne de 15 minutes.</p>
         <div class="welcome-actions">
             <button class="btn-secondary" onclick="openFaqFromWelcome()">À propos de ce projet</button>
-            <button class="btn-primary" onclick="closeWelcomeModal()">Commencer</button>
+            <button class="btn-primary" id="welcomeStartBtn" onclick="startFromWelcome()">Accéder à l&apos;outil</button>
+        </div>
+        <div id="visitorPill" class="visitor-pill">
+            Vous êtes le <span class="num" id="visitorCount">&mdash;</span> visiteur depuis le lancement
         </div>
         <div class="welcome-logos">
             <img src="logos/ivado-rgb_logo-full-degrade.png" alt="IVADO">
@@ -510,10 +556,31 @@
 
         var allData = { total: null, daily: {}, current: null };
         var currentLayer = null;
-        var lastReadingTime = "2026-04-22 13:02:41";
+        var lastReadingTime = "2026-04-22 13:44:56";
         var dataLoaded = { total: false, current: false };
         var hexDataVisible = true;
         var previousView = "all";
+
+        // If the user clicks the welcome start button before data is loaded,
+        // we keep the modal open with a spinner and close it automatically
+        // once both the total and current datasets have arrived.
+        var waitingToStart = false;
+        function isDataReady() { return dataLoaded.total && dataLoaded.current; }
+        function maybeFinishStart() {
+            if (waitingToStart && isDataReady()) {
+                waitingToStart = false;
+                closeWelcomeModal();
+            }
+        }
+        function startFromWelcome() {
+            if (isDataReady()) { closeWelcomeModal(); return; }
+            var btn = document.getElementById("welcomeStartBtn");
+            if (btn && !waitingToStart) {
+                waitingToStart = true;
+                btn.disabled = true;
+                btn.innerHTML = '<span class="btn-spinner"></span>Chargement&hellip;';
+            }
+        }
 
         function toggleHexData() {
             var btn = document.getElementById("toggleDataBtn");
@@ -547,17 +614,19 @@
                 allData.current = data;
                 dataLoaded.current = true;
                 updateCurrentCount();
+                maybeFinishStart();
                 // If current is selected, update map
                 var dateSelect = document.getElementById("dateSelect");
                 if (dateSelect && dateSelect.value === "current") {
                     updateMap();
                 }
             })
-            .catch(function(e) { 
+            .catch(function(e) {
                 console.error("Error loading current.geojson:", e);
                 allData.current = { type: "FeatureCollection", features: [] };
                 dataLoaded.current = true;
                 updateCurrentCount();
+                maybeFinishStart();
             });
         
         // Load regional data files and merge them
@@ -594,10 +663,20 @@
                 var hexCountSpan = document.getElementById("totalHexCount");
                 if (hexCountSpan) hexCountSpan.innerHTML = "<span class=\"info-value\">" + allData.total.features.length.toLocaleString("fr-CA") + "</span>";
                 dataLoaded.total = true;
+                maybeFinishStart();
                 updateMap();
             })
             .catch(function(e) {
                 console.error("Error loading regional data:", e);
+                // Re-enable the welcome start button so the user can dismiss.
+                if (waitingToStart) {
+                    waitingToStart = false;
+                    var btn = document.getElementById("welcomeStartBtn");
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.textContent = "Accéder à l'outil";
+                    }
+                }
             });
         
         var dates = ["2026-01-01","2026-01-02","2026-01-03","2026-01-04","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-10","2026-01-11","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-17","2026-01-18","2026-01-19","2026-01-20","2026-01-21","2026-01-22","2026-01-23","2026-01-24","2026-01-25","2026-01-26","2026-01-27","2026-01-28","2026-01-29","2026-01-30","2026-01-31","2026-02-01","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-07","2026-02-08","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-14","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-21","2026-02-22","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-02-28","2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-20","2026-04-21","2026-04-22"];
@@ -930,6 +1009,21 @@
             closeWelcomeModal();
         }
 
+        // Fetch total visitor count from GoatCounter and show the pill.
+        // If the request fails, the pill stays hidden.
+        (function loadVisitorCount() {
+            fetch("https://ebudem.goatcounter.com/counter/TOTAL.json")
+                .then(function(r) { return r.ok ? r.json() : null; })
+                .then(function(data) {
+                    if (!data || !data.count) return;
+                    var n = parseInt(String(data.count).replace(/\s/g, ""), 10);
+                    if (isNaN(n) || n <= 0) return;
+                    document.getElementById("visitorCount").textContent = n.toLocaleString("fr-CA");
+                    document.getElementById("visitorPill").classList.add("visible");
+                })
+                .catch(function() { /* silent */ });
+        })();
+
         var legend = L.control({position: "bottomright"});
         legend.onAdd = function() {
             var div = L.DomUtil.create("div", "info legend");
@@ -950,7 +1044,7 @@
                 "<div class=\"info-row\"><span class=\"info-label\">Nombre total d&apos;occurrences<br>en 2026:</span> <span id=\"totalOccurrences\" class=\"loading\">chargement...</span></div>" +
                 "<div class=\"info-row\"><span class=\"info-label\">Nombre d&apos;hexagones impactés<br>en 2026:</span> <span id=\"totalHexCount\" class=\"loading\">chargement...</span></div>" +
                 "<div style=\"margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb;font-size:11px;color:#9ca3af;line-height:1.6;\">" +
-                    "<div>Généré: 2026-04-22 13:22</div>" +
+                    "<div>Généré: 2026-04-22 13:53</div>" +
                     "<div>Taille hexagones: 1.0 km</div>" +
                     "<div>Jours analysés: 112</div>" +
                     "<div>1 occurrence: panne de 15 minutes</div>" +
