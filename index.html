@@ -112,21 +112,11 @@
             letter-spacing: 0.02em;
         }
 
-        /* Legend */
+        /* Legend (now inside Statistiques box) */
         .legend {
-            position: absolute;
-            bottom: 30px;
-            right: 10px;
-            min-width: 240px;
-            max-width: 320px;
             font-size: 13px;
             line-height: 22px;
             color: #374151;
-            background: white;
-            padding: 18px 22px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 1;
         }
         .legend i { width:20px; height:20px; float:left; margin-right:10px; opacity:0.9; border-radius: 3px; }
         .legend h4 { margin:0; font-size:15px; color:#111827; }
@@ -1094,12 +1084,13 @@
             <div>Hexagones d'1&nbsp;km &middot; <span id="daysCount">&mdash;</span>&nbsp;jours analysés</div>
             <div><strong>1 occurrence = 1 panne de 15 minutes</strong></div>
         </div>
-    </div>
 
-    <div class="legend" id="legend">
-        <h4 class="panel-title">Intensité des pannes</h4>
-        <div id="legendItems"><div style="font-size:12px;color:#999;">Chargement...</div></div>
-        <div id="legendFooter" style="font-size:11px;color:#666;margin-top:14px;line-height:1.4;"></div>
+        <!-- Intensité des pannes merged into Statistiques -->
+        <div id="legend" style="margin-top: 16px; padding-top: 14px; border-top: 1px solid #e5e7eb;">
+            <h4 class="panel-title">Intensité des pannes</h4>
+            <div id="legendItems"><div style="font-size:12px;color:#999;">Chargement...</div></div>
+            <div id="legendFooter" style="font-size:11px;color:#666;margin-top:14px;line-height:1.4;"></div>
+        </div>
     </div>
 
     <div class="controls">
