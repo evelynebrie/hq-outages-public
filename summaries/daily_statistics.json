@@ -962,10 +962,10 @@
     },
     "2026-05-01": {
       "date": "2026-05-01",
-      "hexagons_affected": 126,
-      "total_occurrences_today": 126,
-      "max_occurrences": 1,
-      "mean_occurrences": 1,
+      "hexagons_affected": 131,
+      "total_occurrences_today": 257,
+      "max_occurrences": 2,
+      "mean_occurrences": 1.96,
       "new_hexagons": 0
     }
   }
