@@ -38,12 +38,12 @@
     },
     "2026-05": {
       "month": "2026-05",
-      "hexagons_affected": 1211,
-      "total_occurrences_month": 12391,
-      "total_days_affected": 1211,
+      "hexagons_affected": 1213,
+      "total_occurrences_month": 12426,
+      "total_days_affected": 1246,
       "max_occurrences": 69,
-      "mean_occurrences": 10.23,
-      "mean_days_affected": 1
+      "mean_occurrences": 10.24,
+      "mean_days_affected": 1.03
     }
   }
 }
