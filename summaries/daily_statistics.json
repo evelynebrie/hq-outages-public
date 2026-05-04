@@ -986,11 +986,11 @@
     },
     "2026-05-04": {
       "date": "2026-05-04",
-      "hexagons_affected": 101,
-      "total_occurrences_today": 615,
+      "hexagons_affected": 165,
+      "total_occurrences_today": 684,
       "max_occurrences": 13,
-      "mean_occurrences": 6.09,
-      "new_hexagons": 2
+      "mean_occurrences": 4.15,
+      "new_hexagons": 8
     }
   }
 }
