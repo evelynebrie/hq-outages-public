@@ -2,25 +2,25 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-05-12 11:10:56
+Generated: 2026-05-12 11:20:03
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 116,718
-Total occurrence count: 3,819,293
+Total occurrence count: 3,819,316
 Maximum occurrences (single hex): 719
 Mean occurrences per hex: 32.7
 Median occurrences per hex: 17
 
-Date range: 2026-01-01 00:42:56 to 2026-05-12 07:02:08
+Date range: 2026-01-01 00:42:56 to 2026-05-12 07:16:13
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
          1 occurrences:   9583 hexagons (  8.2%)
          2 occurrences:   5887 hexagons (  5.0%)
        3-5 occurrences:  11262 hexagons (  9.7%)
-      6-10 occurrences:  17331 hexagons ( 14.8%)
-     11-20 occurrences:  22888 hexagons ( 19.6%)
+      6-10 occurrences:  17330 hexagons ( 14.8%)
+     11-20 occurrences:  22889 hexagons ( 19.6%)
      21-40 occurrences:  22289 hexagons ( 19.1%)
      41-60 occurrences:  10297 hexagons (  8.8%)
      61-80 occurrences:   4976 hexagons (  4.3%)
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-05-09: 1183 hexagons affected, 8268 occurrences
 2026-05-10: 2416 hexagons affected, 12588 occurrences
 2026-05-11: 1596 hexagons affected, 17911 occurrences
-2026-05-12: 110 hexagons affected, 1086 occurrences
+2026-05-12: 112 hexagons affected, 1109 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -56,7 +56,7 @@ MONTHLY SUMMARY
 2026-02: 26954 hexagons, 312177 occurrences, 1.2 avg days affected
 2026-03: 72088 hexagons, 2197921 occurrences, 1.7 avg days affected
 2026-04: 48017 hexagons, 639026 occurrences, 1.4 avg days affected
-2026-05: 17574 hexagons, 200566 occurrences, 1.2 avg days affected
+2026-05: 17576 hexagons, 200589 occurrences, 1.2 avg days affected
 
 =================================================================
 End of Report
