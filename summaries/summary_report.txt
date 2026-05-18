@@ -2,17 +2,17 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-05-18 11:15:47
+Generated: 2026-05-18 11:25:48
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 118,160
-Total occurrence count: 3,926,456
+Total occurrence count: 3,926,490
 Maximum occurrences (single hex): 719
 Mean occurrences per hex: 33.2
 Median occurrences per hex: 17
 
-Date range: 2026-01-01 00:42:56 to 2026-05-18 07:01:19
+Date range: 2026-01-01 00:42:56 to 2026-05-18 07:16:43
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
@@ -23,8 +23,8 @@ OCCURRENCE DISTRIBUTION
      11-20 occurrences:  22685 hexagons ( 19.2%)
      21-40 occurrences:  22665 hexagons ( 19.2%)
      41-60 occurrences:  10848 hexagons (  9.2%)
-     61-80 occurrences:   5180 hexagons (  4.4%)
-       81+ occurrences:  12510 hexagons ( 10.6%)
+     61-80 occurrences:   5179 hexagons (  4.4%)
+       81+ occurrences:  12511 hexagons ( 10.6%)
 
 TOP 10 MOST AFFECTED HEXAGONS
 -----------------------------------------------------------------
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-05-15: 1609 hexagons affected, 22937 occurrences
 2026-05-16: 2903 hexagons affected, 28371 occurrences
 2026-05-17: 1113 hexagons affected, 18012 occurrences
-2026-05-18: 66 hexagons affected, 1048 occurrences
+2026-05-18: 66 hexagons affected, 1082 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -56,7 +56,7 @@ MONTHLY SUMMARY
 2026-02: 26954 hexagons, 312177 occurrences, 1.2 avg days affected
 2026-03: 72088 hexagons, 2197921 occurrences, 1.7 avg days affected
 2026-04: 48017 hexagons, 639026 occurrences, 1.4 avg days affected
-2026-05: 25690 hexagons, 307729 occurrences, 1.2 avg days affected
+2026-05: 25690 hexagons, 307763 occurrences, 1.2 avg days affected
 
 =================================================================
 End of Report
