@@ -2,17 +2,17 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-05-27 22:17:18
+Generated: 2026-05-27 22:28:00
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 123,767
-Total occurrence count: 4,298,178
-Maximum occurrences (single hex): 821
+Total occurrence count: 4,298,280
+Maximum occurrences (single hex): 822
 Mean occurrences per hex: 34.7
 Median occurrences per hex: 18
 
-Date range: 2026-01-01 00:42:56 to 2026-05-27 18:01:32
+Date range: 2026-01-01 00:42:56 to 2026-05-27 18:16:24
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
@@ -29,16 +29,16 @@ OCCURRENCE DISTRIBUTION
 TOP 10 MOST AFFECTED HEXAGONS
 -----------------------------------------------------------------
 Hex ID     Occurrences          Days              Location
-297817             821            14   52.61588,  -76.69992
-298428             820            14   52.62377,  -76.69284
-299038             820            14   52.61609,  -76.68515
-299039             820            14   52.63166,  -76.68575
-299649             820            14   52.62398,  -76.67807
-299650             820            14   52.63954,  -76.67866
-300260             820            14   52.63186,  -76.67098
-300261             820            14   52.64743,  -76.67158
-300871             820            14   52.63975,  -76.66389
-300872             820            14   52.65532,  -76.66448
+297817             822            14   52.61588,  -76.69992
+298428             821            14   52.62377,  -76.69284
+299038             821            14   52.61609,  -76.68515
+299039             821            14   52.63166,  -76.68575
+299649             821            14   52.62398,  -76.67807
+299650             821            14   52.63954,  -76.67866
+300260             821            14   52.63186,  -76.67098
+300261             821            14   52.64743,  -76.67158
+300871             821            14   52.63975,  -76.66389
+300872             821            14   52.65532,  -76.66448
 
 RECENT DAILY ACTIVITY (Last 7 Days)
 -----------------------------------------------------------------
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-05-24: 3072 hexagons affected, 24788 occurrences
 2026-05-25: 2173 hexagons affected, 26679 occurrences
 2026-05-26: 8494 hexagons affected, 110161 occurrences
-2026-05-27: 3475 hexagons affected, 45418 occurrences
+2026-05-27: 3477 hexagons affected, 45520 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -56,7 +56,7 @@ MONTHLY SUMMARY
 2026-02: 26954 hexagons, 312177 occurrences, 1.2 avg days affected
 2026-03: 72088 hexagons, 2197921 occurrences, 1.7 avg days affected
 2026-04: 48017 hexagons, 639026 occurrences, 1.4 avg days affected
-2026-05: 46771 hexagons, 679451 occurrences, 1.4 avg days affected
+2026-05: 46771 hexagons, 679553 occurrences, 1.4 avg days affected
 
 =================================================================
 End of Report
