@@ -44,6 +44,15 @@
       "max_occurrences": 366,
       "mean_occurrences": 25.45,
       "mean_days_affected": 1.64
+    },
+    "2026-06": {
+      "month": "2026-06",
+      "hexagons_affected": 556,
+      "total_occurrences_month": 556,
+      "total_days_affected": 556,
+      "max_occurrences": 1,
+      "mean_occurrences": 1,
+      "mean_days_affected": 1
     }
   }
 }
