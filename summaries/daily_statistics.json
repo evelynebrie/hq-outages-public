@@ -1247,6 +1247,14 @@
       "max_occurrences": 53,
       "mean_occurrences": 3.65,
       "new_hexagons": 400
+    },
+    "2026-06-06": {
+      "date": "2026-06-06",
+      "hexagons_affected": 78,
+      "total_occurrences_today": 78,
+      "max_occurrences": 1,
+      "mean_occurrences": 1,
+      "new_hexagons": 0
     }
   }
 }
