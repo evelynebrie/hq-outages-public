@@ -2,24 +2,24 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-06-06 03:11:03
+Generated: 2026-06-06 03:22:00
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 126,850
-Total occurrence count: 5,229,885
+Total occurrence count: 5,229,910
 Maximum occurrences (single hex): 849
 Mean occurrences per hex: 41.2
 Median occurrences per hex: 21
 
-Date range: 2026-01-01 00:42:56 to 2026-06-05 23:01:31
+Date range: 2026-01-01 00:42:56 to 2026-06-05 23:16:31
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
          1 occurrences:   8257 hexagons (  6.5%)
-         2 occurrences:   4718 hexagons (  3.7%)
-       3-5 occurrences:  10472 hexagons (  8.3%)
-      6-10 occurrences:  17499 hexagons ( 13.8%)
+         2 occurrences:   4717 hexagons (  3.7%)
+       3-5 occurrences:  10466 hexagons (  8.2%)
+      6-10 occurrences:  17506 hexagons ( 13.8%)
      11-20 occurrences:  22186 hexagons ( 17.5%)
      21-40 occurrences:  24422 hexagons ( 19.2%)
      41-60 occurrences:  13679 hexagons ( 10.8%)
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-06-02: 4360 hexagons affected, 31526 occurrences
 2026-06-03: 2440 hexagons affected, 16837 occurrences
 2026-06-04: 3014 hexagons affected, 18759 occurrences
-2026-06-05: 2341 hexagons affected, 8575 occurrences
+2026-06-05: 2341 hexagons affected, 8600 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -57,7 +57,7 @@ MONTHLY SUMMARY
 2026-03: 72088 hexagons, 2197921 occurrences, 1.7 avg days affected
 2026-04: 48017 hexagons, 639026 occurrences, 1.4 avg days affected
 2026-05: 58641 hexagons, 1492683 occurrences, 1.6 avg days affected
-2026-06: 15102 hexagons, 118475 occurrences, 1.1 avg days affected
+2026-06: 15102 hexagons, 118500 occurrences, 1.1 avg days affected
 
 =================================================================
 End of Report
