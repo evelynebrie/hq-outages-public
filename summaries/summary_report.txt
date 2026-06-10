@@ -2,23 +2,23 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-06-10 19:46:05
+Generated: 2026-06-10 19:58:28
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
-Total hexagons affected: 127,989
-Total occurrence count: 5,373,350
+Total hexagons affected: 127,990
+Total occurrence count: 5,373,532
 Maximum occurrences (single hex): 878
 Mean occurrences per hex: 42.0
 Median occurrences per hex: 22
 
-Date range: 2026-01-01 00:42:56 to 2026-06-10 15:31:37
+Date range: 2026-01-01 00:42:56 to 2026-06-10 15:46:37
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
-         1 occurrences:   8231 hexagons (  6.4%)
-         2 occurrences:   4726 hexagons (  3.7%)
-       3-5 occurrences:  10398 hexagons (  8.1%)
+         1 occurrences:   8232 hexagons (  6.4%)
+         2 occurrences:   4725 hexagons (  3.7%)
+       3-5 occurrences:  10399 hexagons (  8.1%)
       6-10 occurrences:  16918 hexagons ( 13.2%)
      11-20 occurrences:  21595 hexagons ( 16.9%)
      21-40 occurrences:  25465 hexagons ( 19.9%)
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-06-07: 6412 hexagons affected, 68488 occurrences
 2026-06-08: 803 hexagons affected, 6851 occurrences
 2026-06-09: 2558 hexagons affected, 23428 occurrences
-2026-06-10: 2045 hexagons affected, 21578 occurrences
+2026-06-10: 2053 hexagons affected, 21760 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -57,7 +57,7 @@ MONTHLY SUMMARY
 2026-03: 72088 hexagons, 2197921 occurrences, 1.7 avg days affected
 2026-04: 48017 hexagons, 639026 occurrences, 1.4 avg days affected
 2026-05: 58641 hexagons, 1492683 occurrences, 1.6 avg days affected
-2026-06: 26532 hexagons, 261940 occurrences, 1.2 avg days affected
+2026-06: 26539 hexagons, 262122 occurrences, 1.2 avg days affected
 
 =================================================================
 End of Report
