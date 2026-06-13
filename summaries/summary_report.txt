@@ -2,17 +2,17 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-06-13 12:00:13
+Generated: 2026-06-13 12:12:58
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 129,296
-Total occurrence count: 5,463,698
+Total occurrence count: 5,463,746
 Maximum occurrences (single hex): 878
 Mean occurrences per hex: 42.3
 Median occurrences per hex: 22
 
-Date range: 2026-01-01 00:42:56 to 2026-06-13 07:46:17
+Date range: 2026-01-01 00:42:56 to 2026-06-13 08:01:23
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
@@ -21,8 +21,8 @@ OCCURRENCE DISTRIBUTION
        3-5 occurrences:  10355 hexagons (  8.0%)
       6-10 occurrences:  16447 hexagons ( 12.7%)
      11-20 occurrences:  21654 hexagons ( 16.8%)
-     21-40 occurrences:  25740 hexagons ( 19.9%)
-     41-60 occurrences:  14076 hexagons ( 10.9%)
+     21-40 occurrences:  25739 hexagons ( 19.9%)
+     41-60 occurrences:  14077 hexagons ( 10.9%)
      61-80 occurrences:   7499 hexagons (  5.8%)
        81+ occurrences:  19505 hexagons ( 15.1%)
 
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-06-10: 4201 hexagons affected, 48678 occurrences
 2026-06-11: 3971 hexagons affected, 26770 occurrences
 2026-06-12: 5716 hexagons affected, 32163 occurrences
-2026-06-13: 651 hexagons affected, 4315 occurrences
+2026-06-13: 652 hexagons affected, 4363 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -57,7 +57,7 @@ MONTHLY SUMMARY
 2026-03: 72088 hexagons, 2197921 occurrences, 1.7 avg days affected
 2026-04: 48017 hexagons, 639026 occurrences, 1.4 avg days affected
 2026-05: 58641 hexagons, 1492683 occurrences, 1.6 avg days affected
-2026-06: 34718 hexagons, 352288 occurrences, 1.2 avg days affected
+2026-06: 34719 hexagons, 352336 occurrences, 1.2 avg days affected
 
 =================================================================
 End of Report
