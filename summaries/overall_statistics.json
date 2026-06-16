@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-06-16 21:25:33",
+  "generated_at": "2026-06-16 21:38:10",
   "total_hexagons_affected": 131762,
-  "total_occurrences": 5627194,
+  "total_occurrences": 5627358,
   "max_occurrences_per_hex": 909,
-  "mean_occurrences_per_hex": 42.7073,
+  "mean_occurrences_per_hex": 42.7085,
   "median_occurrences_per_hex": 22,
   "date_range": {
     "first": "2026-01-01 00:42:56",
-    "last": "2026-06-16 17:16:39"
+    "last": "2026-06-16 17:31:46"
   },
   "num_daily_summaries": 167,
   "num_monthly_summaries": 6,
   "occurrence_distribution": {
     "occurrence_bin": ["1", "2", "3-5", "6-10", "11-20", "21-40", "41-60", "61-80", "81+"],
-    "count": [9197, 5483, 10018, 16478, 22029, 25560, 15007, 8122, 19868],
+    "count": [9197, 5483, 10017, 16477, 22031, 25560, 15006, 8123, 19868],
     "percentage": [6.98, 4.16, 7.6, 12.51, 16.72, 19.4, 11.39, 6.16, 15.08]
   },
   "top_20_hexagons": {
