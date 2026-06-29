@@ -2,23 +2,23 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-06-29 01:17:53
+Generated: 2026-06-29 01:31:01
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
-Total hexagons affected: 134,946
-Total occurrence count: 6,047,465
+Total hexagons affected: 134,947
+Total occurrence count: 6,047,773
 Maximum occurrences (single hex): 910
 Mean occurrences per hex: 44.8
 Median occurrences per hex: 23
 
-Date range: 2026-01-01 00:42:56 to 2026-06-28 21:01:25
+Date range: 2026-01-01 00:42:56 to 2026-06-28 21:16:21
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
-         1 occurrences:   8861 hexagons (  6.6%)
-         2 occurrences:   4622 hexagons (  3.4%)
-       3-5 occurrences:   9151 hexagons (  6.8%)
+         1 occurrences:   8862 hexagons (  6.6%)
+         2 occurrences:   4619 hexagons (  3.4%)
+       3-5 occurrences:   9154 hexagons (  6.8%)
       6-10 occurrences:  16591 hexagons ( 12.3%)
      11-20 occurrences:  22152 hexagons ( 16.4%)
      21-40 occurrences:  27196 hexagons ( 20.1%)
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-06-25: 3153 hexagons affected, 46023 occurrences
 2026-06-26: 2528 hexagons affected, 20570 occurrences
 2026-06-27: 1112 hexagons affected, 9803 occurrences
-2026-06-28: 1379 hexagons affected, 12362 occurrences
+2026-06-28: 1390 hexagons affected, 12670 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -57,7 +57,7 @@ MONTHLY SUMMARY
 2026-03: 72088 hexagons, 2197921 occurrences, 1.7 avg days affected
 2026-04: 48017 hexagons, 639026 occurrences, 1.4 avg days affected
 2026-05: 58641 hexagons, 1492683 occurrences, 1.6 avg days affected
-2026-06: 62352 hexagons, 936055 occurrences, 1.6 avg days affected
+2026-06: 62354 hexagons, 936363 occurrences, 1.6 avg days affected
 
 =================================================================
 End of Report
