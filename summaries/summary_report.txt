@@ -2,17 +2,17 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-07-01 04:48:18
+Generated: 2026-07-01 05:02:31
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 135,568
-Total occurrence count: 6,136,043
+Total occurrence count: 6,137,091
 Maximum occurrences (single hex): 922
 Mean occurrences per hex: 45.3
 Median occurrences per hex: 23
 
-Date range: 2026-01-01 00:42:56 to 2026-07-01 00:31:39
+Date range: 2026-01-01 00:42:56 to 2026-07-01 00:46:43
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
@@ -21,9 +21,9 @@ OCCURRENCE DISTRIBUTION
        3-5 occurrences:   9025 hexagons (  6.7%)
       6-10 occurrences:  16702 hexagons ( 12.3%)
      11-20 occurrences:  22109 hexagons ( 16.3%)
-     21-40 occurrences:  26794 hexagons ( 19.8%)
-     41-60 occurrences:  16588 hexagons ( 12.2%)
-     61-80 occurrences:   8861 hexagons (  6.5%)
+     21-40 occurrences:  26776 hexagons ( 19.8%)
+     41-60 occurrences:  16600 hexagons ( 12.2%)
+     61-80 occurrences:   8867 hexagons (  6.5%)
        81+ occurrences:  21863 hexagons ( 16.1%)
 
 TOP 10 MOST AFFECTED HEXAGONS
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-06-28: 1543 hexagons affected, 16306 occurrences
 2026-06-29: 2345 hexagons affected, 27107 occurrences
 2026-06-30: 4653 hexagons affected, 54184 occurrences
-2026-07-01: 1209 hexagons affected, 3343 occurrences
+2026-07-01: 1210 hexagons affected, 4391 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -58,7 +58,7 @@ MONTHLY SUMMARY
 2026-04: 48017 hexagons, 639026 occurrences, 1.4 avg days affected
 2026-05: 58641 hexagons, 1492683 occurrences, 1.6 avg days affected
 2026-06: 65894 hexagons, 1021290 occurrences, 1.6 avg days affected
-2026-07: 1209 hexagons, 3343 occurrences, 1.0 avg days affected
+2026-07: 1210 hexagons, 4391 occurrences, 1.0 avg days affected
 
 =================================================================
 End of Report
