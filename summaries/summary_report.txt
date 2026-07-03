@@ -2,43 +2,43 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-07-03 22:36:21
+Generated: 2026-07-03 22:52:09
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
-Total hexagons affected: 136,439
-Total occurrence count: 6,550,541
-Maximum occurrences (single hex): 931
+Total hexagons affected: 136,440
+Total occurrence count: 6,551,401
+Maximum occurrences (single hex): 932
 Mean occurrences per hex: 48.0
 Median occurrences per hex: 25
 
-Date range: 2026-01-01 00:42:56 to 2026-07-03 18:16:20
+Date range: 2026-01-01 00:42:56 to 2026-07-03 18:31:28
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
-         1 occurrences:   8510 hexagons (  6.2%)
+         1 occurrences:   8511 hexagons (  6.2%)
          2 occurrences:   4556 hexagons (  3.3%)
-       3-5 occurrences:   8767 hexagons (  6.4%)
-      6-10 occurrences:  16112 hexagons ( 11.8%)
-     11-20 occurrences:  21205 hexagons ( 15.5%)
-     21-40 occurrences:  27698 hexagons ( 20.3%)
-     41-60 occurrences:  16666 hexagons ( 12.2%)
-     61-80 occurrences:   8938 hexagons (  6.5%)
+       3-5 occurrences:   8766 hexagons (  6.4%)
+      6-10 occurrences:  16113 hexagons ( 11.8%)
+     11-20 occurrences:  21204 hexagons ( 15.5%)
+     21-40 occurrences:  27699 hexagons ( 20.3%)
+     41-60 occurrences:  16664 hexagons ( 12.2%)
+     61-80 occurrences:   8940 hexagons (  6.5%)
        81+ occurrences:  23987 hexagons ( 17.6%)
 
 TOP 10 MOST AFFECTED HEXAGONS
 -----------------------------------------------------------------
 Hex ID     Occurrences          Days              Location
-297817             931            20   52.61588,  -76.69992
-298428             930            20   52.62377,  -76.69284
-299038             930            20   52.61609,  -76.68515
-299039             930            20   52.63166,  -76.68575
-299649             930            20   52.62398,  -76.67807
-299650             930            20   52.63954,  -76.67866
-300260             930            20   52.63186,  -76.67098
-300261             930            20   52.64743,  -76.67158
-300871             930            20   52.63975,  -76.66389
-300872             930            20   52.65532,  -76.66448
+297817             932            20   52.61588,  -76.69992
+298428             931            20   52.62377,  -76.69284
+299038             931            20   52.61609,  -76.68515
+299039             931            20   52.63166,  -76.68575
+299649             931            20   52.62398,  -76.67807
+299650             931            20   52.63954,  -76.67866
+300260             931            20   52.63186,  -76.67098
+300261             931            20   52.64743,  -76.67158
+300871             931            20   52.63975,  -76.66389
+300872             931            20   52.65532,  -76.66448
 
 RECENT DAILY ACTIVITY (Last 7 Days)
 -----------------------------------------------------------------
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-06-30: 4653 hexagons affected, 54184 occurrences
 2026-07-01: 8653 hexagons affected, 112668 occurrences
 2026-07-02: 10584 hexagons affected, 177815 occurrences
-2026-07-03: 5117 hexagons affected, 127358 occurrences
+2026-07-03: 5122 hexagons affected, 128218 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -58,7 +58,7 @@ MONTHLY SUMMARY
 2026-04: 48017 hexagons, 639026 occurrences, 1.4 avg days affected
 2026-05: 58641 hexagons, 1492683 occurrences, 1.6 avg days affected
 2026-06: 65894 hexagons, 1021290 occurrences, 1.6 avg days affected
-2026-07: 17356 hexagons, 417841 occurrences, 1.4 avg days affected
+2026-07: 17359 hexagons, 418701 occurrences, 1.4 avg days affected
 
 =================================================================
 End of Report
