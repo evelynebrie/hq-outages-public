@@ -2,22 +2,22 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-07-03 23:08:42
+Generated: 2026-07-03 23:24:42
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
-Total hexagons affected: 136,440
-Total occurrence count: 6,552,910
-Maximum occurrences (single hex): 934
+Total hexagons affected: 136,441
+Total occurrence count: 6,553,800
+Maximum occurrences (single hex): 935
 Mean occurrences per hex: 48.0
 Median occurrences per hex: 25
 
-Date range: 2026-01-01 00:42:56 to 2026-07-03 19:01:13
+Date range: 2026-01-01 00:42:56 to 2026-07-03 19:16:28
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
-         1 occurrences:   8510 hexagons (  6.2%)
-         2 occurrences:   4556 hexagons (  3.3%)
+         1 occurrences:   8509 hexagons (  6.2%)
+         2 occurrences:   4558 hexagons (  3.3%)
        3-5 occurrences:   8762 hexagons (  6.4%)
       6-10 occurrences:  16117 hexagons ( 11.8%)
      11-20 occurrences:  21203 hexagons ( 15.5%)
@@ -29,16 +29,16 @@ OCCURRENCE DISTRIBUTION
 TOP 10 MOST AFFECTED HEXAGONS
 -----------------------------------------------------------------
 Hex ID     Occurrences          Days              Location
-297817             934            20   52.61588,  -76.69992
-298428             933            20   52.62377,  -76.69284
-299038             933            20   52.61609,  -76.68515
-299039             933            20   52.63166,  -76.68575
-299649             933            20   52.62398,  -76.67807
-299650             933            20   52.63954,  -76.67866
-300260             933            20   52.63186,  -76.67098
-300261             933            20   52.64743,  -76.67158
-300871             933            20   52.63975,  -76.66389
-300872             933            20   52.65532,  -76.66448
+297817             935            20   52.61588,  -76.69992
+298428             934            20   52.62377,  -76.69284
+299038             934            20   52.61609,  -76.68515
+299039             934            20   52.63166,  -76.68575
+299649             934            20   52.62398,  -76.67807
+299650             934            20   52.63954,  -76.67866
+300260             934            20   52.63186,  -76.67098
+300261             934            20   52.64743,  -76.67158
+300871             934            20   52.63975,  -76.66389
+300872             934            20   52.65532,  -76.66448
 
 RECENT DAILY ACTIVITY (Last 7 Days)
 -----------------------------------------------------------------
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-06-30: 4653 hexagons affected, 54184 occurrences
 2026-07-01: 8653 hexagons affected, 112668 occurrences
 2026-07-02: 10584 hexagons affected, 177815 occurrences
-2026-07-03: 5124 hexagons affected, 129727 occurrences
+2026-07-03: 5302 hexagons affected, 130617 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -58,7 +58,7 @@ MONTHLY SUMMARY
 2026-04: 48017 hexagons, 639026 occurrences, 1.4 avg days affected
 2026-05: 58641 hexagons, 1492683 occurrences, 1.6 avg days affected
 2026-06: 65894 hexagons, 1021290 occurrences, 1.6 avg days affected
-2026-07: 17361 hexagons, 420210 occurrences, 1.4 avg days affected
+2026-07: 17538 hexagons, 421100 occurrences, 1.4 avg days affected
 
 =================================================================
 End of Report
