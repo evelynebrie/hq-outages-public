@@ -2,17 +2,17 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-07-04 11:13:03
+Generated: 2026-07-04 11:28:08
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 136,451
-Total occurrence count: 6,587,849
-Maximum occurrences (single hex): 982
+Total occurrence count: 6,588,361
+Maximum occurrences (single hex): 983
 Mean occurrences per hex: 48.3
 Median occurrences per hex: 25
 
-Date range: 2026-01-01 00:42:56 to 2026-07-04 07:01:35
+Date range: 2026-01-01 00:42:56 to 2026-07-04 07:11:57
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
@@ -22,23 +22,23 @@ OCCURRENCE DISTRIBUTION
       6-10 occurrences:  16069 hexagons ( 11.8%)
      11-20 occurrences:  21179 hexagons ( 15.5%)
      21-40 occurrences:  27612 hexagons ( 20.2%)
-     41-60 occurrences:  16794 hexagons ( 12.3%)
-     61-80 occurrences:   8953 hexagons (  6.6%)
+     41-60 occurrences:  16790 hexagons ( 12.3%)
+     61-80 occurrences:   8957 hexagons (  6.6%)
        81+ occurrences:  24021 hexagons ( 17.6%)
 
 TOP 10 MOST AFFECTED HEXAGONS
 -----------------------------------------------------------------
 Hex ID     Occurrences          Days              Location
-297817             982            21   52.61588,  -76.69992
-298428             981            21   52.62377,  -76.69284
-299038             981            21   52.61609,  -76.68515
-299039             981            21   52.63166,  -76.68575
-299649             981            21   52.62398,  -76.67807
-299650             981            21   52.63954,  -76.67866
-300260             981            21   52.63186,  -76.67098
-300261             981            21   52.64743,  -76.67158
-300871             981            21   52.63975,  -76.66389
-300872             981            21   52.65532,  -76.66448
+297817             983            21   52.61588,  -76.69992
+298428             982            21   52.62377,  -76.69284
+299038             982            21   52.61609,  -76.68515
+299039             982            21   52.63166,  -76.68575
+299649             982            21   52.62398,  -76.67807
+299650             982            21   52.63954,  -76.67866
+300260             982            21   52.63186,  -76.67098
+300261             982            21   52.64743,  -76.67158
+300871             982            21   52.63975,  -76.66389
+300872             982            21   52.65532,  -76.66448
 
 RECENT DAILY ACTIVITY (Last 7 Days)
 -----------------------------------------------------------------
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-07-01: 8653 hexagons affected, 112668 occurrences
 2026-07-02: 10584 hexagons affected, 177815 occurrences
 2026-07-03: 5605 hexagons affected, 145858 occurrences
-2026-07-04: 1143 hexagons affected, 18808 occurrences
+2026-07-04: 1144 hexagons affected, 19320 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -58,7 +58,7 @@ MONTHLY SUMMARY
 2026-04: 48017 hexagons, 639026 occurrences, 1.4 avg days affected
 2026-05: 58641 hexagons, 1492683 occurrences, 1.6 avg days affected
 2026-06: 65894 hexagons, 1021290 occurrences, 1.6 avg days affected
-2026-07: 18151 hexagons, 455149 occurrences, 1.4 avg days affected
+2026-07: 18152 hexagons, 455661 occurrences, 1.4 avg days affected
 
 =================================================================
 End of Report
