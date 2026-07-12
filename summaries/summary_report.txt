@@ -2,24 +2,24 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-07-12 10:02:00
+Generated: 2026-07-12 10:16:25
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 137,371
-Total occurrence count: 6,739,126
+Total occurrence count: 6,739,146
 Maximum occurrences (single hex): 1021
 Mean occurrences per hex: 49.1
 Median occurrences per hex: 26
 
-Date range: 2026-01-01 00:42:56 to 2026-07-12 05:46:55
+Date range: 2026-01-01 00:42:56 to 2026-07-12 06:01:37
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
          1 occurrences:   8166 hexagons (  5.9%)
-         2 occurrences:   4464 hexagons (  3.2%)
-       3-5 occurrences:   9061 hexagons (  6.6%)
-      6-10 occurrences:  15908 hexagons ( 11.6%)
+         2 occurrences:   4463 hexagons (  3.2%)
+       3-5 occurrences:   9059 hexagons (  6.6%)
+      6-10 occurrences:  15911 hexagons ( 11.6%)
      11-20 occurrences:  20892 hexagons ( 15.2%)
      21-40 occurrences:  28293 hexagons ( 20.6%)
      41-60 occurrences:  17107 hexagons ( 12.4%)
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-07-09: 2387 hexagons affected, 23127 occurrences
 2026-07-10: 2333 hexagons affected, 12679 occurrences
 2026-07-11: 1714 hexagons affected, 15868 occurrences
-2026-07-12: 43 hexagons affected, 216 occurrences
+2026-07-12: 46 hexagons affected, 236 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -58,7 +58,7 @@ MONTHLY SUMMARY
 2026-04: 48017 hexagons, 639026 occurrences, 1.4 avg days affected
 2026-05: 58641 hexagons, 1492683 occurrences, 1.6 avg days affected
 2026-06: 65894 hexagons, 1021290 occurrences, 1.6 avg days affected
-2026-07: 28740 hexagons, 606426 occurrences, 1.4 avg days affected
+2026-07: 28740 hexagons, 606446 occurrences, 1.4 avg days affected
 
 =================================================================
 End of Report
