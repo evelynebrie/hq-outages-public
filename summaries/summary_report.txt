@@ -2,29 +2,29 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-08-04 15:45:31
+Generated: 2026-08-04 16:04:08
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 144,101
-Total occurrence count: 7,617,691
+Total occurrence count: 7,619,471
 Maximum occurrences (single hex): 1282
 Mean occurrences per hex: 52.9
 Median occurrences per hex: 29
 
-Date range: 2026-01-01 00:42:56 to 2026-08-04 11:32:02
+Date range: 2026-01-01 00:42:56 to 2026-08-04 11:46:50
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
-         1 occurrences:   6797 hexagons (  4.7%)
-         2 occurrences:   3637 hexagons (  2.5%)
-       3-5 occurrences:  10680 hexagons (  7.4%)
-      6-10 occurrences:  13802 hexagons (  9.6%)
-     11-20 occurrences:  22052 hexagons ( 15.3%)
-     21-40 occurrences:  28830 hexagons ( 20.0%)
-     41-60 occurrences:  19535 hexagons ( 13.6%)
-     61-80 occurrences:  10553 hexagons (  7.3%)
-       81+ occurrences:  28215 hexagons ( 19.6%)
+         1 occurrences:   6793 hexagons (  4.7%)
+         2 occurrences:   3639 hexagons (  2.5%)
+       3-5 occurrences:  10678 hexagons (  7.4%)
+      6-10 occurrences:  13647 hexagons (  9.5%)
+     11-20 occurrences:  22198 hexagons ( 15.4%)
+     21-40 occurrences:  28837 hexagons ( 20.0%)
+     41-60 occurrences:  19541 hexagons ( 13.6%)
+     61-80 occurrences:  10552 hexagons (  7.3%)
+       81+ occurrences:  28216 hexagons ( 19.6%)
 
 TOP 10 MOST AFFECTED HEXAGONS
 -----------------------------------------------------------------
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-08-01: 5299 hexagons affected, 14896 occurrences
 2026-08-02: 1904 hexagons affected, 21000 occurrences
 2026-08-03: 8074 hexagons affected, 101257 occurrences
-2026-08-04: 6350 hexagons affected, 36458 occurrences
+2026-08-04: 6506 hexagons affected, 38238 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -59,7 +59,7 @@ MONTHLY SUMMARY
 2026-05: 58641 hexagons, 1492683 occurrences, 1.6 avg days affected
 2026-06: 65894 hexagons, 1021290 occurrences, 1.6 avg days affected
 2026-07: 72608 hexagons, 1311381 occurrences, 1.6 avg days affected
-2026-08: 19488 hexagons, 173611 occurrences, 1.1 avg days affected
+2026-08: 19644 hexagons, 175391 occurrences, 1.1 avg days affected
 
 =================================================================
 End of Report
