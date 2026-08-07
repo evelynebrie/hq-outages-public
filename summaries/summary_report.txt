@@ -2,17 +2,17 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-08-07 05:01:14
+Generated: 2026-08-07 05:18:02
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 144,349
-Total occurrence count: 7,684,063
+Total occurrence count: 7,684,138
 Maximum occurrences (single hex): 1282
 Mean occurrences per hex: 53.2
 Median occurrences per hex: 29
 
-Date range: 2026-01-01 00:42:56 to 2026-08-07 00:31:43
+Date range: 2026-01-01 00:42:56 to 2026-08-07 01:01:51
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
@@ -21,8 +21,8 @@ OCCURRENCE DISTRIBUTION
        3-5 occurrences:  10804 hexagons (  7.5%)
       6-10 occurrences:  12723 hexagons (  8.8%)
      11-20 occurrences:  22665 hexagons ( 15.7%)
-     21-40 occurrences:  29380 hexagons ( 20.4%)
-     41-60 occurrences:  19757 hexagons ( 13.7%)
+     21-40 occurrences:  29379 hexagons ( 20.4%)
+     41-60 occurrences:  19758 hexagons ( 13.7%)
      61-80 occurrences:  10595 hexagons (  7.3%)
        81+ occurrences:  28345 hexagons ( 19.6%)
 
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-08-04: 10156 hexagons affected, 78910 occurrences
 2026-08-05: 1434 hexagons affected, 11294 occurrences
 2026-08-06: 2407 hexagons affected, 12381 occurrences
-2026-08-07: 83 hexagons affected, 245 occurrences
+2026-08-07: 83 hexagons affected, 320 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -59,7 +59,7 @@ MONTHLY SUMMARY
 2026-05: 58641 hexagons, 1492683 occurrences, 1.6 avg days affected
 2026-06: 65894 hexagons, 1021290 occurrences, 1.6 avg days affected
 2026-07: 72608 hexagons, 1311381 occurrences, 1.6 avg days affected
-2026-08: 26083 hexagons, 239983 occurrences, 1.1 avg days affected
+2026-08: 26083 hexagons, 240058 occurrences, 1.1 avg days affected
 
 =================================================================
 End of Report
