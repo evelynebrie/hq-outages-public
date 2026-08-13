@@ -1746,11 +1746,19 @@
     },
     "2026-08-07": {
       "date": "2026-08-07",
-      "hexagons_affected": 585,
-      "total_occurrences_today": 2179,
-      "max_occurrences": 21,
-      "mean_occurrences": 3.72,
+      "hexagons_affected": 590,
+      "total_occurrences_today": 2242,
+      "max_occurrences": 24,
+      "mean_occurrences": 3.8,
       "new_hexagons": 93
+    },
+    "2026-08-13": {
+      "date": "2026-08-13",
+      "hexagons_affected": 1110,
+      "total_occurrences_today": 1110,
+      "max_occurrences": 1,
+      "mean_occurrences": 1,
+      "new_hexagons": 49
     }
   }
 }
