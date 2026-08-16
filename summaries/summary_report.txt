@@ -2,17 +2,17 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-08-16 06:19:55
+Generated: 2026-08-16 06:38:15
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 144,823
-Total occurrence count: 7,726,217
+Total occurrence count: 7,726,375
 Maximum occurrences (single hex): 1282
-Mean occurrences per hex: 53.3
+Mean occurrences per hex: 53.4
 Median occurrences per hex: 29
 
-Date range: 2026-01-01 00:42:56 to 2026-08-16 02:02:03
+Date range: 2026-01-01 00:42:56 to 2026-08-16 02:31:42
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-08-13: 1900 hexagons affected, 16420 occurrences
 2026-08-14: 1561 hexagons affected, 14111 occurrences
 2026-08-15: 1119 hexagons affected, 8975 occurrences
-2026-08-16: 87 hexagons affected, 651 occurrences
+2026-08-16: 90 hexagons affected, 809 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -59,7 +59,7 @@ MONTHLY SUMMARY
 2026-05: 58641 hexagons, 1492683 occurrences, 1.6 avg days affected
 2026-06: 65894 hexagons, 1021290 occurrences, 1.6 avg days affected
 2026-07: 72608 hexagons, 1311381 occurrences, 1.6 avg days affected
-2026-08: 29973 hexagons, 282137 occurrences, 1.1 avg days affected
+2026-08: 29975 hexagons, 282295 occurrences, 1.1 avg days affected
 
 =================================================================
 End of Report
