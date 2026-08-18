@@ -2,17 +2,17 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-08-18 09:15:02
+Generated: 2026-08-18 09:33:47
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 144,891
-Total occurrence count: 7,749,911
+Total occurrence count: 7,749,935
 Maximum occurrences (single hex): 1282
 Mean occurrences per hex: 53.5
 Median occurrences per hex: 29
 
-Date range: 2026-01-01 00:42:56 to 2026-08-18 05:00:46
+Date range: 2026-01-01 00:42:56 to 2026-08-18 05:18:06
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
@@ -23,8 +23,8 @@ OCCURRENCE DISTRIBUTION
      11-20 occurrences:  22712 hexagons ( 15.7%)
      21-40 occurrences:  29438 hexagons ( 20.3%)
      41-60 occurrences:  19735 hexagons ( 13.6%)
-     61-80 occurrences:  10762 hexagons (  7.4%)
-       81+ occurrences:  28609 hexagons ( 19.8%)
+     61-80 occurrences:  10760 hexagons (  7.4%)
+       81+ occurrences:  28611 hexagons ( 19.8%)
 
 TOP 10 MOST AFFECTED HEXAGONS
 -----------------------------------------------------------------
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-08-15: 1119 hexagons affected, 8975 occurrences
 2026-08-16: 1063 hexagons affected, 13262 occurrences
 2026-08-17: 980 hexagons affected, 10392 occurrences
-2026-08-18: 134 hexagons affected, 691 occurrences
+2026-08-18: 134 hexagons affected, 715 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -59,7 +59,7 @@ MONTHLY SUMMARY
 2026-05: 58641 hexagons, 1492683 occurrences, 1.6 avg days affected
 2026-06: 65894 hexagons, 1021290 occurrences, 1.6 avg days affected
 2026-07: 72608 hexagons, 1311381 occurrences, 1.6 avg days affected
-2026-08: 31573 hexagons, 305831 occurrences, 1.2 avg days affected
+2026-08: 31573 hexagons, 305855 occurrences, 1.2 avg days affected
 
 =================================================================
 End of Report
