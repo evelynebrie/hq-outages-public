@@ -2,27 +2,27 @@
 HQ OUTAGES - CUMULATIVE ANALYSIS REPORT
 =================================================================
 
-Generated: 2026-08-20 04:00:04
+Generated: 2026-08-20 04:17:39
 
 OVERALL STATISTICS
 -----------------------------------------------------------------
 Total hexagons affected: 145,174
-Total occurrence count: 7,774,138
+Total occurrence count: 7,774,268
 Maximum occurrences (single hex): 1282
 Mean occurrences per hex: 53.6
 Median occurrences per hex: 29
 
-Date range: 2026-01-01 00:42:56 to 2026-08-19 23:47:41
+Date range: 2026-01-01 00:42:56 to 2026-08-19 23:58:52
 
 OCCURRENCE DISTRIBUTION
 -----------------------------------------------------------------
          1 occurrences:   6619 hexagons (  4.6%)
-         2 occurrences:   3569 hexagons (  2.5%)
-       3-5 occurrences:  10705 hexagons (  7.4%)
+         2 occurrences:   3568 hexagons (  2.5%)
+       3-5 occurrences:  10706 hexagons (  7.4%)
       6-10 occurrences:  12642 hexagons (  8.7%)
-     11-20 occurrences:  22954 hexagons ( 15.8%)
-     21-40 occurrences:  29466 hexagons ( 20.3%)
-     41-60 occurrences:  19716 hexagons ( 13.6%)
+     11-20 occurrences:  22953 hexagons ( 15.8%)
+     21-40 occurrences:  29465 hexagons ( 20.3%)
+     41-60 occurrences:  19718 hexagons ( 13.6%)
      61-80 occurrences:  10776 hexagons (  7.4%)
        81+ occurrences:  28727 hexagons ( 19.8%)
 
@@ -48,7 +48,7 @@ RECENT DAILY ACTIVITY (Last 7 Days)
 2026-08-16: 1063 hexagons affected, 13262 occurrences
 2026-08-17: 980 hexagons affected, 10392 occurrences
 2026-08-18: 1446 hexagons affected, 9388 occurrences
-2026-08-19: 2913 hexagons affected, 15530 occurrences
+2026-08-19: 2915 hexagons affected, 15660 occurrences
 
 MONTHLY SUMMARY
 -----------------------------------------------------------------
@@ -59,7 +59,7 @@ MONTHLY SUMMARY
 2026-05: 58641 hexagons, 1492683 occurrences, 1.6 avg days affected
 2026-06: 65894 hexagons, 1021290 occurrences, 1.6 avg days affected
 2026-07: 72608 hexagons, 1311381 occurrences, 1.6 avg days affected
-2026-08: 33599 hexagons, 330058 occurrences, 1.2 avg days affected
+2026-08: 33600 hexagons, 330188 occurrences, 1.2 avg days affected
 
 =================================================================
 End of Report
