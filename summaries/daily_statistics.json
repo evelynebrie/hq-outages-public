@@ -1842,10 +1842,10 @@
     },
     "2026-08-24": {
       "date": "2026-08-24",
-      "hexagons_affected": 192,
-      "total_occurrences_today": 192,
-      "max_occurrences": 1,
-      "mean_occurrences": 1,
+      "hexagons_affected": 194,
+      "total_occurrences_today": 555,
+      "max_occurrences": 3,
+      "mean_occurrences": 2.86,
       "new_hexagons": 0
     }
   }
