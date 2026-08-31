@@ -1891,10 +1891,18 @@
     "2026-08-30": {
       "date": "2026-08-30",
       "hexagons_affected": 3827,
-      "total_occurrences_today": 36800,
-      "max_occurrences": 93,
-      "mean_occurrences": 9.62,
-      "new_hexagons": 11
+      "total_occurrences_today": 37017,
+      "max_occurrences": 94,
+      "mean_occurrences": 9.67,
+      "new_hexagons": 9
+    },
+    "2026-08-31": {
+      "date": "2026-08-31",
+      "hexagons_affected": 163,
+      "total_occurrences_today": 163,
+      "max_occurrences": 1,
+      "mean_occurrences": 1,
+      "new_hexagons": 0
     }
   }
 }
