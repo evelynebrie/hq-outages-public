@@ -1922,11 +1922,19 @@
     },
     "2026-09-03": {
       "date": "2026-09-03",
-      "hexagons_affected": 2031,
-      "total_occurrences_today": 52322,
-      "max_occurrences": 92,
-      "mean_occurrences": 25.76,
-      "new_hexagons": 43
+      "hexagons_affected": 2071,
+      "total_occurrences_today": 52633,
+      "max_occurrences": 93,
+      "mean_occurrences": 25.41,
+      "new_hexagons": 12
+    },
+    "2026-09-04": {
+      "date": "2026-09-04",
+      "hexagons_affected": 309,
+      "total_occurrences_today": 309,
+      "max_occurrences": 1,
+      "mean_occurrences": 1,
+      "new_hexagons": 0
     }
   }
 }
