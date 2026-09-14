@@ -2003,10 +2003,18 @@
     "2026-09-13": {
       "date": "2026-09-13",
       "hexagons_affected": 3033,
-      "total_occurrences_today": 41703,
+      "total_occurrences_today": 42583,
       "max_occurrences": 62,
-      "mean_occurrences": 13.75,
-      "new_hexagons": 381
+      "mean_occurrences": 14.04,
+      "new_hexagons": 15
+    },
+    "2026-09-14": {
+      "date": "2026-09-14",
+      "hexagons_affected": 894,
+      "total_occurrences_today": 894,
+      "max_occurrences": 1,
+      "mean_occurrences": 1,
+      "new_hexagons": 0
     }
   }
 }
